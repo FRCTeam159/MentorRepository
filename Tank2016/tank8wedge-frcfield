@@ -1,0 +1,21 @@
+# start gazebo
+#. ~/bin/gdev.env
+killsims
+
+export GAZEBO_MODEL_PATH=$WPILIB/simulation/models:/usr/share/gazebo-6.5/models
+export GAZEBO_RESOURCE_PATH=/usr/share/gazebo-6.5
+export LD_LIBRARY_PATH=/usr/lib:/usr/lib/x86_64-linux-gnu/:${GAZEBO_PLUGIN_PATH}
+
+export SWMODEL=$HOME/Robotics/Solidworks/Exported/Tank8Wedge_Exported
+export GAZEBO_MODEL_PATH=$SWMODEL:${GAZEBO_MODEL_PATH}
+#gazebo --verbose $SWMODEL/Tank8Wedge.world &
+gazebo --verbose $SWMODEL/TankWedgeField.world &
+#gazebo --verbose $SWMODEL/Tank8WedgeTest.world &
+sleep 5 
+# start simulation client
+linux_simulate/FRCUserProgram &
+
+sleep 5
+# start java driver station
+sim_ds 
+

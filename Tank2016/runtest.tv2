@@ -1,0 +1,17 @@
+# start gazebo
+#. ~/bin/gdev.env
+killsims
+#sleep 1
+export SWMODEL=$HOME/Robotics/Solidworks/Exported/Tank8v2_Exported
+export GAZEBO_MODEL_PATH=$SWMODEL:${GAZEBO_MODEL_PATH}
+gazebo --verbose $SWMODEL/FRC2016_t8.world &
+#gazebo --verbose $SWMODEL/Tank8v2.world &
+sleep 5 
+# start simulation client
+linux_simulate/FRCUserProgram &
+
+# start java driver station
+sleep 5
+sim_ds
+
+
