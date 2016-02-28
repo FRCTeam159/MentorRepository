@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sdf version="1.5">
+  <model name="Ball">
+    <pose>0 0 -0.0888999999999999 0 0 0</pose>
+    <plugin name="clock" filename="libgz_clock.so">
+      <topic>/gazebo/frc/time</topic>
+    </plugin>
+    <link name="Ball">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>-6.80444377776246E-19 1.38777878078145E-17 0 0 0 0</pose>
+      <must_be_base_link>1</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.17</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.000149031563620964</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000149031563620964</iyy>
+          <iyz>9.31990791856974E-54</iyz>
+          <izz>0.000149031563620964</izz>
+        </inertia>
+      </inertial>
+      <collision name="Ball_collision">
+        <pose>-5.14683665419605E-18 -0.0889 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Ball/meshes/Ball_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="Ball_visual">
+        <pose>-5.14683665419605E-18 -0.0889 0 0 0 0</pose>
+        <material>
+          <ambient>1 0 0 1</ambient>
+          <diffuse>1 0 0 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Ball/meshes/Ball.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>

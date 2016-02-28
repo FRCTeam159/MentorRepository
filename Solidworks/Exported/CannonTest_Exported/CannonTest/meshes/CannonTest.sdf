@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sdf version="1.5">
+  <model name="CannonTest">
+    <pose>0 0 -0.05334 0 0 0</pose>
+    <plugin name="clock" filename="libgz_clock.so">
+      <topic>/gazebo/frc/time</topic>
+    </plugin>
+    <link name="Chassis">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.304801886904009 0.254006226547669 0.0342053428597835 1.5707963267949 -3.37849678924218E-18 -1.53617232855595</pose>
+      <must_be_base_link>1</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>47.0466978789159</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>1.37190611172484</ixx>
+          <ixy>4.69227181351873E-05</ixy>
+          <ixz>0.0132301194332059</ixz>
+          <iyy>2.25733306126557</iyy>
+          <iyz>1.69411125148096E-05</iyz>
+          <izz>0.990407610659257</izz>
+        </inertia>
+      </inertial>
+      <collision name="Chassis_collision">
+        <pose>0.00329565928721906 0.00273373914755762 -1.10322730744152 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://CannonTest/meshes/Chassis_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="Chassis_visual">
+        <pose>0.00329565928721906 0.00273373914755762 -1.10322730744152 0 0 0</pose>
+        <material>
+          <ambient>0 0 1 1</ambient>
+          <diffuse>0 0 1 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://CannonTest/meshes/Chassis.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <link name="LFWheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.1016 -0.0254 0.0254 1.5707963267949 -3.37849678924218E-18 -1.53617232855595</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.915001295566967</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.00262416197279721</ixx>
+          <ixy>1.35619431571476E-19</ixy>
+          <ixz>3.87491230957322E-05</ixz>
+          <iyy>0.00150546859814331</iyy>
+          <iyz>9.95108204543819E-21</iyz>
+          <izz>0.00150681078410303</izz>
+        </inertia>
+      </inertial>
+      <collision name="LFWheel_collision">
+        <pose>-0.268908848821357 0.0115390820073411 -1.31597963302299 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://CannonTest/meshes/LFWheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+              <mu2>1</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="LFWheel_visual">
+        <pose>-0.268908848821357 0.0115390820073411 -1.31597963302299 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://CannonTest/meshes/LFWheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-LFWheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>LFWheel</child>
+      <pose>-5.55111512312578E-17 -3.46944695195361E-18 0 0 6.24856130894064 0</pose>
+      <axis>
+        <xyz>1 0 -1.39471767468535E-15</xyz>
+        <dynamics>
+          <damping>1</damping>
+          <friction>10</friction>
+        </dynamics>
+        <limit>
+          <effort>100</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="LRWheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.508 -0.0254 0.0253999999999999 1.5707963267949 -3.37849678924218E-18 -1.53617232855595</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.908566110582429</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.0026240306507658</ixx>
+          <ixy>5.03855404980647E-20</ixy>
+          <ixz>3.87947569490717E-05</ixz>
+          <iyy>0.00150401981947514</iyy>
+          <iyz>6.99987235942654E-21</iyz>
+          <izz>0.001505363586093</izz>
+        </inertia>
+      </inertial>
+      <collision name="LRWheel_collision">
+        <pose>-0.2829772304 0.0115390820073411 -0.909823209166664 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://CannonTest/meshes/LRWheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+              <mu2>1</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="LRWheel_visual">
+        <pose>-0.2829772304 0.0115390820073411 -0.909823209166664 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://CannonTest/meshes/LRWheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-LRWheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>LRWheel</child>
+      <pose>0 0 0 0 6.24856130894064 0</pose>
+      <axis>
+        <xyz>1 0 -8.32667268468867E-16</xyz>
+        <dynamics>
+          <damping>1</damping>
+          <friction>10</friction>
+        </dynamics>
+        <limit>
+          <effort>100</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="RFWheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.1016 0.5334 0.0253999999999999 1.5707963267949 -3.37849678924218E-18 -1.53617232855595</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.915001295566967</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.00262416197279721</ixx>
+          <ixy>3.22797337534101E-19</ixy>
+          <ixz>3.87491230957327E-05</ixz>
+          <iyy>0.00150546859814331</iyy>
+          <iyz>7.164355951129E-21</iyz>
+          <izz>0.00150681078410303</izz>
+        </inertia>
+      </inertial>
+      <collision name="RFWheel_collision">
+        <pose>0.289556233981089 0.0115390820073412 -1.29663560835235 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://CannonTest/meshes/RFWheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+              <mu2>1</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="RFWheel_visual">
+        <pose>0.289556233981089 0.0115390820073412 -1.29663560835235 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://CannonTest/meshes/RFWheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-RFWheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>RFWheel</child>
+      <pose>-5.55111512312578E-17 1.04083408558608E-17 0 0 6.24856130894064 0</pose>
+      <axis>
+        <xyz>1 0 -1.39471767468535E-15</xyz>
+        <dynamics>
+          <damping>1</damping>
+          <friction>10</friction>
+        </dynamics>
+        <limit>
+          <effort>100</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="RRWheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.508 0.5334 0.0253999999999999 1.5707963267949 -3.37849678924218E-18 -1.53617232855595</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.908566110582429</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.0026240306507658</ixx>
+          <ixy>4.89911970572986E-20</ixy>
+          <ixz>3.87947569490717E-05</ixz>
+          <iyy>0.00150401981947514</iyy>
+          <iyz>4.10885599491715E-21</iyz>
+          <izz>0.001505363586093</izz>
+        </inertia>
+      </inertial>
+      <collision name="RRWheel_collision">
+        <pose>0.275487852402445 0.0115390820073412 -0.89047918449603 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://CannonTest/meshes/RRWheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+              <mu2>1</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="RRWheel_visual">
+        <pose>0.275487852402445 0.0115390820073412 -0.89047918449603 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://CannonTest/meshes/RRWheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-RRWheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>RRWheel</child>
+      <pose>-1.66533453693773E-16 3.46944695195361E-18 0 0 6.24856130894064 0</pose>
+      <axis>
+        <xyz>1 0 -8.32667268468867E-16</xyz>
+        <dynamics>
+          <damping>1</damping>
+          <friction>10</friction>
+        </dynamics>
+        <limit>
+          <effort>100</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="Cannon">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.151681994631937 0.254123701178184 0.379844842998629 1.5707963267949 -3.37849678924218E-18 -1.53617232855595</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>18.8219126736624</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>1.84538739714775</ixx>
+          <ixy>0.0110030963182516</ixy>
+          <ixz>0.0524769500835223</ixz>
+          <iyy>1.72544396890633</iyy>
+          <iyz>0.354394231515775</iyz>
+          <izz>0.288331023002287</izz>
+        </inertia>
+      </inertial>
+      <collision name="Cannon_collision">
+        <pose>0.00871362717006364 -0.342905760991288 -1.25625136056298 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://CannonTest/meshes/Cannon_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="Cannon_visual">
+        <pose>0.00871362717006364 -0.342905760991288 -1.25625136056298 0 0 0</pose>
+        <material>
+          <ambient>1 0 0 1</ambient>
+          <diffuse>1 0 0 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://CannonTest/meshes/Cannon.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-Cannon" type="revolute">
+      <parent>Chassis</parent>
+      <child>Cannon</child>
+      <pose>0.00523417568849553 -0.173214327921117 -0.151757769618706 0 0.0346239982389471 3.14159265358979</pose>
+      <axis>
+        <xyz>1 7.3965367354622E-15 0</xyz>
+        <dynamics>
+          <damping>1</damping>
+          <friction>1</friction>
+        </dynamics>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+          <effort>200</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="Piston">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.258539922096759 0.253612784694248 0.387368780486746 1.5707963267949 -3.37849678924218E-18 -1.53617232855595</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>4.62311523819618</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.456567930145135</ixx>
+          <ixy>0.00260839646038143</ixy>
+          <ixz>0.0147840852576265</ixz>
+          <iyy>0.443793783829724</iyy>
+          <iyz>0.0753048225501864</iyz>
+          <izz>0.0302611155224095</izz>
+        </inertia>
+      </inertial>
+      <collision name="Piston_collision">
+        <pose>0.00450390741050995 -0.350429698479405 -1.14947516491396 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://CannonTest/meshes/Piston_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="Piston_visual">
+        <pose>0.00450390741050995 -0.350429698479405 -1.14947516491396 0 0 0</pose>
+        <material>
+          <ambient>1 0 0 1</ambient>
+          <diffuse>1 0 0 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://CannonTest/meshes/Piston.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Cannon-Piston" type="prismatic">
+      <parent>Cannon</parent>
+      <child>Piston</child>
+      <pose>0.0132778258421766 -0.210058047627282 -0.383332953438826 0 5.32410965771977 0.611146954225631</pose>
+      <axis>
+        <xyz>0.846927848459373 0.161777952869656 0.506498878053329</xyz>
+        <dynamics>
+          <damping>1</damping>
+          <friction>1</friction>
+        </dynamics>
+        <limit>
+          <upper>2</upper>
+          <lower>0</lower>
+          <effort>100</effort>
+        </limit>
+      </axis>
+    </joint>
+    <plugin name="Chassis-LFWheel_motor" filename="libgz_dc_motor.so">
+      <joint>Chassis-LFWheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/1</topic>
+      <multiplier>25</multiplier>
+    </plugin>
+    <plugin name="Chassis-LFWheel_encoder" filename="libgz_encoder.so">
+      <joint>Chassis-LFWheel</joint>
+      <topic>/gazebo/frc/simulator/dio/1/2</topic>
+      <units>degrees</units>
+    </plugin>
+    <plugin name="Chassis-LRWheel_motor" filename="libgz_dc_motor.so">
+      <joint>Chassis-LRWheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/2</topic>
+      <multiplier>25</multiplier>
+    </plugin>
+    <plugin name="Chassis-LRWheel_encoder" filename="libgz_encoder.so">
+      <joint>Chassis-LRWheel</joint>
+      <topic>/gazebo/frc/simulator/dio/3/4</topic>
+      <units>degrees</units>
+    </plugin>
+    <plugin name="Chassis-RFWheel_motor" filename="libgz_dc_motor.so">
+      <joint>Chassis-RFWheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/3</topic>
+      <multiplier>25</multiplier>
+    </plugin>
+    <plugin name="Chassis-RFWheel_encoder" filename="libgz_encoder.so">
+      <joint>Chassis-RFWheel</joint>
+      <topic>/gazebo/frc/simulator/dio/5/6</topic>
+      <units>degrees</units>
+    </plugin>
+    <plugin name="Chassis-RRWheel_motor" filename="libgz_dc_motor.so">
+      <joint>Chassis-RRWheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/4</topic>
+      <multiplier>24</multiplier>
+    </plugin>
+    <plugin name="Chassis-RRWheel_encoder" filename="libgz_encoder.so">
+      <joint>Chassis-RRWheel</joint>
+      <topic>/gazebo/frc/simulator/dio/7/8</topic>
+      <units>degrees</units>
+    </plugin>
+    <plugin name="Chassis-Cannon_motor" filename="libgz_dc_motor.so">
+      <joint>Chassis-Cannon</joint>
+      <topic>/gazebo/frc/simulator/pwm/9</topic>
+      <multiplier>50</multiplier>
+    </plugin>
+    <plugin name="Chassis-Cannon_encoder" filename="libgz_encoder.so">
+      <joint>Chassis-Cannon</joint>
+      <topic>/gazebo/frc/simulator/dio/17/18</topic>
+      <units>degrees</units>
+    </plugin>
+    <plugin name="Cannon-Piston_piston" filename="libgz_pneumatic_piston.so">
+      <joint>Cannon-Piston</joint>
+      <topic>/gazebo/frc/simulator/pneumatic/1/1</topic>
+      <forward-force>100</forward-force>
+      <reverse-force>100</reverse-force>
+    </plugin>
+  </model>
+</sdf>

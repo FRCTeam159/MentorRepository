@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sdf version="1.4">
+  <world name="default">
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+     <include>
+      <uri>model://rod-30m</uri>
+      <pose>0 0 0.1 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://Ball</uri>
+      <pose>0.16 -0.252 0.418 0 0 0</pose>
+    </include>
+   <include>
+      <uri>model://CannonTest</uri>
+      <pose>0 0 0.05 0 0 0</pose>
+    </include>
+    </include>
+  </world>
+</sdf>
+
