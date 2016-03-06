@@ -62,11 +62,11 @@
       <sensor name="TopFrameUltrasonic" type="sonar">
         <always_on>1</always_on>
         <visualize>1</visualize>
-        <pose>0.315722564309512 0.0208674535167648 -0.112784440937995 3.14159265358979 0 1.5707963267949</pose>
+        <pose>0.315722564309512 0.0208674535167648 -0.112784440937995 3.14159265358979 -0.2 1.5707963267949</pose>
         <sonar>
-          <min>0.05</min>
-          <max>0.8</max>
-          <radius>0.01</radius>
+          <min>0.1</min>
+          <max>1</max>
+          <radius>0.05</radius>
         </sonar>
       </sensor>
     </link>
@@ -1076,7 +1076,7 @@
           <friction>1</friction>
         </dynamics>
         <limit>
-          <upper>1.4</upper>
+          <upper>1.5</upper>
           <lower>0</lower>
           <effort>30</effort>
         </limit>
@@ -1186,14 +1186,14 @@
       <type>internal</type>
       <units>radians</units>
       <min>1.0</min>
-      <max>1.2</max>
+      <max>1.5</max>
     </plugin>
     <plugin name="Shooter-Gate_intlimit" filename="libgz_limit_switch.so">
       <joint>Shooter-Gate</joint>
       <topic>/gazebo/frc/simulator/dio/0</topic>
       <type>internal</type>
       <units>radians</units>
-      <min>0</min>
+      <min>-0.1</min>
       <max>0.2</max>
     </plugin>
   </model>
