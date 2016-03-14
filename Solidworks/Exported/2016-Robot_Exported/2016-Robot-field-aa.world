@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <sdf version='1.5'>
   <world name='default'>
     <light name='sun' type='directional'>
@@ -15,11 +16,11 @@
     </light>
     <include>
       <uri>model://2016-Robot</uri>
-      <pose frame=''>0.33 -0.24 0 1.57 0 -1.57</pose>
+      <pose frame=''>0.00 -0.24 0 1.57 0 -1.57</pose>
 	</include>
     <include>
       <uri>model://ball</uri>
-      <pose frame=''>0.624 -0.117 0.218 0 -0 0</pose>
+      <pose frame=''>0.60 -0.117 0.218 0 -0 0</pose>
     </include>
     <model name='ground_plane'>
       <static>1</static>
@@ -2764,6 +2765,8 @@
           </limit>
           <use_parent_model_frame>0</use_parent_model_frame>
           <dynamics>
+            <damping>1</damping>
+            <friction>1</friction>
             <spring_reference>0</spring_reference>
             <spring_stiffness>0</spring_stiffness>
           </dynamics>
@@ -4294,6 +4297,8 @@
           </limit>
           <use_parent_model_frame>0</use_parent_model_frame>
           <dynamics>
+            <damping>1</damping>
+            <friction>1</friction>
             <spring_reference>0</spring_reference>
             <spring_stiffness>0</spring_stiffness>
           </dynamics>
