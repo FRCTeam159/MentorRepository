@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <sdf version="1.5">
   <model name="2016-Robot">
-    <pose>0 0 0.0657304309593055 0 0 0</pose>
+    <pose>-0.1 0 0.0657304309593055 0 0 0</pose>
     <plugin name="clock" filename="libgz_clock.so">
       <topic>/gazebo/frc/time</topic>
     </plugin>
@@ -61,7 +61,7 @@
       </visual>
       <sensor name="TopFrameUltrasonic" type="sonar">
         <always_on>1</always_on>
-        <visualize>1</visualize>
+        <visualize>0</visualize>
         <pose>0.315722564309511 0.0208674535167649 -0.112784440937995 3.14159265358979 6.10865238198015 1.5707963267949</pose>
         <sonar>
           <min>0.05</min>
@@ -757,7 +757,7 @@
         </geometry>
       </visual>
       <sensor name="ShooterCamera" type="camera">
-        <visualize>1</visualize>
+        <visualize>0</visualize>
         <always_on>1</always_on>
         <pose>-0.0740233188947544 0.0952380706583773 -0.122317062498647 1.5707963267949 0 3.14159265358979</pose>
         <camera name="Shootercamera">
@@ -778,7 +778,7 @@
         <pose>-0.0740233188947544 0.0952380706583773 -0.122317062498647 1.57079632679492 0 1.53580122962653</pose>
         <sonar>
           <min>1</min>
-          <max>4</max>
+          <max>8</max>
           <radius>0.01</radius>
         </sonar>
       </sensor>

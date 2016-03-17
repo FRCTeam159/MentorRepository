@@ -778,8 +778,8 @@
         <pose>-0.0740233188947544 0.0952380706583773 -0.122317062498647 1.57079632679492 0 1.53580122962653</pose>
         <sonar>
           <min>1</min>
-          <max>8</max>
-          <radius>0.01</radius>
+          <max>20</max>
+          <radius>0.03</radius>
         </sonar>
       </sensor>
     </link>
