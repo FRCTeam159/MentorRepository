@@ -136,11 +136,11 @@
         <xyz>0 1.35912835505685E-15 -1</xyz>
         <dynamics>
           <damping>1</damping>
-          <friction>1</friction>
+          <friction>2</friction>
         </dynamics>
         <limit>
-          <upper>0.1</upper>
-          <lower>-0.1</lower>
+          <upper>0.05</upper>
+          <lower>-0.05</lower>
           <effort>1</effort>
         </limit>
       </axis>
