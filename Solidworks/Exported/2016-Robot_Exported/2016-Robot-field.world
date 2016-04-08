@@ -2311,9 +2311,9 @@
       <iterations>98224</iterations>
       
       <model name='frc2016_chevaldefrise'>
-        <pose frame=''>0.693032 -2.6874 -0 0 0 -1e-06</pose>
+        <pose frame=''>0.6666 -2.704 -0 0 0 -1e-06</pose>
         <link name='base'>
-          <pose frame=''>0.693032 -2.6874 -0 0 0 -1e-06</pose>
+          <pose frame=''>0.6666 -2.704 -0 0 0 -1e-06</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>-0 0 0 0 -0 0</acceleration>
           <wrench>-0 0 0 0 -0 0</wrench>
@@ -2407,9 +2407,9 @@
         </link>
       </model>
       <model name='frc2016_portcullis_0'>
-        <pose frame=''>0.578175 2.7951 -1e-06 1e-06 3e-06 0.027053</pose>
+        <pose frame=''>0.5785 2.827 0 0 0 0.0</pose>
         <link name='base'>
-          <pose frame=''>0.578175 2.7951 -1e-06 1e-06 3e-06 0.027053</pose>
+          <pose frame=''>0.5785 2.827 0 0 0 0.0</pose>
           <velocity>5e-06 -2.2e-05 -0.001554 -0.0008 0.003167 -4.3e-05</velocity>
           <acceleration>2.94927 1.17792 -1.9266 1.99521 0.295269 3.06435</acceleration>
           <wrench>147.464 58.8959 -96.3299 0 -0 0</wrench>
@@ -2431,9 +2431,9 @@
         </link>
       </model>
       <model name='frc2016_rockwall'>
-        <pose frame=''>2.03019 -2.68656 0.03 0 -0 0</pose>
+        <pose frame=''>2.0377 -2.705 0.027 0 0 0</pose>
         <link name='link'>
-          <pose frame=''>2.03019 -2.68656 0.03 0 -0 0</pose>
+          <pose frame=''>2.0377 -2.705 0.027 0 0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -2449,9 +2449,9 @@
         </link>
       </model>
       <model name='frc2016_sallyport'>
-        <pose frame=''>-2.13787 2.83352 -4e-06 -1e-05 4e-06 0.028007</pose>
+        <pose frame=''>-2.13787 2.83352 0 0 0 0</pose>
         <link name='base'>
-          <pose frame=''>-2.13787 2.83352 -4e-06 -1e-05 4e-06 0.028007</pose>
+          <pose frame=''>-2.13787 2.83352 0 0 0 0</pose>
           <velocity>0.00011 -0.000137 -0.00428 -0.013598 0.004257 -0.000483</velocity>
           <acceleration>1.91679 1.73694 -6.69746 1.16363 -1.46207 -0.742914</acceleration>
           <wrench>95.8395 86.8469 -334.873 0 -0 0</wrench>
@@ -2473,13 +2473,6 @@
         </link>
       </model>
     </state>
-    <gui fullscreen='0'>
-      <camera name='user_camera'>
-        <pose frame=''>3.73971 4.65538 1.26178 0 0.125796 -2.003</pose>
-        <view_controller>orbit</view_controller>
-        <projection_type>perspective</projection_type>
-      </camera>
-    </gui>
     <model name='frc2016_lowbar_0_0'>
       <link name='base'>
         <inertial>
@@ -2497,7 +2490,7 @@
           <pose frame=''>0 0 0.039065 0 -0 0</pose>
           <geometry>
             <box>
-              <size>1.26 0.5996 0.07813</size>
+             <size>1.27 0.60 0.089</size>
             </box>
           </geometry>
         </visual>
@@ -2505,7 +2498,7 @@
           <pose frame=''>0 0 0.039065 0 -0 0</pose>
           <geometry>
             <box>
-              <size>1.27 0.6096 0.07813</size>
+              <size>1.27 0.60 0.089</size>
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2688,18 +2681,18 @@
           </inertia>
         </inertial>
         <visual name='platform'>
-          <pose frame=''>0 0 0.06974 0 -0 0</pose>
+          <pose frame=''>0 0 0.075 0 -0 0</pose>
           <geometry>
             <box>
-              <size>1.27 0.5969 0.003175</size>
+              <size>1.27 0.5969 0.03</size>
             </box>
           </geometry>
         </visual>
         <collision name='platform'>
-          <pose frame=''>0 0 0.06974 0 -0 0</pose>
+          <pose frame=''>0 0 0.075 0 -0 0</pose>
           <geometry>
             <box>
-              <size>1.27 0.5969 0.003175</size>
+              <size>1.27 0.5969 0.03</size>
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -2934,7 +2927,7 @@
           <use_parent_model_frame>0</use_parent_model_frame>
           <dynamics>
             <spring_reference>0</spring_reference>
-            <spring_stiffness>0</spring_stiffness>
+            <spring_stiffness>0.2</spring_stiffness>
           </dynamics>
         </axis>
       </joint>
@@ -3173,7 +3166,7 @@
           <pose frame=''>0 0 0.07284 0 -0 0</pose>
           <geometry>
             <box>
-              <size>1.27 0.5842 0.003175</size>
+              <size>1.27 0.5842 0.03</size>
             </box>
           </geometry>
         </visual>
@@ -3181,7 +3174,7 @@
           <pose frame=''>0 0 0.07284 0 -0 0</pose>
           <geometry>
             <box>
-              <size>1.27 0.5842 0.003175</size>
+              <size>1.27 0.5842 0.03</size>
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -3572,7 +3565,7 @@
           <use_parent_model_frame>0</use_parent_model_frame>
           <dynamics>
             <spring_reference>0</spring_reference>
-            <spring_stiffness>0</spring_stiffness>
+            <spring_stiffness>0.2</spring_stiffness>
           </dynamics>
         </axis>
       </joint>
@@ -3593,18 +3586,18 @@
           </inertia>
         </inertial>
         <visual name='platform'>
-          <pose frame=''>0 0 0.06968 0 -0 0</pose>
+          <pose frame=''>0 0 0.073 0 -0 0</pose>
           <geometry>
             <box>
-              <size>1.27 0.5969 0.003175</size>
+              <size>1.27 0.5969 0.03</size>
             </box>
           </geometry>
         </visual>
         <collision name='platform'>
-          <pose frame=''>0 0 0.06968 0 -0 0</pose>
+          <pose frame=''>0 0 0.073 0 -0 0</pose>
           <geometry>
             <box>
-              <size>1.27 0.5969 0.003175</size>
+              <size>1.27 0.5969 0.03</size>
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -4029,7 +4022,7 @@
           <pose frame=''>0 0 0.039065 0 -0 0</pose>
           <geometry>
             <box>
-              <size>1.26 0.5996 0.07813</size>
+              <size>1.27 0.60 0.1</size>
             </box>
           </geometry>
         </visual>
@@ -4037,7 +4030,7 @@
           <pose frame=''>0 0 0.039065 0 -0 0</pose>
           <geometry>
             <box>
-              <size>1.27 0.6096 0.07813</size>
+              <size>1.27 0.60 0.1</size>
             </box>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -4185,7 +4178,7 @@
         <gravity>1</gravity>
       </link>
       <joint name='bar_joint' type='revolute'>
-        <pose frame=''>0 0 0.36378 0 -0 0</pose>
+        <pose frame=''>0 0 0.37 0 -0 0</pose>
         <parent>base</parent>
         <child>wall</child>
         <axis>

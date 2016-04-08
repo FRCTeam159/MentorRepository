@@ -35,16 +35,10 @@
           </mesh>
         </geometry>
         <surface>
-		  <contact>
-			<ode>
-			  <kd>5000</kd>
-			  <kp>5000</kp>
-			</ode>
-		  </contact>
           <friction>
             <ode>
-              <mu>2</mu>
-              <mu2>2</mu2>
+              <mu>1</mu>
+              <mu2>1</mu2>
             </ode>
           </friction>
         </surface>
@@ -136,11 +130,11 @@
         <xyz>0 1.35912835505685E-15 -1</xyz>
         <dynamics>
           <damping>1</damping>
-          <friction>1</friction>
+          <friction>2</friction>
         </dynamics>
         <limit>
-          <upper>0.1</upper>
-          <lower>-0.1</lower>
+          <upper>0.05</upper>
+          <lower>-0.05</lower>
           <effort>1</effort>
         </limit>
       </axis>
@@ -740,8 +734,8 @@
           </contact>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
             </ode>
           </friction>
         </surface>
@@ -760,9 +754,9 @@
         </geometry>
       </visual>
       <sensor name="ShooterCamera" type="camera">
-        <visualize>1</visualize>
+        <visualize>0</visualize>
         <always_on>1</always_on>
-        <pose>-0.137293953142119 0.0926980706583772 -0.244185514955499 1.5707963267949 0 3.14159265358979</pose>
+        <pose>-0.1 0.12 -0.11 1.5707963267949 0 3.14159265358979</pose>
         <camera name="Shootercamera">
           <horizontal_fov>1.02974425867665</horizontal_fov>
           <image>
@@ -778,10 +772,10 @@
       <sensor name="ShooterUltrasonic" type="sonar">
         <always_on>1</always_on>
         <visualize>1</visualize>
-        <pose>-0.137293953142119 0.0926980706583772 -0.244185514955499 1.57079632679492 0 1.53580122962653</pose>
+        <pose>-0.1 0.12 -0.11 1.57079632679492 0 1.53580122962653</pose>
         <sonar>
           <min>1</min>
-          <max>4</max>
+          <max>20</max>
           <radius>0.01</radius>
         </sonar>
       </sensor>
@@ -1079,7 +1073,7 @@
           <friction>1</friction>
         </dynamics>
         <limit>
-          <upper>1.53599667672682</upper>
+          <upper>1.5</upper>
           <lower>0</lower>
           <effort>30</effort>
         </limit>
@@ -1143,15 +1137,15 @@
     <joint name="TopFrame-LoaderArms" type="revolute">
       <parent>TopFrame</parent>
       <child>LoaderArms</child>
-      <pose>-0.418341799065042 0.0299225876293149 0.257489811593649 0 4.71238898038469 0</pose>
+      <pose>-0.418341799065042 0.0299225876293149 0.257489811593649 0 4.71238898038469 0.0</pose>
       <axis>
-        <xyz>1 0 -2.22044604925031E-16</xyz>
+        <xyz>1 0 0</xyz>
         <dynamics>
           <damping>1</damping>
           <friction>1</friction>
         </dynamics>
         <limit>
-          <upper>1.5</upper>
+          <upper>1.4</upper>
           <lower>0</lower>
           <effort>30</effort>
         </limit>
@@ -1618,8 +1612,8 @@
       <topic>/gazebo/frc/simulator/dio/0</topic>
       <type>internal</type>
       <units>radians</units>
-      <min>0</min>
-      <max>0.3</max>
+      <min>-0.1</min>
+      <max>0.4</max>
     </plugin>
     <plugin name="TopFrame-LoaderArms_motor" filename="libgz_dc_motor.so">
       <joint>TopFrame-LoaderArms</joint>
@@ -1632,8 +1626,9 @@
       <type>internal</type>
       <units>radians</units>
       <min>0</min>
-      <max>0.2</max>
+      <max>0.1</max>
     </plugin>
+
     <plugin name="LoaderArms_gyro" filename="libgz_gyro.so">
       <link>LoaderArms</link>
       <topic>/gazebo/frc/simulator/analog/4</topic>
