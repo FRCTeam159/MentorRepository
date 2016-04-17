@@ -11,10 +11,6 @@
 #include <Commands/Command.h>
 
 class ToggleRollers: public Command {
-	enum {
-		ROLLERS_OFF =0,
-		ROLLERS_ON = 1,
-	};
 	int initial_state;
 	int target_state;
 public:

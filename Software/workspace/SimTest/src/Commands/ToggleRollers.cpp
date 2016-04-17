@@ -13,30 +13,24 @@ ToggleRollers::ToggleRollers()  : Command("ToggleRollers") {
 }
 
 void ToggleRollers::Initialize() {
-	initial_state=Robot::loader->RollersAreOn();
-	if(initial_state==ROLLERS_ON){
-		target_state=ROLLERS_OFF;
-		Robot::loader->StopRollers();
-		std::cout << "Rollers are currently On: Stopping ..."<< std::endl;
-	}
-	else{
-		target_state=ROLLERS_ON;
-		Robot::loader->SpinRollers(true);
-		std::cout << "Rollers are currently Off: Starting ..."<< std::endl;
+	initial_state=Robot::loader->GetRollorState();
+	switch(initial_state){
+	case ROLLERS_OFF:
+		Robot::loader->SetRollerState(ROLLERS_FORWARD);
+		break;
+	case ROLLERS_FORWARD:
+		Robot::loader->SetRollerState(ROLLERS_REVERSE);
+		break;
+	case ROLLERS_REVERSE:
+		Robot::loader->SetRollerState(ROLLERS_OFF);
+		break;
 	}
 }
 bool ToggleRollers::IsFinished() {
-	return (Robot::loader->RollersAreOn()==target_state);
+	return true;
 }
 void ToggleRollers::End() {
-	if(target_state==ROLLERS_ON)
-		std::cout << "ToggleRollers Rollers are On"<< std::endl;
-	else
-		std::cout << "ToggleRollers Rollers are Off"<< std::endl;
-
 }
 
 void ToggleRollers::Execute() {
-	if(target_state==ROLLERS_ON)
-		Robot::loader->SpinRollers(true);
 }

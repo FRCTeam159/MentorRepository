@@ -5,8 +5,6 @@
 
 #define SIMRATE 0.01
 
-#define BASE_CONTROLLER PIDController
-
 #define PI 3.141516
 #define RPD(x) (x)*2*PI/360
 #define DPR(x) (x)*180.0/PI

@@ -81,12 +81,13 @@ void Robot::SetMode(int m) {
 	OI::SetMode(m);
 	if(m==LOADING){
 		std::cout << "Changing Mode to Loading"<<std::endl;
-		loader->SpinRollers(true);
-		loader->LoadBall();
+		if(!holder->IsBallPresent())
+			loader->LoadBall();
 		drivetrain->SetReverseDriving(true);
 	}
 	else{
 		std::cout << "Changing Mode to Shooting"<<std::endl;
+		loader->SetLow();
 		drivetrain->SetReverseDriving(false);
 	}
 }

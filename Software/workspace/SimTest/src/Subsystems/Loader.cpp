@@ -9,10 +9,8 @@
 #include <Subsystems/Loader.h>
 
 #define LOAD_ROLLER_SPEED 0.9
-#define EXPEL_ROLLER_SPEED 0.5
-
 #define SETZEROSPEED -0.2
-#define LIFT_ASSIST_SPEED 0.2
+#define LIFT_ASSIST_SPEED 0.1
 
 #define MED_ANGLE 6
 #define HIGH_ANGLE 12
@@ -46,7 +44,7 @@ void Loader::InitDefaultCommand() {
 void Loader::Log() {
 	SmartDashboard::PutBoolean("Loading", Loading());
 	SmartDashboard::PutNumber("Lifter Angle", -accel.GetAngle());
-	SmartDashboard::PutBoolean("Rollers", rollers_on);
+	SmartDashboard::PutNumber("Rollers", roller_state);
 }
 
 // ===========================================================================================================
@@ -57,6 +55,7 @@ void Loader::Log() {
 // ===========================================================================================================
 void Loader::Execute() {
 	Log();
+	SpinRollers();
 	if(!initialized){
 		if(!LifterAtLowerLimit())
 			GoToZeroLimitSwitch();
@@ -70,7 +69,7 @@ void Loader::Execute() {
 // - Set lifter to low position
 // ===========================================================================================================
 void Loader::SetLow() {
-	StopRollers();
+	SetRollerState(ROLLERS_OFF);
 	liftMotor.Disable(); // disable PID control
 	GoToZeroLimitSwitch();
 	loading=false;
@@ -90,12 +89,7 @@ void Loader::LoadBall() {
 
 void Loader::ExecLoad() {
 	liftMotor.Set(LIFT_ASSIST_SPEED);
-	SpinRollers(true);
-}
-void Loader::CancelLoad()
-{
-	SetLow();
-	cancelling=true;
+	SetRollerState(ROLLERS_FORWARD);
 }
 
 bool Loader::LifterAtLowerLimit() {
@@ -116,6 +110,7 @@ void Loader::Disable(){
 	initialized=false;
 	roller_speed=0;
 	loading=false;
+	SetRollerState(ROLLERS_OFF);
 	Log();
 }
 
@@ -156,21 +151,21 @@ double Loader::GetLifterAngle(){
 	return angle;
 }
 
-void Loader::StopRollers() {
-	rollerMotor.Disable();
-	rollers_on=false;
-}
-
-void Loader::SpinRollers(bool forward) {
-	if(forward)
+void Loader::SpinRollers() {
+	switch(roller_state){
+	case ROLLERS_OFF:
+		rollerMotor.Set(0);
+		break;
+	case ROLLERS_FORWARD:
 		rollerMotor.Set(roller_speed);
-	else
+		break;
+	case ROLLERS_REVERSE:
 		rollerMotor.Set(-roller_speed);
-	rollers_on=true;
+		break;
+	}
 }
-
-bool Loader::RollersAreOn() {
-	return rollers_on;
+void Loader::SetRollerState(int b) {
+	roller_state=b;
 }
 
 void Loader::GoToZeroLimitSwitch() {
@@ -200,4 +195,5 @@ bool Loader::IsInitialized() {
 double Loader::PIDGet() {
 	return -accel.GetAngle();
 }
+
 

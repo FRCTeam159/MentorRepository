@@ -38,6 +38,7 @@ GPMotor::GPMotor(int i,bool enc) : Talon(i){
 	control_mode=VOLTAGE;
 	inverted=false;
 	syncGroup=0x08;
+	debug=0;
 }
 #endif
 

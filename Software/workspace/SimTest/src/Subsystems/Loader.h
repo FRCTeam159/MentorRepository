@@ -11,6 +11,8 @@
 #include "WPILib.h"
 #include "Subsystems/GPMotor.h"
 
+enum { ROLLERS_OFF,ROLLERS_FORWARD,ROLLERS_REVERSE};
+
 class Loader: public Subsystem, public PIDSource {
 	GPMotor liftMotor;
 	GPMotor rollerMotor;
@@ -22,16 +24,16 @@ class Loader: public Subsystem, public PIDSource {
 	double min_angle=0;
 	double roller_speed=0;
 
-	bool rollers_on=false;
+	int roller_state=ROLLERS_OFF;
 	bool initialized=false;
 	bool loading=false;
-	bool cancelling=false;
 
 	void Init();
 	void Disable();
 
 	double PIDGet();
 	void InitDefaultCommand();
+	void SpinRollers();
 public:
 	Loader();
 	void Log();
@@ -41,9 +43,8 @@ public:
 	bool LifterIsAtTargetAngle();
 	bool LifterAtLowerLimit();
 
-	void SpinRollers(bool b);
-	void StopRollers();
-	bool RollersAreOn();
+	void SetRollerState(int b);
+	int GetRollorState() { return roller_state;}
 
 	void AutonomousInit();
 	void TeleopInit();
@@ -56,7 +57,6 @@ public:
 	void SetInitialized();
 	void Initialize();
 	void Execute();
-	void CancelLoad();
 	void ExecLoad();
 
 	bool Loading();

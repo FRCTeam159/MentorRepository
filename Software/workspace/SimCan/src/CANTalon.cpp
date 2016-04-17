@@ -1,8 +1,9 @@
 /*
- * SmartMotor.cpp
+ * CANTalon.cpp
  *
- *  Created on: Jul 6, 2015
- *      Author: alpiner
+ *  Created on: April 16, 2016
+ *      Author: Dean Sindorf
+ *  Adds simulation support for CANTalon motor controllers
  */
 #include "WPILib.h"
 #include <CANTalon.h>
