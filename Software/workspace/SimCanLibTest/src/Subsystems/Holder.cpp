@@ -19,7 +19,7 @@
 #define BALL_DETECT_VALUE 0.5
 
 Holder::Holder() : Subsystem("Holder"),
-	gateMotor(HOLDER_GATE,false),pushMotor(HOLDER_PUSH,false),
+	gateMotor(HOLDER_GATE),pushMotor(HOLDER_PUSH),
 	lowerLimit(GATE_MIN),upperLimit(GATE_MAX),ballSensor(BALL_SENSOR)
 {
 	std::cout<<"New BallHolder("<<HOLDER_GATE<<","<<HOLDER_PUSH<<")"<<std::endl;

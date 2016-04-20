@@ -932,7 +932,7 @@
       <axis>
         <xyz>0.0349879547749602 0.999387734075552 1.28607625788662E-15</xyz>
         <dynamics>
-          <damping>1</damping>
+          <damping>0.1</damping>
           <friction>0.1</friction>
         </dynamics>
         <limit>
@@ -1002,7 +1002,7 @@
       <axis>
         <xyz>0.999387734075552 -0.0349879547749582 -7.87420668946189E-19</xyz>
         <dynamics>
-          <damping>1</damping>
+          <damping>0.1</damping>
           <friction>0.1</friction>
         </dynamics>
         <limit>

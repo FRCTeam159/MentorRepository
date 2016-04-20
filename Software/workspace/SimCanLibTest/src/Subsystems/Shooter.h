@@ -9,14 +9,16 @@
 #define SRC_SUBSYSTEMS_SHOOTER_H_
 
 #include "WPILib.h"
-#include "Subsystems/GPMotor.h"
+#include "CANTalon.h"
 
-class Shooter: public Subsystem , public PIDSource {
-	GPMotor angleMotor;
-	GPMotor leftFWMotor;
-	GPMotor rightFWMotor;
+class Shooter: public Subsystem , public PIDSource, public PIDOutput {
+	CANTalon angleMotor;
+	CANTalon leftFWMotor;
+	CANTalon rightFWMotor;
 	AnalogGyro accel;
 	DigitalInput lowerLimit;
+
+	PIDController *angle_pid;
 
 	double angle,max_angle,min_angle;
 	double flywheel_target;
@@ -29,6 +31,7 @@ class Shooter: public Subsystem , public PIDSource {
 
 public:
 	Shooter();
+	~Shooter();
 	void SetTargetAngle(double a);
 	void SetTargetSpeed(double a);
 	double GetTargetAngle();
@@ -57,9 +60,9 @@ public:
 	void Initialize();
 	void SetInitialized();
 
-	bool TestIsInitialized();
 	void Execute();
 	void Reset();
+	void PIDWrite(float output);
 
 };
 

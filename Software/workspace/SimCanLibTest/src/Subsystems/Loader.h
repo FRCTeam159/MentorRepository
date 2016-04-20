@@ -9,13 +9,14 @@
 #define SRC_SUBSYSTEMS_LOADER_H_
 
 #include "WPILib.h"
-#include "Subsystems/GPMotor.h"
+#include "CANTalon.h"
 
 enum { ROLLERS_OFF,ROLLERS_FORWARD,ROLLERS_REVERSE};
 
-class Loader: public Subsystem, public PIDSource {
-	GPMotor liftMotor;
-	GPMotor rollerMotor;
+class Loader: public Subsystem, public PIDSource, public PIDOutput {
+	CANTalon liftMotor;
+	CANTalon rollerMotor;
+	PIDController *angle_pid;
 	AnalogGyro accel;
 	DigitalInput lowerLimit;
 
@@ -32,10 +33,13 @@ class Loader: public Subsystem, public PIDSource {
 	void Disable();
 
 	double PIDGet();
+	void PIDWrite(float output);
+
 	void InitDefaultCommand();
 	void SpinRollers();
 public:
 	Loader();
+	~Loader();
 	void Log();
 
 	void SetLifterAngle(double a);

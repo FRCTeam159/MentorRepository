@@ -6,16 +6,27 @@
 
 #include "Commands/TankDriveWithJoystick.h"
 
+#define WHEEL_DIAMETER 7.5
+#define DEADBAND 0.25
+
+#ifdef SIMULATION
+#define WHEEL_TICKS SIM_ENCODER_TICKS // default encoder ticks given in simulation
+#else // replace these values for whatever is appropriate for real drive-train
+#define WHEEL_TICKS 900
+#endif
+#define INVERT_RIGHT_SIDE true
+
 #define MP 0.5
 #define MI 0.00
 #define MD 0.5
-//#define MI 0.0
-//#define MD 0.0
+
 #define MAX_POS_ERROR 0.1 // tolerance for set position
 DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 	left_motor(DRIVE_LEFT),right_motor(DRIVE_RIGHT),gyro(DRIVE_ANGLE)
 {
 	std::cout<<"New DriveTrain("<<DRIVE_LEFT<<","<<DRIVE_RIGHT<<")"<<std::endl;
+	left_motor.SetFeedbackDevice(CANTalon::FeedbackDevice::QuadEncoder);
+	right_motor.SetFeedbackDevice(CANTalon::FeedbackDevice::QuadEncoder);
 	SetDistancePerPulse(WHEEL_DIAMETER,WHEEL_TICKS,INVERT_RIGHT_SIDE);
 	SetDeadband(DEADBAND,DEADBAND);
 	gyro.Reset();
@@ -36,10 +47,10 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 //   An alternative solution is to just invert the "DistancePerPulse" value
 // ===========================================================================================================
 void DriveTrain::SetDistancePerPulse(double d, double t, bool b){
-	dpp=(double)M_PI*(d/12.0) / t;
-	left_motor.SetDistancePerPulse(dpp);
-	//right_motor.SetDistancePerPulse(b?-dpp:dpp);
-	right_motor.SetDistancePerPulse(dpp);
+	cpr=12.0*t/M_PI/d;
+	//std::cout<<"codes per rev:"<<cpr<<std::endl;
+	left_motor.ConfigEncoderCodesPerRev(cpr);
+	right_motor.ConfigEncoderCodesPerRev(cpr);
 	squared_inputs=false;
 }
 // ===========================================================================================================
@@ -47,7 +58,7 @@ void DriveTrain::SetDistancePerPulse(double d, double t, bool b){
 //  - return Distance per encoder tick (in feet)
 // ===========================================================================================================
 double DriveTrain::GetDistancePerPulse() {
-	return dpp;
+	return cpr;
 }
 
 /**
@@ -121,16 +132,10 @@ void DriveTrain::SetDeadband(double x, double y) {
 	y_deadband=y;
 }
 
-void DriveTrain::SetPID(int mode, double P, double I, double D){
-	right_motor.SetPID(mode,P,I,D);
-	left_motor.SetPID(mode,P,I,D);
-	left_motor.SetTolerance(MAX_POS_ERROR);
-	right_motor.SetTolerance(MAX_POS_ERROR);
-}
 void DriveTrain::SetDistance(double d){
 	target_distance=d;
-	left_motor.SetDistance(d);
-	right_motor.SetDistance(d);
+	left_motor.SetPosition(d);
+	right_motor.SetPosition(d);
 }
 
 void DriveTrain::Turn(double d){
@@ -168,13 +173,13 @@ void DriveTrain::EndTravel() {
 	Drive(0,0);
 }
 void DriveTrain::DisablePID() {
-	right_motor.DisablePID();
-	left_motor.DisablePID();
+	right_motor.Disable();
+	left_motor.Disable();
 	pid_disabled=true;
 }
 void DriveTrain::EnablePID() {
-	right_motor.EnablePID();
-	left_motor.EnablePID();
+	right_motor.EnableControl();
+	left_motor.EnableControl();
 	pid_disabled=false;
 }
 
@@ -184,8 +189,6 @@ double DriveTrain::GetHeading() {
 
 void DriveTrain::TeleopInit() {
 	std::cout << "DriveTrain::TeleopInit"<<std::endl;
-	left_motor.SetMode(GPMotor::VOLTAGE);
-	right_motor.SetMode(GPMotor::VOLTAGE);
 	Reset();
 	Enable();
 }
@@ -205,22 +208,22 @@ void DriveTrain::DisabledInit() {
 }
 
 double DriveTrain::GetDistance() {
-	return (left_motor.GetDistance() + right_motor.GetDistance())/2;
+	return (left_motor.GetPosition() + right_motor.GetPosition())/2;
 }
 double DriveTrain::GetSpeed() {
-	return (left_motor.GetVelocity() + right_motor.GetVelocity())/2;
+	return (left_motor.GetSpeed() + right_motor.GetSpeed())/2;
 }
 double DriveTrain::GetLeftSpeed(){
-	return left_motor.GetVelocity();
+	return left_motor.GetSpeed();
 }
 double DriveTrain::GetRightSpeed(){
-	return right_motor.GetVelocity();
+	return right_motor.GetSpeed();
 }
 double DriveTrain::GetLeftDistance(){
-	return left_motor.GetDistance();
+	return left_motor.GetPosition();
 }
 double DriveTrain::GetRightDistance(){
-	return right_motor.GetDistance();
+	return right_motor.GetPosition();
 }
 double DriveTrain::GetLeftVoltage(){
 	return left_motor.GetVoltage();

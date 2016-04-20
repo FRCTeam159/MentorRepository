@@ -124,9 +124,17 @@ void ShootBall::OpenGate(){
 //==========================================================================================
 void ShootBall::TurnFlywheelsOn(){
 	Robot::holder->HoldBall();
-	Robot::shooter->EnableFlywheels();
+	if(!Timing()){
+		DEBUG_PRINT("Enabling Flywheels ..");
+		Robot::shooter->EnableFlywheels();
+		SetDeltaTimeout(FLYWHEEL_DELAY);
+	}
 	if(Robot::shooter->IsAtSpeed()){
-		DEBUG_PRINT("Flywheels at speed, PushBall started ..");
+			DEBUG_PRINT("Flywheels at speed, PushBall started ..");
+		state=PUSH_BALL;
+	}
+	else if(CheckTimeout()){
+		DEBUG_PRINT("Flywheels NOT not speed, shooting anyway ..");
 		state=PUSH_BALL;
 	}
 }

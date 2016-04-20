@@ -5,29 +5,36 @@
  *      Author: alpiner
  */
 #include <Commands/ExecShooter.h>
-#include "Assignments.h"
 #include <Subsystems/Shooter.h>
+#include "Assignments.h"
 
-#define FWSPEED 300
+#define FWSPEED 200
 #define FP 0.002
 #define FI 0.00001
 #define FD 0.0001
 
-#define AP 0.02
-#define AI 0.0005
-#define AD 0.3
-#define FVMAX 1000
-#define FVMIN -1000
+#define AP 0.04
+#define AI 0.001
+#define AD 0.2
+
 #define AMIN 0
 #define AMAX 70
 #define MAX_SPEED_ERROR 50
 #define MAX_ANGLE_ERROR 1
 #define GOTO_LOWER_SPEED -0.6
+#define PID_UPDATE_PERIOD 0.01
 
+//#define DEBUG_ANGLE_PID
+
+#ifdef SIMULATION
+#define ENCODER_TICKS 360
+#else
+#define ENCODER_TICKS 900
+#endif
 Shooter::Shooter() : Subsystem("Shooter"),
-	angleMotor(SHOOTER_ANGLE,false),
-	leftFWMotor(SHOOTER_LEFT,true),
-	rightFWMotor(SHOOTER_RIGHT,true),
+	angleMotor(SHOOTER_ANGLE),
+	leftFWMotor(SHOOTER_LEFT),
+	rightFWMotor(SHOOTER_RIGHT),
 	accel(SHOOTER_PITCH),
 	lowerLimit(SHOOTER_MIN)
 
@@ -36,32 +43,36 @@ Shooter::Shooter() : Subsystem("Shooter"),
 	max_angle=AMAX; // max elevation (degrees)
 	min_angle=AMIN;
 
-	leftFWMotor.SetInputRange(FVMIN,FVMAX);
-	rightFWMotor.SetInputRange(FVMIN,FVMAX);
+	leftFWMotor.SetFeedbackDevice(CANTalon::QuadEncoder);
+	rightFWMotor.SetFeedbackDevice(CANTalon::QuadEncoder);
+	leftFWMotor.SetControlMode(CANTalon::kSpeed);
+	rightFWMotor.SetControlMode(CANTalon::kSpeed);
 
-	leftFWMotor.SetPID(GPMotor::SPEED, FP, FI, FD);
-	leftFWMotor.SetDistancePerPulse(RPD(1)); // 1 degree = 0.01745 radians
-	leftFWMotor.SetTolerance(MAX_SPEED_ERROR);
+	leftFWMotor.SetPID(FP, FI, FD);
+	leftFWMotor.ConfigEncoderCodesPerRev(ENCODER_TICKS);
+	//leftFWMotor.SetDebug(1);
 
-	rightFWMotor.SetPID(GPMotor::SPEED,  FP, FI, FD);
-	rightFWMotor.SetDistancePerPulse(RPD(1));
-	rightFWMotor.SetTolerance(MAX_SPEED_ERROR);
+	rightFWMotor.SetPID(FP, FI, FD);
+	rightFWMotor.ConfigEncoderCodesPerRev(ENCODER_TICKS);
 
 	flywheel_target=FWSPEED;
 	flywheel_speed=0;
 
 	angle=0;
-	angleMotor.SetPID(AP, AI, AD,this);
-	//angleMotor.Reset(); // clear IAccum
-	//angleMotor.SetDistancePerPulse(1.0); // 1 degree = 0.01745 radians
-	//angleMotor.SetDistance(0);
-	//angleMotor.SetInputRange(min_angle,max_angle);      // 0..70 degrees
-	angleMotor.SetTolerance(MAX_ANGLE_ERROR);
-	//angleMotor.SetToleranceBuffer(2);
+	angle_pid=new PIDController(AP, AI, AD,this,this,PID_UPDATE_PERIOD);
+	angle_pid->Reset(); // clear IAccum
+	angle_pid->SetSetpoint(0);
+	//angle_pid->SetInputRange(min_angle,max_angle);      // 0..70 degrees
+	angle_pid->SetAbsoluteTolerance(MAX_ANGLE_ERROR);
+	angle_pid->SetToleranceBuffer(2);
 	initialized=false;
 	Log();
 }
 
+Shooter::~Shooter(){
+	if(angle_pid)
+		delete angle_pid;
+}
 void Shooter::Log() {
 	SmartDashboard::PutBoolean("Shooter Initialized", IsInitialized());
 	LogAngle(GetAngle());
@@ -75,7 +86,7 @@ void Shooter::InitDefaultCommand() {
 void Shooter::Execute() {
 	Log();
 	if(!initialized){
-		angleMotor.SetVoltage(GOTO_LOWER_SPEED);
+		angleMotor.Set(GOTO_LOWER_SPEED);
 		if(AtLowerLimit())
 			SetInitialized();
 	}
@@ -85,6 +96,17 @@ double Shooter::PIDGet() {
 	return accel.GetAngle();
 }
 
+void Shooter::PIDWrite(float output){
+#ifdef DEBUG_ANGLE_PID
+	if(!angle_pid->OnTarget())
+	std::cout<<"Shooter::PIDWrite target:"
+			<<angle_pid->GetSetpoint()
+			<<" error:"<<angle_pid->GetError()
+			<<" correction:"<<output
+			<<std::endl;
+#endif
+	angleMotor.PIDWrite(output);
+}
 void Shooter::AutonomousInit(){
 	std::cout << "Shooter::AutonomousInit"<<std::endl;
 	Init();
@@ -96,9 +118,6 @@ void Shooter::TeleopInit(){
 void Shooter::DisabledInit(){
 	std::cout << "Shooter::DisabledInit"<<std::endl;
 	Disable();
-	angleMotor.SetDebug(0);
-	leftFWMotor.SetDebug(0);
-	rightFWMotor.SetDebug(0);
 }
 
 void Shooter::LogSpeed(double d) {
@@ -111,12 +130,10 @@ void Shooter::LogAngle(double d) {
 // Initialize
 void Shooter::Init(){
 	initialized=false;
-	angleMotor.SetTolerance(MAX_ANGLE_ERROR);
-	angleMotor.ClearIaccum();
-	angleMotor.DisablePID();
-
-	leftFWMotor.SetVelocity(0);
-	rightFWMotor.SetVelocity(0);
+	angle_pid->Reset();
+	angleMotor.Disable();
+	leftFWMotor.Reset();
+	rightFWMotor.Reset();
 	Log();
 }
 
@@ -125,14 +142,14 @@ void Shooter::Reset(){
 }
 
 void Shooter::Disable(){
-	angleMotor.Reset();
+	angle_pid->Reset();
 	angleMotor.Disable();
 	leftFWMotor.Disable();
 	rightFWMotor.Disable();
 
-	angleMotor.DisablePID();
-	leftFWMotor.DisablePID();
-	rightFWMotor.DisablePID();
+	angleMotor.Disable();
+	leftFWMotor.Disable();
+	rightFWMotor.Disable();
 
 	angle=0;
 	initialized=false;
@@ -143,9 +160,8 @@ void Shooter::SetTargetAngle(double a){
 	a=a>max_angle?max_angle:a;
 	a=a<min_angle?min_angle:a;
 	angle=a;
-	angleMotor.SetDistance(angle);
-	angleMotor.EnablePID();
-	//angleMotor.SetDebug(1);
+	angle_pid->SetSetpoint(angle);
+	angle_pid->Enable();
 }
 
 // Set the shooter angle
@@ -154,13 +170,13 @@ void Shooter::SetTargetSpeed(double a){
 }
 
 bool Shooter::IsAtAngle(){
-	bool ontarget= angleMotor.OnTarget();
+	bool ontarget=angle_pid->OnTarget();
 	GetAngle();
 	return ontarget;
 }
 bool Shooter::IsAtSpeed(){
-	bool ontarget= leftFWMotor.OnTarget() && rightFWMotor.OnTarget();
-	GetFWSpeed();
+	double ave_speed=GetFWSpeed();
+	bool ontarget=fabs(ave_speed-flywheel_target)<=MAX_SPEED_ERROR;
 	return ontarget;
 }
 
@@ -171,7 +187,7 @@ double Shooter::GetTargetSpeed(){
 	return flywheel_target;
 }
 double Shooter::GetFWSpeed(){
-	double ave_speed=(leftFWMotor.GetVelocity()+rightFWMotor.GetVelocity());
+	double ave_speed=0.5*(leftFWMotor.GetSpeed()+rightFWMotor.GetSpeed());
 	LogSpeed(ave_speed);
 	return ave_speed;
 }
@@ -182,17 +198,21 @@ double Shooter::GetAngle(){
 }
 
 void Shooter::EnableFlywheels(){
-	leftFWMotor.SetVelocity(flywheel_target);
-	rightFWMotor.SetVelocity(flywheel_target);
+	leftFWMotor.Reset();
+	rightFWMotor.Reset();
+	leftFWMotor.SetSetpoint(flywheel_target);
+	rightFWMotor.SetSetpoint(flywheel_target);
 	leftFWMotor.Enable();
 	rightFWMotor.Enable();
 	Log();
 }
 void Shooter::DisableFlywheels(){
-	leftFWMotor.SetVelocity(0);
-	rightFWMotor.SetVelocity(0);
 	leftFWMotor.Disable();
 	rightFWMotor.Disable();
+	leftFWMotor.Reset();
+	rightFWMotor.Reset();
+	leftFWMotor.SetSetpoint(0.0);
+	rightFWMotor.SetSetpoint(0.0);
 	Log();
 }
 
@@ -201,12 +221,12 @@ void Shooter::SetInitialized() {
 	angleMotor.SetSetpoint(0);
 	angle=0;
 	accel.Reset();
-	angleMotor.EnablePID();
+	angleMotor.EnableControl();
 }
 
 void Shooter::Initialize() {
 	if(!AtLowerLimit()){
-		angleMotor.DisablePID();
+		angleMotor.Disable();
 		GoToLowerLimitSwitch();
 	}
 }
@@ -215,20 +235,11 @@ bool Shooter::IsInitialized() {
 }
 
 void Shooter::GoToLowerLimitSwitch() {
-	angleMotor.SetVoltage(GOTO_LOWER_SPEED);
+	angleMotor.Set(GOTO_LOWER_SPEED);
 }
 
 bool Shooter::AtLowerLimit() {
 	return lowerLimit.Get();
 }
 
-bool Shooter::TestIsInitialized() {
-	if(AtLowerLimit() || initialized){
-		return true;
-	}
-	else{
-		angleMotor.SetVoltage(GOTO_LOWER_SPEED);
-		return false;
-	}
-}
 

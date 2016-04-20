@@ -4,6 +4,9 @@
  *  Created on: Jul 6, 2015
  *      Author: alpiner
  */
+
+#ifdef USE_GP_MOTOR
+
 #include "WPILib.h"
 #include <Subsystems/GPMotor.h>
 
@@ -371,3 +374,4 @@ void GPMotor::SetDistancePerPulse(double target){
 void GPMotor::SetDebug(int b){
 	debug=b;
 }
+#endif

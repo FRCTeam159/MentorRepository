@@ -1,7 +1,12 @@
 #ifndef GP_MOTOR_H
-#define GP_MOTOR_H
+#define GP_MOTOR_
 
 #include "WPILib.h"
+
+#ifndef USE_GP_MOTOR
+#define GPMotor CANTalon
+#include "CANTalon.h"
+#else
 
 #define SIMRATE 0.01
 
@@ -105,4 +110,5 @@ public:
 	virtual void PIDWrite(float output);
 	virtual void SetDebug(int b);
 };
+#endif
 #endif

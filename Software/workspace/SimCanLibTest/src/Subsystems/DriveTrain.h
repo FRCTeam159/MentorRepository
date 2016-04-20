@@ -2,7 +2,7 @@
 #define DriveTrain_H
 
 #include "WPILib.h"
-#include "Subsystems/GPMotor.h"
+#include "CANTalon.h"
 
 /**
  * The DriveTrain subsystem incorporates the sensors and actuators attached to
@@ -10,13 +10,13 @@
  * and a gyro.
  */
 class DriveTrain : public Subsystem {
-	GPMotor left_motor;
-	GPMotor right_motor;
+	CANTalon left_motor;
+	CANTalon right_motor;
 private:
 	AnalogGyro gyro;
 	double x_deadband=0.2;
 	double y_deadband=0.2;
-	double dpp=1;
+	double cpr=1;
 	bool inverted=false;
 	bool squared_inputs=true;
 	bool disabled=true;
@@ -63,7 +63,7 @@ public:
 	virtual void SetDeadband(double x, double y);
 	virtual void SetDistancePerPulse(double diam,double ticks, bool b);
 	virtual double GetDistancePerPulse();
-	virtual void SetPID(int mode, double P, double I, double D);
+	//virtual void SetPID(int mode, double P, double I, double D);
 	virtual void Turn(double d);
 
 	virtual void Drive(double l,double r);

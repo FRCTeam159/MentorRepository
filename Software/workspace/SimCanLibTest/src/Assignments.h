@@ -36,17 +36,6 @@ enum AnalogIDs {  // limit switch ids
 
 };
 
-#define WHEEL_DIAMETER 7.5
-#define DEADBAND 0.25
-
-#ifdef SIMULATION
-#define WHEEL_TICKS 360 // default encoder ticks given in simulation
-#define INVERT_RIGHT_SIDE true // set true if wheel axis point in same direction on both sides
-#else // replace these values for whatever is appropriate for real drive-train
-#define WHEEL_TICKS 360
-#define INVERT_RIGHT_SIDE true
-#endif
-
 #define XBOX_GAMEPAD 1
 #define EXTREME_3D   2
 

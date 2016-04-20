@@ -91,6 +91,7 @@
 									<listOptionValue builtIn="false" value="/usr/include/gazebo-6.5"/>
 									<listOptionValue builtIn="false" value="/usr/include/ignition/math2"/>
 									<listOptionValue builtIn="false" value="/usr/include/sdformat-3.7"/>
+									<listOptionValue builtIn="false" value=""/>
 								</option>
 								<option id="gnu.cpp.compiler.option.optimization.level.1164201786" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.1878081045" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
@@ -106,6 +107,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.842198771" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
 								<option id="gnu.cpp.link.option.libs.507606310" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="wpilibcSim"/>
+									<listOptionValue builtIn="false" value="SimCan"/>
 									<listOptionValue builtIn="false" value="gz_msgs"/>
 									<listOptionValue builtIn="false" value="ntcore"/>
 									<listOptionValue builtIn="false" value="gazebo_client"/>
@@ -114,14 +116,10 @@
 								</option>
 								<option id="gnu.cpp.link.option.paths.588769736" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/usr/lib/x86_64-linux-gnu"/>
-									<listOptionValue builtIn="false" value="/home/dean/Robotics/allwpilib/build/simulation/gz_msgs"/>
-									<listOptionValue builtIn="false" value="/home/dean/Robotics/allwpilib/build/install/simulation/lib"/>
-									<listOptionValue builtIn="false" value="/home/dean/Robotics/allwpilib/build/networktables/Linux/amd64"/>
+									<listOptionValue builtIn="false" value="&quot;${WPILIB}/simulation/lib&quot;"/>
 								</option>
 								<option id="gnu.cpp.link.option.other.1613850514" name="Other options (-Xlinker [option])" superClass="gnu.cpp.link.option.other" valueType="stringList">
-									<listOptionValue builtIn="false" value="-rpath ${ALLWPILIB}/build/simulation/gz_msgs"/>
-									<listOptionValue builtIn="false" value="-rpath ${ALLWPILIB}/build/networktables/Linux/amd64"/>
-									<listOptionValue builtIn="false" value="-rpath ${ALLWPILIB}/build/install/simulation/lib"/>
+									<listOptionValue builtIn="false" value="-rpath ${WPILIB}/simulation/lib"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1475817582" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>

@@ -8,11 +8,11 @@
 #ifndef SRC_SUBSYSTEMS_HOLDER_H_
 #define SRC_SUBSYSTEMS_HOLDER_H_
 #include "WPILib.h"
-#include "Subsystems/GPMotor.h"
+#include "CANTalon.h"
 
 class Holder: public Subsystem {
-	GPMotor gateMotor;
-	GPMotor pushMotor;
+	CANTalon gateMotor;
+	CANTalon pushMotor;
 	DigitalInput lowerLimit;
 	DigitalInput upperLimit;
 	AnalogInput ballSensor;

@@ -11,7 +11,7 @@
 #define LOAD_ROLLER_SPEED 0.9
 #define SETZEROSPEED -0.2
 #define LIFT_ASSIST_SPEED 0.1
-
+#define PID_UPDATE_PERIOD 0.01
 #define MED_ANGLE 6
 #define HIGH_ANGLE 12
 #define LOW_ANGLE 0.0
@@ -23,20 +23,23 @@
 #define D 0.2
 
 Loader::Loader() : Subsystem("Loader"),
-  liftMotor(LOADER_ANGLE,false),
-  rollerMotor(LOADER_ROLLERS,false),
+  liftMotor(LOADER_ANGLE),
+  rollerMotor(LOADER_ROLLERS),
   accel(LOADER_PITCH),
   lowerLimit(LOADER_MIN)
 {
-	liftMotor.SetPID(P,I,D,this);
-	liftMotor.SetTolerance(MAX_ANGLE_ERROR);
+	angle_pid=new PIDController(P, I, D,this,this,PID_UPDATE_PERIOD);
+	angle_pid->SetTolerance(MAX_ANGLE_ERROR);
 	liftMotor.Disable();
 	initialized=false;
 	roller_speed=LOAD_ROLLER_SPEED;
 	accel.Reset();
 	Log();
 }
-
+Loader::~Loader(){
+	if(angle_pid)
+		delete angle_pid;
+}
 void Loader::InitDefaultCommand() {
 	SetDefaultCommand(new ExecLoader());
 }
@@ -70,7 +73,7 @@ void Loader::Execute() {
 // ===========================================================================================================
 void Loader::SetLow() {
 	SetRollerState(ROLLERS_OFF);
-	liftMotor.Disable(); // disable PID control
+	angle_pid->Disable(); // disable PID control
 	GoToZeroLimitSwitch();
 	loading=false;
 }
@@ -104,6 +107,7 @@ void Loader::SetLoading(bool b) {
 }
 
 void Loader::Disable(){
+	angle_pid->Reset();
 	liftMotor.Reset();
 	liftMotor.Disable();
 	rollerMotor.Disable();
@@ -138,13 +142,14 @@ void Loader::SetLifterAngle(double a){
 	a=a>max_angle?max_angle:a;
 	a=a<min_angle?min_angle:a;
 	angle=a;
-	liftMotor.SetSetpoint(angle);
+	angle_pid->SetSetpoint(angle);
+	angle_pid->Enable();
 	liftMotor.Enable();
 	Log();
 }
 bool Loader::LifterIsAtTargetAngle(){
 	Log();
-	return liftMotor.OnTarget();
+	return angle_pid->OnTarget();
 }
 
 double Loader::GetLifterAngle(){
@@ -154,7 +159,7 @@ double Loader::GetLifterAngle(){
 void Loader::SpinRollers() {
 	switch(roller_state){
 	case ROLLERS_OFF:
-		rollerMotor.Set(0);
+		rollerMotor.Set(0.0);
 		break;
 	case ROLLERS_FORWARD:
 		rollerMotor.Set(roller_speed);
@@ -170,9 +175,9 @@ void Loader::SetRollerState(int b) {
 
 void Loader::GoToZeroLimitSwitch() {
 	if(!LifterAtLowerLimit())
-		liftMotor.SetVoltage(SETZEROSPEED);
+		liftMotor.Set(SETZEROSPEED);
 	else
-		liftMotor.SetVoltage(0);
+		liftMotor.Set(0);
 }
 
 void Loader::SetInitialized() {
@@ -183,7 +188,7 @@ void Loader::SetInitialized() {
 
 void Loader::Initialize() {
 	if(!LifterAtLowerLimit()){
-		liftMotor.DisablePID();
+		liftMotor.Disable();
 		GoToZeroLimitSwitch();
 	}
 }
@@ -194,6 +199,9 @@ bool Loader::IsInitialized() {
 
 double Loader::PIDGet() {
 	return -accel.GetAngle();
+}
+void Loader::PIDWrite(float output){
+	liftMotor.PIDWrite(output);
 }
 
 
