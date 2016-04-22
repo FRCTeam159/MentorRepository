@@ -22,7 +22,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="so" artifactName="SimCan" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.so.debug.2032336931" name="Debug" parent="cdt.managedbuild.config.gnu.so.debug" postannouncebuildStep="&quot; cp ../include/CANTalon.h  ${HOME}/wpilib/simulation/include&quot;" postbuildStep="cp libSimCan.so ${HOME}/wpilib/simulation/lib;cp ../include/CANTalon.h  ${HOME}/wpilib/simulation/include">
+				<configuration artifactExtension="so" artifactName="SimCan" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.so.debug.2032336931" name="Debug" parent="cdt.managedbuild.config.gnu.so.debug" postannouncebuildStep="&quot; cp ../include/CANTalon.h  ${HOME}/wpilib/simulation/include&quot;" postbuildStep="cp libSimCan.so ${HOME}/wpilib/simulation/lib;">
 					<folderInfo id="cdt.managedbuild.config.gnu.so.debug.2032336931." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.so.debug.1353227521" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.so.debug">
 							<targetPlatform id="cdt.managedbuild.target.gnu.platform.so.debug.1088585571" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.so.debug"/>
@@ -144,5 +144,12 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/SimCanLib"/>
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/SimCanLib"/>
+		</configuration>
+	</storageModule>
 </cproject>

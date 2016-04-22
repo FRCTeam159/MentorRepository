@@ -7,7 +7,7 @@
 
 #ifndef SRC_COMMANDS_DRIVESTRAIGHT_H_
 #define SRC_COMMANDS_DRIVESTRAIGHT_H_
-#include "Subsystems/GPMotor.h"
+#include <WPILib.h>
 #include <Commands/Command.h>
 
 class DriveStraight: public Command

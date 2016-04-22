@@ -16,8 +16,9 @@
 #define AD 0.4
 
 //#define DEBUG_COMMAND
+#define PIDUPDATERATE 0.01
 
-Turn::Turn(double a)  : Command("Turn"), pid(AP,AI,AD,this,this,SIMRATE)
+Turn::Turn(double a)  : Command("Turn"), pid(AP,AI,AD,this,this,PIDUPDATERATE)
 {
 	target=a;
 	Requires(Robot::drivetrain.get());

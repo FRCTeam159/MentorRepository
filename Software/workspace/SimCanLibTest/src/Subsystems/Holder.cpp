@@ -11,19 +11,23 @@
 #define GATE_OPEN_SPEED 0.25
 #define GATE_REMOVE_SPEED -0.5
 #define GATE_CLOSE_SPEED -0.3
+#define GATE_OFF_SPEED 0.0
 
 #define PUSH_SPEED 1.0
 #define PUSH_HOLD_SPEED 0.02
 #define PUSH_REMOVE_SPEED -0.25
+#define PUSH_OFF_SPEED 0.0
 
 #define BALL_DETECT_VALUE 0.5
 
 Holder::Holder() : Subsystem("Holder"),
-	gateMotor(HOLDER_GATE),pushMotor(HOLDER_PUSH),
-	lowerLimit(GATE_MIN),upperLimit(GATE_MAX),ballSensor(BALL_SENSOR)
+	gateMotor(HOLDER_GATE),pushMotor(HOLDER_PUSH),ballSensor(BALL_SENSOR)
 {
 	std::cout<<"New BallHolder("<<HOLDER_GATE<<","<<HOLDER_PUSH<<")"<<std::endl;
 	push_hold_speed=0;
+	gateMotor.ConfigLimitMode(CANTalon::kLimitMode_SwitchInputsOnly); // note: soft limits not supported in simulation
+	gateMotor.ConfigRevLimitSwitchNormallyOpen(true); // warning: currently required in simulation mode
+	gateMotor.ConfigFwdLimitSwitchNormallyOpen(true); // warning: currently required in simulation mode
 	Log();
 }
 
@@ -40,8 +44,8 @@ void Holder::InitDefaultCommand() {
 
 void Holder::Init(){
 	initialized=false;
-	pushMotor.Set(0);
-	gateMotor.Set(0);
+	pushMotor.Set(PUSH_OFF_SPEED);
+	gateMotor.Set(GATE_OFF_SPEED);
 }
 
 void Holder::AutonomousInit(){
@@ -55,11 +59,11 @@ void Holder::DisabledInit(){
 }
 
 bool Holder::IsGateOpen(){
-	return upperLimit.Get();
+	return gateMotor.IsFwdLimitSwitchClosed();
 }
 
 bool Holder::IsGateClosed(){
-	return lowerLimit.Get();
+	return gateMotor.IsRevLimitSwitchClosed();
 }
 // ===========================================================================================================
 // Holder::IsBallPresent
@@ -79,7 +83,7 @@ void Holder::CloseGate(){
 	if(!IsGateClosed())
 		gateMotor.Set(GATE_CLOSE_SPEED);
 	else
-		gateMotor.Set(0);
+		gateMotor.Set(GATE_OFF_SPEED);
 }
 
 void Holder::PushBall(){
@@ -101,20 +105,20 @@ bool Holder::IsInitialized() {
 
 void Holder::SetInitialized() {
 	initialized=true;
-	gateMotor.Set(0);
+	gateMotor.Set(GATE_OFF_SPEED);
 }
 
 void Holder::Initialize() {
 	if(!IsGateClosed())
 		gateMotor.Set(GATE_CLOSE_SPEED);
 	else
-		gateMotor.Set(0);
+		gateMotor.Set(GATE_OFF_SPEED);
 }
 
 void Holder::Reset(){
 	initialized=false;
-	gateMotor.Set(0);
-	pushMotor.Set(0);
+	gateMotor.Set(GATE_OFF_SPEED);
+	pushMotor.Set(PUSH_OFF_SPEED);
 }
 void Holder::SetPushHoldSpeed(double d) {
 	push_hold_speed=d;

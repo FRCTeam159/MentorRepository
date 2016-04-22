@@ -16,7 +16,6 @@ class Shooter: public Subsystem , public PIDSource, public PIDOutput {
 	CANTalon leftFWMotor;
 	CANTalon rightFWMotor;
 	AnalogGyro accel;
-	DigitalInput lowerLimit;
 
 	PIDController *angle_pid;
 

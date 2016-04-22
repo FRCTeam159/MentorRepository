@@ -18,7 +18,6 @@ class Loader: public Subsystem, public PIDSource, public PIDOutput {
 	CANTalon rollerMotor;
 	PIDController *angle_pid;
 	AnalogGyro accel;
-	DigitalInput lowerLimit;
 
 	double angle=0;
 	double max_angle=80;

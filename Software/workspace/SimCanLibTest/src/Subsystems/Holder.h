@@ -13,8 +13,6 @@
 class Holder: public Subsystem {
 	CANTalon gateMotor;
 	CANTalon pushMotor;
-	DigitalInput lowerLimit;
-	DigitalInput upperLimit;
 	AnalogInput ballSensor;
 
 	bool initialized=false;

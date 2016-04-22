@@ -8,7 +8,7 @@
 #include <Commands/StepShooterAngle.h>
 #include "Robot.h"
 
-#define STEP_TIMEOUT 1
+#define STEP_TIMEOUT 2
 
 StepShooterAngle::StepShooterAngle(double a) : Command("StepShooterAngle") {
 	Requires(Robot::shooter.get());

@@ -103,6 +103,9 @@ CANTalon::CANTalon(int i) : Talon(i){
 	pid_data[0].pid=0;
 	pid_data[1].pid=0;
 	encoder=0;
+	lowerLimit=0;
+	upperLimit=0;
+	limit_mode=kLimitMode_SrxDisableSwitchInputs;
 	id=i;
 	debug=0;
 	control_mode=kPercentVbus;
@@ -113,6 +116,10 @@ CANTalon::~CANTalon(){
 	if(encoder)
 		delete encoder;
 	ClearPID();
+	if(lowerLimit)
+		delete lowerLimit;
+	if(upperLimit)
+		delete upperLimit;
 }
 void CANTalon::SelectProfileSlot(int i) {
 	pid_channel=i>=1?1:0;
@@ -299,6 +306,67 @@ void CANTalon::Reset(){
 void CANTalon::ConfigEncoderCodesPerRev(uint16_t codesPerRev){
 	if(encoder)
 		encoder->SetDistancePerPulse((double)(1.0/codesPerRev));
+}
+
+/**
+ * Athena: Configures the soft limit enable (wear leveled persistent memory).
+ *   - Also sets the limit switch overrides.
+ * Simulation: Support Hard Limits only (there is not yet support for soft limits)
+ *   - Only the following opcode is allowed: kLimitMode_SwitchInputsOnly
+ *   - Limit switches also require a (simulated) DigitalInput channel
+ */
+void CANTalon::ConfigLimitMode(LimitMode mode){
+	if(mode==kLimitMode_SoftPositionLimits){
+		std::cout<<id<<" CANTalon::ConfigLimitMode ERROR: SoftLimits are not supported in simulation"<<std::endl;
+		return;
+	}
+	limit_mode=mode;
+}
+/**
+ * Athena: Change the fwd limit switch setting to normally open or closed.
+ * @param normallyOpen true for normally open.  false for normally closed.
+ *
+ * Simulation: This function is not directly supported
+ *   - DigitalInput "Get" function will always return true if the joint is in a position that meets
+ *     the Joint limit properties set in the Solidworks exporter (or .sdf file)
+ *   - Since user code normally will call this function (and not rely on the default configuration)
+ *     this will be made a requirement to activate a forward or reverse limit switch in simulation mode
+ *     (which will instantiate a DigitalInput channel)
+ *   - DigitalInput ids that emulate CAN limit switches are assigned as follows:
+ *     DIO channel: reverse=(CANChannel-1)*2+1 forward=(CANChannel-1)*2+2
+ *     CANchannel=1 reverse limit=1, forward limit=2
+ *     CANchannel=2 reverse limit=3, forward limit=4 ...
+ *   - note: Simulated DigitalInput ids for switches are the same as PWM ids for simulated encoders
+ */
+void CANTalon::ConfigRevLimitSwitchNormallyOpen(bool normallyOpen){
+	if(lowerLimit==0){
+		int lid=(id-1)*2+1;
+		lowerLimit= new DigitalInput(lid);
+		std::cout<<id<<" CANTalon: Simulating reverse limit using DigitalInput channel "<<lid<<std::endl;
+	}
+}
+/**
+ * API is the same as for ConfigRevLimitSwitchNormallyOpen
+ */
+void CANTalon::ConfigFwdLimitSwitchNormallyOpen(bool normallyOpen){
+	if(upperLimit==0){
+		int lid=(id-1)*2+2;
+		upperLimit= new DigitalInput(lid);
+		std::cout<<id<<" CANTalon: Simulating forward limit using DigitalInput channel "<<lid<<std::endl;
+	}
+}
+int CANTalon::IsRevLimitSwitchClosed(){
+	if(limit_mode==kLimitMode_SwitchInputsOnly && lowerLimit!=0)
+		return lowerLimit->Get();
+	else
+		return 0;
+}
+
+int CANTalon::IsFwdLimitSwitchClosed(){
+	if(limit_mode==kLimitMode_SwitchInputsOnly && upperLimit!=0)
+		return upperLimit->Get();
+	else
+		return 0;
 }
 
 int CANTalon::GetEncVel() {

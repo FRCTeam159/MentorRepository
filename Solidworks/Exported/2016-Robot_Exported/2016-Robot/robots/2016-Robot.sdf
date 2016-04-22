@@ -1638,7 +1638,7 @@
       <topic>/gazebo/frc/simulator/dio/10</topic>
       <type>internal</type>
       <units>radians</units>
-      <min>0</min>
+      <min>0.9</min>
       <max>1.5</max>
     </plugin>
     <plugin name="Shooter-Gate_intlimit" filename="libgz_limit_switch.so">

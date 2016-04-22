@@ -73,6 +73,7 @@ protected:
 	};
 
 	ControlMode control_mode;
+	LimitMode limit_mode;
 	bool inverted=false;
 	int debug=0;
 	int id=0;
@@ -111,6 +112,12 @@ public:
 
 	virtual void ConfigEncoderCodesPerRev(uint16_t codesPerRev);
 	//virtual void ConfigPotentiometerTurns(uint16_t turns);
+
+	virtual void ConfigLimitMode(LimitMode mode);
+	virtual int IsFwdLimitSwitchClosed();
+	virtual int IsRevLimitSwitchClosed();
+	virtual void ConfigFwdLimitSwitchNormallyOpen(bool normallyOpen);
+	virtual void ConfigRevLimitSwitchNormallyOpen(bool normallyOpen);
 
 	virtual double PIDGet();
 

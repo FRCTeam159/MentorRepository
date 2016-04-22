@@ -8,7 +8,7 @@
 #include <Subsystems/Shooter.h>
 #include "Assignments.h"
 
-#define FWSPEED 200
+#define FWSPEED 100
 #define FP 0.002
 #define FI 0.00001
 #define FD 0.0001
@@ -19,7 +19,7 @@
 
 #define AMIN 0
 #define AMAX 70
-#define MAX_SPEED_ERROR 50
+#define MAX_SPEED_ERROR 10
 #define MAX_ANGLE_ERROR 1
 #define GOTO_LOWER_SPEED -0.6
 #define PID_UPDATE_PERIOD 0.01
@@ -35,13 +35,15 @@ Shooter::Shooter() : Subsystem("Shooter"),
 	angleMotor(SHOOTER_ANGLE),
 	leftFWMotor(SHOOTER_LEFT),
 	rightFWMotor(SHOOTER_RIGHT),
-	accel(SHOOTER_PITCH),
-	lowerLimit(SHOOTER_MIN)
-
+	accel(SHOOTER_PITCH)
 {
 	std::cout<<"New Shooter("<<SHOOTER_ANGLE<<","<<SHOOTER_LEFT<<","<<SHOOTER_RIGHT<<")"<<std::endl;
 	max_angle=AMAX; // max elevation (degrees)
 	min_angle=AMIN;
+
+	angleMotor.ConfigLimitMode(CANTalon::kLimitMode_SwitchInputsOnly); // note: soft limits not supported in simulation
+	angleMotor.ConfigRevLimitSwitchNormallyOpen(true); // warning: currently required in simulation mode
+
 
 	leftFWMotor.SetFeedbackDevice(CANTalon::QuadEncoder);
 	rightFWMotor.SetFeedbackDevice(CANTalon::QuadEncoder);
@@ -62,7 +64,6 @@ Shooter::Shooter() : Subsystem("Shooter"),
 	angle_pid=new PIDController(AP, AI, AD,this,this,PID_UPDATE_PERIOD);
 	angle_pid->Reset(); // clear IAccum
 	angle_pid->SetSetpoint(0);
-	//angle_pid->SetInputRange(min_angle,max_angle);      // 0..70 degrees
 	angle_pid->SetAbsoluteTolerance(MAX_ANGLE_ERROR);
 	angle_pid->SetToleranceBuffer(2);
 	initialized=false;
@@ -239,7 +240,7 @@ void Shooter::GoToLowerLimitSwitch() {
 }
 
 bool Shooter::AtLowerLimit() {
-	return lowerLimit.Get();
+	return angleMotor.IsRevLimitSwitchClosed();
 }
 
 

@@ -25,6 +25,7 @@
 //#define DEBUG_COMMAND
 
 #define DRIVE_TIMEOUT 1
+#define PIDUPDATERATE 0.01
 
 double DriveStraight::speed_error=0;
 double DriveStraight::angle_error=0;
@@ -81,7 +82,7 @@ void DriveStraight::Interrupted() {
 
 // =============== Inner Class AngleControl =============================
 DriveStraight::AngleControl::AngleControl(double P, double I, double D):
-	pid(P,I,D,this,this,SIMRATE)
+	pid(P,I,D,this,this,PIDUPDATERATE)
 {
 	target=0;
 }
@@ -136,7 +137,7 @@ void DriveStraight::AngleControl::End(){
 
 // =============== Inner Class DistanceControl =============================
 DriveStraight::DistanceControl::DistanceControl(double P, double I, double D):
-	pid(P,I,D,this,this,SIMRATE)
+	pid(P,I,D,this,this,PIDUPDATERATE)
 {
 	target=0;
 }

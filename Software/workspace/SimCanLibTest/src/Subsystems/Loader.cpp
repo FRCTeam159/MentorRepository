@@ -25,8 +25,7 @@
 Loader::Loader() : Subsystem("Loader"),
   liftMotor(LOADER_ANGLE),
   rollerMotor(LOADER_ROLLERS),
-  accel(LOADER_PITCH),
-  lowerLimit(LOADER_MIN)
+  accel(LOADER_PITCH)
 {
 	angle_pid=new PIDController(P, I, D,this,this,PID_UPDATE_PERIOD);
 	angle_pid->SetTolerance(MAX_ANGLE_ERROR);
@@ -34,6 +33,8 @@ Loader::Loader() : Subsystem("Loader"),
 	initialized=false;
 	roller_speed=LOAD_ROLLER_SPEED;
 	accel.Reset();
+	liftMotor.ConfigLimitMode(CANTalon::kLimitMode_SwitchInputsOnly);
+	liftMotor.ConfigRevLimitSwitchNormallyOpen(true); // warning: required in simulation mode
 	Log();
 }
 Loader::~Loader(){
@@ -96,7 +97,7 @@ void Loader::ExecLoad() {
 }
 
 bool Loader::LifterAtLowerLimit() {
-	return lowerLimit.Get();
+	return liftMotor.IsRevLimitSwitchClosed();
 }
 
 bool Loader::Loading() {
