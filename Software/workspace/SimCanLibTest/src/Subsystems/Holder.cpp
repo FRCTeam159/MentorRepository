@@ -18,16 +18,35 @@
 #define PUSH_REMOVE_SPEED -0.25
 #define PUSH_OFF_SPEED 0.0
 
+#define FORWARDLIMITPOSITION (80.0/360.0)
+#define REVERSELIMITPOSITION (10.0/360.0)
+
+#define P 0.2
+#define I 0.0005
+#define D 0.1
+
 #define BALL_DETECT_VALUE 0.5
+
+#ifdef REAL
+#define GATEMOTOR_GR 26.9
+#define GATEMOTOR_ET 7
+#define GATETICKS (double)GATEMOTOR_GR*GATEMOTOR_ET
+#else
+#define GATETICKS 360.0
+#endif
 
 Holder::Holder() : Subsystem("Holder"),
 	gateMotor(HOLDER_GATE),pushMotor(HOLDER_PUSH),ballSensor(BALL_SENSOR)
 {
 	std::cout<<"New BallHolder("<<HOLDER_GATE<<","<<HOLDER_PUSH<<")"<<std::endl;
 	push_hold_speed=0;
-	gateMotor.ConfigLimitMode(CANTalon::kLimitMode_SwitchInputsOnly); // note: soft limits not supported in simulation
-	gateMotor.ConfigRevLimitSwitchNormallyOpen(true); // warning: currently required in simulation mode
-	gateMotor.ConfigFwdLimitSwitchNormallyOpen(true); // warning: currently required in simulation mode
+	gateTicksPerRevolution = GATETICKS;
+
+	gateMotor.ConfigRevLimitSwitchNormallyOpen(true);
+	gateMotor.ConfigFwdLimitSwitchNormallyOpen(true);
+	gateMotor.ConfigEncoderCodesPerRev(gateTicksPerRevolution);
+	gateMotor.ConfigLimitMode(CANTalon::kLimitMode_SwitchInputsOnly);
+
 	Log();
 }
 
@@ -77,7 +96,11 @@ bool Holder::IsBallPresent(){
 }
 
 void Holder::OpenGate(){
-	gateMotor.Set(GATE_OPEN_SPEED);
+	if(!IsGateOpen())
+		gateMotor.Set(GATE_OPEN_SPEED);
+	else
+		gateMotor.Set(GATE_OFF_SPEED);
+
 }
 void Holder::CloseGate(){
 	if(!IsGateClosed())
@@ -116,13 +139,30 @@ void Holder::Initialize() {
 }
 
 void Holder::Reset(){
-	initialized=false;
+	//initialized=false;
 	gateMotor.Set(GATE_OFF_SPEED);
 	pushMotor.Set(PUSH_OFF_SPEED);
 }
 void Holder::SetPushHoldSpeed(double d) {
 	push_hold_speed=d;
 }
+
+bool Holder::FindZero() {
+	if(found_zero)
+		return true;
+	else{
+		gateMotor.Set(GATE_CLOSE_SPEED);
+		if(gateMotor.IsRevLimitSwitchClosed()){
+			found_zero=true;
+			gateMotor.ConfigLimitMode(CANTalon::kLimitMode_SoftPositionLimits);
+			gateMotor.Reset();
+			gateMotor.ConfigSoftPositionLimits(FORWARDLIMITPOSITION,REVERSELIMITPOSITION);
+			return true;
+		}
+	}
+	return false;
+}
+
 // ===========================================================================================================
 // Holder::Execute
 // ===========================================================================================================
@@ -139,5 +179,4 @@ void Holder::Execute() {
 			gateMotor.Set(GATE_CLOSE_SPEED);
 	}
 }
-
 

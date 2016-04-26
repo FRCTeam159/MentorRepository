@@ -34,7 +34,6 @@ Loader::Loader() : Subsystem("Loader"),
 	roller_speed=LOAD_ROLLER_SPEED;
 	accel.Reset();
 	liftMotor.ConfigLimitMode(CANTalon::kLimitMode_SwitchInputsOnly);
-	liftMotor.ConfigRevLimitSwitchNormallyOpen(true); // warning: required in simulation mode
 	Log();
 }
 Loader::~Loader(){
@@ -178,12 +177,12 @@ void Loader::GoToZeroLimitSwitch() {
 	if(!LifterAtLowerLimit())
 		liftMotor.Set(SETZEROSPEED);
 	else
-		liftMotor.Set(0);
+		liftMotor.Set(0.0);
 }
 
 void Loader::SetInitialized() {
 	initialized=true;
-	liftMotor.Set(0);
+	liftMotor.Set(0.0);
 	accel.Reset();
 }
 

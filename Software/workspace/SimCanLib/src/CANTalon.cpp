@@ -2,120 +2,40 @@
  * CANTalon.cpp
  *
  *  Created on: April 16, 2016
- *      Author: Dean Sindorf
- *  Adds simulation support for CANTalon motor controllers
+ *  Adds partial support for CANTalon motor controllers
+ *  - Constructor automatically instantiates a Quad Encoder
+ *    -- For simulation,PWM channels are assigned from CAN id (id*2)+1,(id*2)+2
+ *  - Constructor automatically instantiates Forward and Reverse (hard) limit switches
+ *    -- Simulated using DIO channels based on CAN id rev=(id*2)+1 fwd=(id*2)+2
+ *  - Instantiates up to 2 independent PIDContollers
+ *    -- PIDControllers are instantiated on first call to SetPID (with pid_channel also set)
  */
 #include "WPILib.h"
 #include <CANTalon.h>
 
+#define ID1 ((id-1)*2+1)
+#define ID2 ((id-1)*2+2)
 
-CANTalon::PIDData::PIDData(){
-	P=I=D=F=0; changed=false;pid=0;
-}
-void CANTalon::PIDData::SetPID(double P, double I, double D, double F, PIDSource *s,PIDOutput *d){
-	SetF(F);
-	SetPID(P,I,D,s,d);
-}
-void CANTalon::PIDData::SetPID(double P, double I, double D, PIDSource *s,PIDOutput *d){
-	SetP(P);
-	SetI(I);
-	SetD(D);
-	Set(s,d);
-}
-void CANTalon::PIDData::Set(PIDSource *s,PIDOutput *d){
-	if(changed && pid)
-		Clear();
-	if(!pid)
-		pid=new PIDController(P,I,D,F,s,d,SIMPIDRATE);
-	changed=false;
-}
-void CANTalon::PIDData::Clear(){
-	if(pid)
-		delete pid;
-	pid=0;
-}
-void CANTalon::PIDData::SetP(double d){
-	if(d!=P)
-		changed=true;
-	P=d;
-}
-void CANTalon::PIDData::SetI(double d){
-	if(d!=I)
-		changed=true;
-	I=d;
-}
-void CANTalon::PIDData::SetD(double d){
-	if(d!=D)
-		changed=true;
-	D=d;
-}
-void CANTalon::PIDData::SetF(double d){
-	if(d!=F)
-		changed=true;
-	F=d;
-}
-void CANTalon::PIDData::SetSetpoint(double value){
-	if(pid)
-		pid->SetSetpoint(value);
-}
-bool CANTalon::PIDData::IsEnabled(){
-	if(pid)
-		return pid->IsEnabled();
-	else
-		return false;
-}
-void CANTalon::PIDData::Enable(){
-	if(pid)
-		pid->Enable();
-}
-void CANTalon::PIDData::Disable(){
-	if(pid)
-		pid->Disable();
-}
-void CANTalon::PIDData::Reset(){
-	if(pid)
-		pid->Reset();
-}
-double CANTalon::PIDData::GetTargetError(){
-	if(pid)
-		return pid->GetError();
-	else
-		return 0;
-}
-double CANTalon::PIDData::GetSetpoint(){
-	if(pid)
-		return pid->GetSetpoint();
-	else
-		return 0;
-}
-bool CANTalon::PIDData::OnTarget(){
-	if(pid)
-		return pid->OnTarget();
-	else
-		return false;
-}
-double CANTalon::PIDData::GetP() { return P;}
-double CANTalon::PIDData::GetI() { return I;}
-double CANTalon::PIDData::GetD() { return D;}
-double CANTalon::PIDData::GetF() { return F;}
-
-CANTalon::CANTalon(int i) : Talon(i){
-	pid_data[0].pid=0;
-	pid_data[1].pid=0;
+CANTalon::CANTalon(int i) : Talon(i) {
+	id=i;
+	for(int i=0;i<MAXPIDCHNLS;i++){
+		pid_data[i].pid=0;
+	}
+	limit_mode=kLimitMode_SrxDisableSwitchInputs;
+	feedback_device=UnsetFeedbackDevice;
 	encoder=0;
 	lowerLimit=0;
 	upperLimit=0;
-	limit_mode=kLimitMode_SrxDisableSwitchInputs;
-	id=i;
+
 	debug=0;
 	control_mode=kPercentVbus;
 	inverted=false;
 }
 
 CANTalon::~CANTalon(){
+	ClearPID();
 	if(encoder)
 		delete encoder;
-	ClearPID();
 	if(lowerLimit)
 		delete lowerLimit;
 	if(upperLimit)
@@ -126,7 +46,7 @@ void CANTalon::SelectProfileSlot(int i) {
 }
 
 void CANTalon::ClearPID(){
-	for(int i=0;i<2;i++){
+	for(int i=0;i<MAXPIDCHNLS;i++){
 		pid_data[i].Clear();
 	}
 }
@@ -174,7 +94,7 @@ double CANTalon::GetF(){
 }
 
 void CANTalon::SetControlMode(ControlMode m) {
-	if(m>=kMaxControlMode){
+	if(m>=UnsetControlMode){
 		std::cout<<"ERROR mode unsupported in simulation:"<<m<<std::endl;
 		return;
 	}
@@ -194,16 +114,27 @@ bool CANTalon::IsModePID(ControlMode mode) {
 }
 
 void CANTalon::SetFeedbackDevice(FeedbackDevice device){
-	if(encoder==0 && device==QuadEncoder){
-		int ival=(id-1)*2+1; // 1,3,5,..
-		encoder=new Encoder(ival,ival+1); // {1,2} {3,4} {5,6} ..
-		//encoder->SetDistancePerPulse(1.0/SIM_ENCODER_TICKS);
+	if(device>=UnsetFeedbackDevice){
+		std::cout<<"ERROR feedback device unsupported in simulation:"<<device<<std::endl;
+		return;
 	}
-	else if(encoder){
-		delete encoder;
-		encoder=0;
-	}
+	feedback_device=device;
+	AddEncoder();
 }
+
+void CANTalon::AddEncoder(){
+	if(!encoder)
+		encoder=new Encoder(ID1,ID2); // {1,2} {3,4} {5,6} ..
+}
+void CANTalon::AddLowerLimit(){
+	if(!lowerLimit)
+		lowerLimit=new Limit(ID1,false);
+}
+void CANTalon::AddUpperLimit(){
+	if(!upperLimit)
+		upperLimit=new Limit(ID2,true);
+}
+
 double CANTalon::ReturnPIDInput(){
 	switch(control_mode){
 	case kPosition:
@@ -304,21 +235,35 @@ void CANTalon::Reset(){
 	pid_data[pid_channel].Reset();
 }
 void CANTalon::ConfigEncoderCodesPerRev(uint16_t codesPerRev){
-	if(encoder)
-		encoder->SetDistancePerPulse((double)(1.0/codesPerRev));
+	AddEncoder();
+	encoder->SetDistancePerPulse((double)(1.0/codesPerRev));
 }
 
 /**
  * Athena: Configures the soft limit enable (wear leveled persistent memory).
  *   - Also sets the limit switch overrides.
- * Simulation: Support Hard Limits only (there is not yet support for soft limits)
- *   - Only the following opcode is allowed: kLimitMode_SwitchInputsOnly
+ * Simulation: Currently supports hard limits only
  *   - Limit switches also require a (simulated) DigitalInput channel
  */
 void CANTalon::ConfigLimitMode(LimitMode mode){
-	if(mode==kLimitMode_SoftPositionLimits){
-		std::cout<<id<<" CANTalon::ConfigLimitMode ERROR: SoftLimits are not supported in simulation"<<std::endl;
-		return;
+	switch(mode){
+	case kLimitMode_SoftPositionLimits:
+		AddEncoder();
+		AddUpperLimit();
+		AddLowerLimit();
+		break;
+	case kLimitMode_SwitchInputsOnly:
+		if(lowerLimit)
+			lowerLimit->SetSoftLimitEnabled(false);
+		if(upperLimit)
+			upperLimit->SetSoftLimitEnabled(false);
+		break;
+	case kLimitMode_SrxDisableSwitchInputs:
+		if(lowerLimit)
+			lowerLimit->Disable();
+		if(upperLimit)
+			upperLimit->Disable();
+		break;
 	}
 	limit_mode=mode;
 }
@@ -329,61 +274,301 @@ void CANTalon::ConfigLimitMode(LimitMode mode){
  * Simulation: This function is not directly supported
  *   - DigitalInput "Get" function will always return true if the joint is in a position that meets
  *     the Joint limit properties set in the Solidworks exporter (or .sdf file)
- *   - Since user code normally will call this function (and not rely on the default configuration)
- *     this will be made a requirement to activate a forward or reverse limit switch in simulation mode
- *     (which will instantiate a DigitalInput channel)
  *   - DigitalInput ids that emulate CAN limit switches are assigned as follows:
- *     DIO channel: reverse=(CANChannel-1)*2+1 forward=(CANChannel-1)*2+2
- *     CANchannel=1 reverse limit=1, forward limit=2
- *     CANchannel=2 reverse limit=3, forward limit=4 ...
+ *     DIO channel: reverse=(id-1)*2+1 forward=(id-1)*2+2 {1,2},{2,3} ...
  *   - note: Simulated DigitalInput ids for switches are the same as PWM ids for simulated encoders
  */
 void CANTalon::ConfigRevLimitSwitchNormallyOpen(bool normallyOpen){
-	if(lowerLimit==0){
-		int lid=(id-1)*2+1;
-		lowerLimit= new DigitalInput(lid);
-		std::cout<<id<<" CANTalon: Simulating reverse limit using DigitalInput channel "<<lid<<std::endl;
-	}
+	AddLowerLimit();
 }
 /**
  * API is the same as for ConfigRevLimitSwitchNormallyOpen
  */
 void CANTalon::ConfigFwdLimitSwitchNormallyOpen(bool normallyOpen){
-	if(upperLimit==0){
-		int lid=(id-1)*2+2;
-		upperLimit= new DigitalInput(lid);
-		std::cout<<id<<" CANTalon: Simulating forward limit using DigitalInput channel "<<lid<<std::endl;
+	AddUpperLimit();
+}
+/**
+ * Hard Limit: Return true if joint is in predefined range (using DIO channel)
+ * Soft Limit: Return true if encoder <= preset position
+ */
+int CANTalon::IsRevLimitSwitchClosed(){
+	switch(limit_mode){
+	case kLimitMode_SwitchInputsOnly:
+		AddLowerLimit();
+		return lowerLimit->AtHardlimit()?1:0;
+	case kLimitMode_SoftPositionLimits:
+		AddLowerLimit();
+		if(lowerLimit->AtSoftlimit())
+			return 1;
+		return lowerLimit->AtHardlimit()?1:0;
+	default:
+	case kLimitMode_SrxDisableSwitchInputs:
+		return 0;
 	}
 }
-int CANTalon::IsRevLimitSwitchClosed(){
-	if(limit_mode==kLimitMode_SwitchInputsOnly && lowerLimit!=0)
-		return lowerLimit->Get();
-	else
+/**
+ * Hard Limit: Return true if joint is in predefined range
+ * Soft Limit: Return true if encoder >= preset position
+ */
+int CANTalon::IsFwdLimitSwitchClosed(){
+	switch(limit_mode){
+	case kLimitMode_SwitchInputsOnly:
+		AddUpperLimit();
+		return upperLimit->AtHardlimit()?1:0;
+	case kLimitMode_SoftPositionLimits:
+		AddUpperLimit();
+		if(upperLimit->AtSoftlimit())
+			return 1;
+		return upperLimit->AtHardlimit()?1:0;
+	default:
+	case kLimitMode_SrxDisableSwitchInputs:
 		return 0;
+	}
+}
+void CANTalon::DisableSoftPositionLimits() {
+	ConfigForwardSoftLimitEnable(false);
+	ConfigReverseSoftLimitEnable(false);
 }
 
-int CANTalon::IsFwdLimitSwitchClosed(){
-	if(limit_mode==kLimitMode_SwitchInputsOnly && upperLimit!=0)
-		return upperLimit->Get();
-	else
-		return 0;
+void CANTalon::ConfigForwardLimit(double forwardLimitPosition) {
+	AddUpperLimit();
+	AddEncoder();
+	upperLimit->SetSoftLimit(encoder,forwardLimitPosition);
+}
+
+void CANTalon::ConfigReverseLimit(double reverseLimitPosition) {
+	AddLowerLimit();
+	AddEncoder();
+	lowerLimit->SetSoftLimit(encoder,reverseLimitPosition);
+}
+void CANTalon::ConfigSoftPositionLimits(double forward,double reverse) {
+	ConfigForwardLimit(forward);
+	ConfigReverseLimit(reverse);
+}
+
+void CANTalon::ConfigForwardSoftLimitEnable(bool bForwardSoftLimitEn) {
+	if(upperLimit)
+		upperLimit->SetSoftLimitEnabled(bForwardSoftLimitEn);
+}
+
+void CANTalon::ConfigReverseSoftLimitEnable(bool bReverseSoftLimitEn) {
+	if(lowerLimit)
+		lowerLimit->SetSoftLimitEnabled(bReverseSoftLimitEn);
+}
+
+bool CANTalon::GetForwardLimitOK() {
+	if(upperLimit)
+		return upperLimit->IsLimitOK();
+	return true;
+}
+
+bool CANTalon::GetReverseLimitOK() {
+	if(lowerLimit)
+		return lowerLimit->IsLimitOK();
+	return true;
+}
+
+void CANTalon::SetSensorDirection(bool reverseSensor) {
+	// TODO: need to reverse soft limit switches ?
 }
 
 int CANTalon::GetEncVel() {
+	// TODO: return raw encoder ticks ?
 	return 0;
 }
 
 void CANTalon::SetEncPosition(int int1) {
+	// TODO: set raw encoder ticks ?
 }
 
 int CANTalon::GetClosedLoopError() const {
+	// TODO: Use this to mimic PIDController GetError ?
 	return 0;
 }
 
 void CANTalon::SetAllowableClosedLoopErr(uint32_t allowableCloseLoopError) {
+	// TODO: Use this to mimic PIDController OnTarget ?
 }
 
+void CANTalon::ConfigNeutralMode(NeutralMode mode) {
+	// nothing to do in simulation
+}
+
+/**
+ * Special simulation only function
+ */
 void CANTalon::SetDebug(int b){
 	debug=b;
+}
+
+//=========================  private CANTalon::PIDdate Subclass ==================================
+CANTalon::PIDData::PIDData(){
+	P=I=D=F=0; changed=false;pid=0;
+}
+CANTalon::PIDData::~PIDData() {
+	if(pid)
+		delete pid;
+	pid=0;
+}
+
+void CANTalon::PIDData::SetPID(double P, double I, double D, double F, PIDSource *s,PIDOutput *d){
+	SetF(F);
+	SetPID(P,I,D,s,d);
+}
+void CANTalon::PIDData::SetPID(double P, double I, double D, PIDSource *s,PIDOutput *d){
+	SetP(P);
+	SetI(I);
+	SetD(D);
+	Set(s,d);
+}
+void CANTalon::PIDData::Set(PIDSource *s,PIDOutput *d){
+	if(changed && pid)
+		Clear();
+	if(!pid)
+		pid=new PIDController(P,I,D,F,s,d,SIMPIDRATE);
+	changed=false;
+}
+void CANTalon::PIDData::Clear(){
+	if(pid)
+		delete pid;
+	pid=0;
+}
+void CANTalon::PIDData::SetP(double d){
+	if(d!=P)
+		changed=true;
+	P=d;
+}
+void CANTalon::PIDData::SetI(double d){
+	if(d!=I)
+		changed=true;
+	I=d;
+}
+void CANTalon::PIDData::SetD(double d){
+	if(d!=D)
+		changed=true;
+	D=d;
+}
+void CANTalon::PIDData::SetF(double d){
+	if(d!=F)
+		changed=true;
+	F=d;
+}
+void CANTalon::PIDData::SetSetpoint(double value){
+	if(pid)
+		pid->SetSetpoint(value);
+}
+bool CANTalon::PIDData::IsEnabled(){
+	if(pid)
+		return pid->IsEnabled();
+	else
+		return false;
+}
+void CANTalon::PIDData::Enable(){
+	if(pid)
+		pid->Enable();
+}
+void CANTalon::PIDData::Disable(){
+	if(pid)
+		pid->Disable();
+}
+void CANTalon::PIDData::Reset(){
+	if(pid)
+		pid->Reset();
+}
+double CANTalon::PIDData::GetTargetError(){
+	if(pid)
+		return pid->GetError();
+	else
+		return 0;
+}
+double CANTalon::PIDData::GetSetpoint(){
+	if(pid)
+		return pid->GetSetpoint();
+	else
+		return 0;
+}
+bool CANTalon::PIDData::OnTarget(){
+	if(pid)
+		return pid->OnTarget();
+	else
+		return false;
+}
+double CANTalon::PIDData::GetP() { return P;}
+double CANTalon::PIDData::GetI() { return I;}
+double CANTalon::PIDData::GetD() { return D;}
+double CANTalon::PIDData::GetF() {
+	return F;
+}
+
+//=========================  CANTalon::Limit  ==================================
+
+CANTalon::Limit::Limit(int i, bool isFwrd) {
+	id=i;
+	enc=0;
+	soft_limit=0;
+	forward=isFwrd;
+	hard_limit_enabled=true;
+	soft_limit_enabled=false;
+	dio=new DigitalInput(id);
+
+}
+
+CANTalon::Limit::~Limit() {
+	if(dio)
+		delete dio;
+	dio=0;
+}
+
+void CANTalon::Limit::SetSoftLimit(Encoder* encoder, double value) {
+	enc=encoder;
+	soft_limit=value;
+	soft_limit_enabled=true;
+}
+
+bool CANTalon::Limit::AtHardlimit() {
+	if(!dio)
+		return false;
+	if(!hard_limit_enabled)
+		return false;
+	return dio->Get()>0?true:false;
+}
+
+//#define TEST
+bool CANTalon::Limit::AtSoftlimit() {
+	if(!enc)
+		return false;
+	if(!soft_limit_enabled)
+		return false;
+	if(forward && enc->GetDistance()>=soft_limit){
+#ifdef TEST
+		std::cout<<id<< ":At Forward Soft Limit:"<<enc->GetDistance()<<":"<<soft_limit<<std::endl;
+#endif
+		return true;
+	}
+	if(!forward && enc->GetDistance()<=soft_limit){
+#ifdef TEST
+		std::cout<<id<< ":At Reverse Soft Limit"<<enc->GetDistance()<<":"<<soft_limit<<std::endl;
+#endif
+		return true;
+	}
+	return false;
+}
+bool CANTalon::Limit::IsLimitOK() {
+	if(AtHardlimit() || AtSoftlimit())
+		return false;
+    return true;
+}
+
+void CANTalon::Limit::SetHardLimitEnabled(bool b) {
+	hard_limit_enabled=b;
+}
+
+void CANTalon::Limit::SetSoftLimitEnabled(bool b) {
+	soft_limit_enabled=b;
+
+}
+void CANTalon::Limit::Disable() {
+	SetHardLimitEnabled(false);
+	SetSoftLimitEnabled(false);
 }
 

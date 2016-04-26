@@ -10,7 +10,7 @@
 #define DEADBAND 0.25
 
 #ifdef SIMULATION
-#define WHEEL_TICKS SIM_ENCODER_TICKS // default encoder ticks given in simulation
+#define WHEEL_TICKS 360 // default encoder ticks given in simulation
 #else // replace these values for whatever is appropriate for real drive-train
 #define WHEEL_TICKS 900
 #endif

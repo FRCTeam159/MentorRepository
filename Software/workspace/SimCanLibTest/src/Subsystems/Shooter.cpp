@@ -41,9 +41,7 @@ Shooter::Shooter() : Subsystem("Shooter"),
 	max_angle=AMAX; // max elevation (degrees)
 	min_angle=AMIN;
 
-	angleMotor.ConfigLimitMode(CANTalon::kLimitMode_SwitchInputsOnly); // note: soft limits not supported in simulation
-	angleMotor.ConfigRevLimitSwitchNormallyOpen(true); // warning: currently required in simulation mode
-
+	angleMotor.ConfigLimitMode(CANTalon::kLimitMode_SwitchInputsOnly);
 
 	leftFWMotor.SetFeedbackDevice(CANTalon::QuadEncoder);
 	rightFWMotor.SetFeedbackDevice(CANTalon::QuadEncoder);

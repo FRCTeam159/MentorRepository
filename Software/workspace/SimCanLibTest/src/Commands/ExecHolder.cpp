@@ -37,7 +37,7 @@ enum {
 ExecHolder::ExecHolder() : Command("ExecHolder")  {
 	Requires(Robot::holder.get());
 	std::cout << "new ExecHolder()"<< std::endl;
-	state=WAIT_FOR_BALL_TO_ENTER;
+	state=FIND_ZERO;
 	elapsed_time=0;
 }
 
@@ -73,6 +73,14 @@ bool ExecHolder::IsFinished() {
 void ExecHolder::End() {
 	DEBUG_PRINT("End");
 }
+
+void ExecHolder::FindZero() {
+	if(Robot::holder->FindZero()){
+		DEBUG_PRINT("Zero Limit switch found");
+		state=WAIT_FOR_BALL_TO_ENTER;
+	}
+}
+
 void ExecHolder::Interrupted() {
 	DEBUG_PRINT("Interrupted");
 }
@@ -86,6 +94,9 @@ void ExecHolder::Interrupted() {
 void ExecHolder::Execute() {
 	Robot::holder->Execute();
 	switch(state){
+	case FIND_ZERO:
+		FindZero();
+		break;
 	case WAIT_FOR_BALL_TO_ENTER:
 		WaitForBallToEnter();
 		break;
@@ -120,7 +131,7 @@ void ExecHolder::Execute() {
 // - Then pinch the ball (goto forward limit)
 //==========================================================================================
 void ExecHolder::WaitForBallToEnter() {
-	Robot::holder->CloseGate();
+	//Robot::holder->CloseGate();
 	if(Robot::holder->IsBallPresent()){
 		if(!Timing()){
 			SetDeltaTimeout(BALLDETECTIONDELAY);
@@ -139,9 +150,14 @@ void ExecHolder::WaitForBallToEnter() {
 // - Pinch the ball
 //==========================================================================================
 void ExecHolder::GoToForwardLimit() {
-	Robot::holder->OpenGate();
-	if(Robot::holder->IsGateOpen()){
-		state=WAIT_FOR_PUSH_REQUEST;
+	if(!Robot::holder->IsBallPresent()){
+		state=GO_TO_REVERSE_LIMIT;
+	}
+	else{
+		Robot::holder->OpenGate();
+		if(Robot::holder->IsGateOpen()){
+			state=WAIT_FOR_PUSH_REQUEST;
+		}
 	}
 }
 

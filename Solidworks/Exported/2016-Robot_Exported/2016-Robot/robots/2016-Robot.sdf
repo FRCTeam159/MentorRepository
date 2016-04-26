@@ -1639,14 +1639,19 @@
       <type>internal</type>
       <units>radians</units>
       <min>0.9</min>
-      <max>1.5</max>
+      <max>1.52</max>
+    </plugin>
+    <plugin name="Shooter-Gate_encoder" filename="libgz_encoder.so">
+      <joint>Shooter-Gate</joint>
+      <topic>/gazebo/frc/simulator/dio/9/10</topic>
+      <units>degrees</units>
     </plugin>
     <plugin name="Shooter-Gate_intlimit" filename="libgz_limit_switch.so">
       <joint>Shooter-Gate</joint>
       <topic>/gazebo/frc/simulator/dio/9</topic>
       <type>internal</type>
       <units>radians</units>
-      <min>0</min>
+      <min>-0.1</min>
       <max>0.3</max>
     </plugin>
     <plugin name="TopFrame-LoaderArms_motor" filename="libgz_dc_motor.so">

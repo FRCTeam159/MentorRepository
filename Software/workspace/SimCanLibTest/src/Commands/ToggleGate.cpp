@@ -51,7 +51,12 @@ bool ToggleGate::IsFinished() {
 }
 // Called once after isFinished returns true
 void ToggleGate::End() {
-	std::cout << "ToggleGate on target"<< std::endl;
-	//Robot::holder->CloseGate();
+	std::cout << "ToggleGate on target:";
+	if(Robot::holder->IsGateOpen())
+		std::cout << "Open";
+	if(Robot::holder->IsGateClosed())
+		std::cout << "Closed";
+	std::cout << std::endl;
+	Robot::holder->Reset();
 }
 

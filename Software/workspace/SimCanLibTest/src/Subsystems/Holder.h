@@ -14,10 +14,12 @@ class Holder: public Subsystem {
 	CANTalon gateMotor;
 	CANTalon pushMotor;
 	AnalogInput ballSensor;
+	bool found_zero=false;
 
 	bool initialized=false;
 	double push_hold_speed;
 	bool pushRequested=false;
+	double gateTicksPerRevolution;
 
 	void Init();
 	void InitDefaultCommand();
@@ -43,6 +45,7 @@ public:
 	void Reset();
 	void Log();
 	void Execute();
+	bool FindZero();
 	void SetPushHoldSpeed(double d);
 	bool PushRequested() { return pushRequested;}
 };
