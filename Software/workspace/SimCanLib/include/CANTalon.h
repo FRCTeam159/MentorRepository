@@ -9,7 +9,6 @@
 #pragma once
 
 #include "WPILib.h"
-#include "CANSpeedController.h"
 
 #define PI 3.141516
 #define RPD(x) (x)*2*PI/360

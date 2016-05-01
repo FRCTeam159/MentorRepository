@@ -11,7 +11,6 @@
  *    -- PIDControllers are instantiated on first call to SetPID (with pid_channel also set)
  */
 #include "WPILib.h"
-#include <CANTalon.h>
 
 #define ID1 ((id-1)*2+1)
 #define ID2 ((id-1)*2+2)

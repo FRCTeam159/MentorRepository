@@ -226,10 +226,10 @@ double DriveTrain::GetRightDistance(){
 	return right_motor.GetPosition();
 }
 double DriveTrain::GetLeftVoltage(){
-	return left_motor.GetVoltage();
+	return left_motor.Get();
 }
 double DriveTrain::GetRightVoltage(){
-	return right_motor.GetVoltage();
+	return right_motor.Get();
 }
 
 void DriveTrain::SetReverseDriving(bool b) {

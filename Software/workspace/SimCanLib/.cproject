@@ -22,7 +22,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="so" artifactName="SimCan" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.so.debug.2032336931" name="Debug" parent="cdt.managedbuild.config.gnu.so.debug" postannouncebuildStep="&quot; cp ../include/*.h  ${HOME}/wpilib/simulation/include&quot;" postbuildStep="cp libSimCan.so ${HOME}/wpilib/simulation/lib;cp ../include/*.h  ${HOME}/wpilib/simulation/include">
+				<configuration artifactExtension="so" artifactName="SimCan" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.so.debug.2032336931" name="Debug" parent="cdt.managedbuild.config.gnu.so.debug" postannouncebuildStep="&quot; cp libSimCan.so ${HOME}/wpilib/simulation/lib;cp ../include/*.h  ${HOME}/wpilib/simulation/include&quot;" postbuildStep="">
 					<folderInfo id="cdt.managedbuild.config.gnu.so.debug.2032336931." name="/" resourcePath="">
 						<toolChain id="cdt.managedbuild.toolchain.gnu.so.debug.1353227521" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.so.debug">
 							<targetPlatform id="cdt.managedbuild.target.gnu.platform.so.debug.1088585571" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.so.debug"/>
@@ -104,7 +104,7 @@
 									<listOptionValue builtIn="false" value="/usr/include/ignition/math2"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.dialect.std.620929014" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" value="gnu.cpp.compiler.dialect.c++11" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.other.pic.378760766" superClass="gnu.cpp.compiler.option.other.pic" value="true" valueType="boolean"/>
+								<option id="gnu.cpp.compiler.option.other.pic.378760766" name="Position Independent Code (-fPIC)" superClass="gnu.cpp.compiler.option.other.pic" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.931808363" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.so.release.1802261886" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.so.release">
