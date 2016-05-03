@@ -9,7 +9,6 @@
 #define SRC_SUBSYSTEMS_SHOOTER_H_
 
 #include "WPILib.h"
-#include "CANTalon.h"
 
 class Shooter: public Subsystem , public PIDSource, public PIDOutput {
 	CANTalon angleMotor;

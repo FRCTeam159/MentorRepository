@@ -15,9 +15,9 @@
 #define ID1 ((id-1)*2+1)
 #define ID2 ((id-1)*2+2)
 
-CANTalon::CANTalon(int i) : PWM(i),m_safetyHelper(new MotorSafetyHelper(this))
+CANTalon::CANTalon(int i) : id(i), m_safetyHelper(new MotorSafetyHelper(this))
 {
-	id=i;
+	char buf[64];
 	for(int i=0;i<MAXPIDCHNLS;i++){
 		pid_data[i].pid=0;
 	}
@@ -30,7 +30,9 @@ CANTalon::CANTalon(int i) : PWM(i),m_safetyHelper(new MotorSafetyHelper(this))
 	debug=0;
 	control_mode=kPercentVbus;
 	inverted=false;
-	LiveWindow::GetInstance()->AddActuator("CANTalon", PWM::GetChannel(), this);
+	LiveWindow::GetInstance()->AddActuator("CANTalon", GetChannel(), this);
+	sprintf(buf, "pwm/%d", i);
+	impl = new SimContinuousOutput(buf);
 }
 
 CANTalon::~CANTalon(){
@@ -41,24 +43,36 @@ CANTalon::~CANTalon(){
 		delete lowerLimit;
 	if(upperLimit)
 		delete upperLimit;
+	if (m_table != nullptr)
+		m_table->RemoveTableListener(this);
+
+}
+
+float CANTalon::Clamp(float value){
+	if (value > 1.0)
+		return 1.0;
+	if (value < -1.0)
+		return -1.0;
+	return value;
 }
 
 //======== Talon functions ===================
 void CANTalon::Set(float speed, uint8_t syncGroup){
 	SetSpeed(speed);
 }
-float CANTalon::Get() const{
-	return PWM::GetSpeed();
+float CANTalon::Get(){
+	return Clamp(impl->Get());
+	//return GetSpeed();
 }
 void CANTalon::Disable(){
-	PWM::SetRaw(kPwmDisabled);
+	SetRaw(0);
 	pid_data[pid_channel].Disable();
 }
 
 void CANTalon::PIDWrite(float output){
 	if(IsEnabled() && (debug & 1))
 		std::cout<<id<<" PIDWrite: target:"<<GetSetpoint()<<" error:"<<GetTargetError()<<" correction:"<<output<<std::endl;
-	PWM::SetSpeed(output);
+	SetSpeed(output);
 	m_safetyHelper->Feed();
 }
 
@@ -72,8 +86,9 @@ float CANTalon::GetExpiration() const{
 bool CANTalon::IsAlive() const{
 	return m_safetyHelper->IsAlive();
 }
+
 void CANTalon::StopMotor(){
-	PWM::SetRaw(kPwmDisabled);
+	SetRaw(0);
 }
 void CANTalon::SetSafetyEnabled(bool enabled){
 	m_safetyHelper->SetSafetyEnabled(enabled);
@@ -82,11 +97,69 @@ bool CANTalon::IsSafetyEnabled() const{
 	return m_safetyHelper->IsSafetyEnabled();
 }
 void CANTalon::GetDescription(std::ostringstream& desc) const{
-	desc << "CAN " << PWM::GetChannel();
+	desc << "CAN " << GetChannel();
 }
+
+//========= PWM functions ===================
+
+//void CANTalon::SetPosition(float pos){
+//	impl->Set(Clamp(pos));
+//}
+
+//float CANTalon::GetPosition() {
+//	return Clamp(impl->Get());
+//}
+
 void CANTalon::SetSpeed(float speed){
-	PWM::SetSpeed(speed);
+	impl->Set(Clamp(speed));
 	m_safetyHelper->Feed();
+}
+
+//float CANTalon::GetSpeed() {
+//	return Clamp(impl->Get());
+//}
+
+void CANTalon::SetRaw(unsigned short value)
+{
+	//wpi_assert(value == 0);
+	impl->Set(value);
+}
+
+void CANTalon::ValueChanged(ITable* source, llvm::StringRef key,
+                       std::shared_ptr<nt::Value> value, bool isNew) {
+  if (!value->IsDouble())
+	  return;
+  SetSpeed(value->GetDouble());
+}
+
+void CANTalon::UpdateTable() {
+	if (m_table != nullptr)
+		m_table->PutNumber("Value", GetSpeed());
+}
+
+void CANTalon::StartLiveWindowMode() {
+	SetSpeed(0);
+	if (m_table != nullptr)
+		m_table->AddTableListener("Value", this, true);
+}
+
+void CANTalon::StopLiveWindowMode() {
+	SetSpeed(0);
+	if (m_table != nullptr)
+		m_table->RemoveTableListener(this);
+}
+
+std::string CANTalon::GetSmartDashboardType() const {
+	return "Speed Controller";
+}
+
+void CANTalon::InitTable(std::shared_ptr<ITable> subTable) {
+	m_table = subTable;
+	UpdateTable();
+}
+
+std::shared_ptr<ITable> CANTalon::GetTable() const {
+	return m_table;
 }
 
 //===============================================

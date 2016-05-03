@@ -8,7 +8,14 @@
  */
 #pragma once
 
-#include "WPILib.h"
+#include "SafePWM.h"
+#include "SpeedController.h"
+#include "PIDOutput.h"
+#include "PIDSource.h"
+#include "PIDInterface.h"
+#include "MotorSafetyHelper.h"
+#include "LiveWindow/LiveWindowSendable.h"
+#include "tables/ITable.h"
 
 #define PI 3.141516
 #define RPD(x) (x)*2*PI/360
@@ -17,9 +24,10 @@
 #define SIM_ENCODER_TICKS 360
 #define MAXPIDCHNLS 2
 
-class CANTalon: public PWM,
+class CANTalon: public ITableListener,
+				public LiveWindowSendable,
 				public MotorSafety,
-				public SpeedController,
+				public PIDOutput,
 				public PIDSource
 {
 public:
@@ -126,7 +134,26 @@ protected:
 	virtual void AddLowerLimit();
 	virtual void AddUpperLimit();
 
+	float Clamp(float value);
+
 	std::unique_ptr<MotorSafetyHelper> m_safetyHelper;
+
+	// PWM functions
+
+//	virtual void SetPosition(float pos);
+//	virtual float GetPosition() const;
+
+	void ValueChanged(ITable* source, llvm::StringRef key,
+                    std::shared_ptr<nt::Value> value, bool isNew) override;
+	void UpdateTable() override;
+	void StartLiveWindowMode() override;
+	void StopLiveWindowMode() override;
+	std::string GetSmartDashboardType() const override;
+	void InitTable(std::shared_ptr<ITable> subTable) override;
+	std::shared_ptr<ITable> GetTable() const override;
+
+	std::shared_ptr<ITable> m_table;
+	SimContinuousOutput* impl;
 
 public:
 	CANTalon(int id);
@@ -138,7 +165,7 @@ public:
 	// Talon interface
 
 	virtual void Set(float value, uint8_t syncGroup = 0);
-	virtual float Get() const;
+	virtual float Get();
 	virtual void Disable();
 	virtual void PIDWrite(float output) override;
 
@@ -152,7 +179,12 @@ public:
 	virtual void SetSafetyEnabled(bool enabled);
 	virtual void GetDescription(std::ostringstream& desc) const;
 
-	virtual void SetSpeed(float speed);
+	// PWM functions
+
+	virtual void SetRaw(unsigned short value);
+	uint32_t GetChannel() const {
+		return id;
+	}
 
 	// CANTalon functions
 
@@ -194,9 +226,10 @@ public:
 
 	virtual double PIDGet();
 
-	virtual double GetSpeed();
 	virtual double GetVoltage();
 
+	virtual void SetSpeed(float value);
+	virtual double GetSpeed();
 	virtual void SetPosition(double value);
 	virtual double GetPosition();
 

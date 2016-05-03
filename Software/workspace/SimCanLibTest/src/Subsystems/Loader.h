@@ -9,7 +9,6 @@
 #define SRC_SUBSYSTEMS_LOADER_H_
 
 #include "WPILib.h"
-#include "CANTalon.h"
 
 enum { ROLLERS_OFF,ROLLERS_FORWARD,ROLLERS_REVERSE};
 

@@ -2,7 +2,6 @@
 #define DriveTrain_H
 
 #include "WPILib.h"
-#include "CANTalon.h"
 
 /**
  * The DriveTrain subsystem incorporates the sensors and actuators attached to
