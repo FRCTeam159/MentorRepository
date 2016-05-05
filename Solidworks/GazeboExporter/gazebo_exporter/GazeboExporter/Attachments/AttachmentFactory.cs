@@ -30,6 +30,7 @@ namespace GazeboExporter.Robot
         private const int ExtLimitSwitchID = 7;
         private const int IntLimitSwitchID = 8;
         private const int PistonID = 9;
+        private const int CanMotorID = 10;
 
         /// <summary>
         /// Does the initial setup of the factory
@@ -38,6 +39,7 @@ namespace GazeboExporter.Robot
         public static void InitializeFactory()
         {      
             allAttachmentDescriptors.AddLast(new AttachmentDescriptor("Simple Motor", CommandManager.MotorPic, SimpleMotorID));
+            allAttachmentDescriptors.AddLast(new AttachmentDescriptor("CAN Motor", CommandManager.MotorPic, CanMotorID));
             allAttachmentDescriptors.AddLast(new AttachmentDescriptor("Quad Encoder", CommandManager.EncoderPic, QuadEncoderID));
             allAttachmentDescriptors.AddLast(new AttachmentDescriptor("Potentiometer", CommandManager.PotPic, PotentiometerID));
             allAttachmentDescriptors.AddLast(new AttachmentDescriptor("Gyro", CommandManager.GyroPic, GyroID));
@@ -85,6 +87,8 @@ namespace GazeboExporter.Robot
             {
                 case SimpleMotorID:
                     return new SimpleMotor(swData, path, parentLink );
+                case CanMotorID:
+                    return new CanMotor(swData, path, parentLink);
                 case QuadEncoderID:
                     return new QuadEncoder(swData, path, parentLink);
                 case PotentiometerID:

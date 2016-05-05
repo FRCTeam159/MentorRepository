@@ -156,6 +156,13 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attachments\CanMotor.cs" />
+    <Compile Include="Attachments\CanMotorProperties.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Attachments\CanMotorProperties.Designer.cs">
+      <DependentUpon>CanMotorProperties.cs</DependentUpon>
+    </Compile>
     <Compile Include="RobotInfo.cs" />
     <Compile Include="Robot\AxialJoint.cs" />
     <Compile Include="Robot\BallJoint.cs" />
@@ -243,6 +250,9 @@
     <Compile Include="UI\LinkSelectorPanel.Designer.cs">
       <DependentUpon>LinkSelectorPanel.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Attachments\CanMotorProperties.resx">
+      <DependentUpon>CanMotorProperties.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\LinkSelectorPanel.resx">
       <DependentUpon>LinkSelectorPanel.cs</DependentUpon>
     </EmbeddedResource>
