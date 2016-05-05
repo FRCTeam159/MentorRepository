@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GazeboExporter.Robot.IJointAxis">
+    <Position X="13.25" Y="2" Width="1.5" />
+    <Members>
+      <Method Name="CalcAxisVector" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAARBIIA6AAhgxQSUgKHRGg6CIUoACnAAgQACAAiQCA=</HashCode>
+      <FileName>Robot\IJointAxis.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="CalcOriginHandler" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GazeboExporter.Robot.Joint">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAIAIQBGAYAEAEAHQAQAQAUgAAAACQAACEAABAI=</HashCode>
+      <FileName>Robot\Joint.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="jointSpecifics" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GazeboExporter.Robot.LinearJointAxis">
+    <Position X="15.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAQAABAQAAAAMAAAACIAIIAAAAAAAAAEAABAA=</HashCode>
+      <FileName>Robot\LinearJointAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GazeboExporter.Robot.PrismaticJoint">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABEAAAAAAABAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Robot\PrismaticJoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GazeboExporter.Robot.SingleAxisJoint">
+    <Position X="6.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIEAAACAAAAQQQBACAAAAkAIQAAAggAAAAAAAAAAA=</HashCode>
+      <FileName>Robot\SingleAxisJoint.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="Axis1" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="GazeboExporter.Robot.JointSpecifics">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <Members>
+      <Method Name="OnDelete" Hidden="true" />
+      <Method Name="OnDirectionFlipped" Hidden="true" />
+      <Method Name="OnDoubleValueChanged" Hidden="true" />
+      <Method Name="OnEndDrag" Hidden="true" />
+      <Method Name="OnEndNoDrag" Hidden="true" />
+      <Method Name="OnHandleLmbSelected" Hidden="true" />
+      <Method Name="OnHandleRmbSelected" Hidden="true" />
+      <Method Name="OnHandleSelected" Hidden="true" />
+      <Method Name="OnItemSetFocus" Hidden="true" />
+      <Method Name="OnStringValueChanged" Hidden="true" />
+      <Method Name="OnUpdateDrag" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gABQECADOYIAARQgLoCHUAwmCIQgAAoFgyMLgEAAQgA=</HashCode>
+      <FileName>Robot\JointSpecifics.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GazeboExporter.Robot.AxialJoint">
+    <Position X="5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAECAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Robot\AxialJoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GazeboExporter.Robot.RotationalJointAxis">
+    <Position X="15.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQABAAAAYEABIUAAAAKAAAADKEdIABCAEAEEAAAAVAA=</HashCode>
+      <FileName>Robot\RotationalJointAxis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GazeboExporter.Robot.ScrewJointAxis">
+    <Position X="17.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAQAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Robot\ScrewJointAxis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GazeboExporter.Robot.RevoluteJoint">
+    <Position X="8.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABEAAAAAAABAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Robot\RevoluteJoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GazeboExporter.Robot.ScrewJoint">
+    <Position X="8.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABEAAAAAAABAAAAEAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Robot\ScrewJoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GazeboExporter.Robot.DoubleAxisJoint">
+    <Position X="6.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAACAAAAQQABCCAAAAkgIQAAAggAAAAAAAAAAA=</HashCode>
+      <FileName>Robot\DoubleAxisJoint.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="Axes" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="GazeboExporter.Robot.Revolute2Joint">
+    <Position X="8.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABEAAAAAACBAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Robot\Revolute2Joint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GazeboExporter.Robot.UniversalJoint">
+    <Position X="10.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABEAAAAAACBAAAAAAIAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Robot\UniversalJoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GazeboExporter.Robot.BallJoint">
+    <Position X="5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAABAAAQAABADAAAAgAAQAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Robot\BallJoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GazeboExporter.Robot.GearboxJoint">
+    <Position X="10.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAABAAAAAAAABAAAgEQAAAACAAAAAAAEAAAAA=</HashCode>
+      <FileName>Robot\GearboxJoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Delegate Name="GazeboExporter.Robot.ReCalcOrigin" Collapsed="true">
+    <Position X="12.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Robot\IJointAxis.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

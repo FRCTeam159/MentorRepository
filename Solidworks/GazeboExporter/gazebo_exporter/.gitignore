@@ -1,0 +1,8 @@
+GazeboExporter/bin/
+GazeboExporter/obj/
+Installer/Installer/**
+Setup1/Debug/
+Setup1/Release/
+GazeboExporter.v12.suo
+*.suo
+UpgradeLog*
