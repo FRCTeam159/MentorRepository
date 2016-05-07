@@ -35,7 +35,6 @@
 class CANTalon: public ITableListener,
         public LiveWindowSendable,
         public MotorSafety,
-        public PIDInterface,
         public PIDOutput,
         public PIDSource {
 public:

@@ -1,0 +1,17 @@
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+sourceSets {
+    shared
+}
+
+dependencies {
+    sharedCompile 'edu.wpi.first.wpilib.networktables.java:NetworkTables:3.0.0-SNAPSHOT:arm'
+    sharedRuntime 'edu.wpi.first.wpilib.networktables.java:NetworkTables:3.0.0-SNAPSHOT:arm'
+}
+
+apply from: 'athena.gradle'
+
+if (project.hasProperty('makeSim')){
+  apply from: 'simulation.gradle'
+}
