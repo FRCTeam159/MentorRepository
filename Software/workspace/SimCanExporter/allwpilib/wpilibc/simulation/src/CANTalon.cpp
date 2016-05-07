@@ -31,7 +31,7 @@ CANTalon::CANTalon(int i) :
     inverted = false;
     LiveWindow::GetInstance()->AddActuator("CANTalon", GetChannel(), this);
     // note: when can devices are supported in SW exporter can change this to "can/%d"
-    sprintf(buf, "can/%d", i);
+    sprintf(buf, "pwm/%d", i);
     impl = new SimContinuousOutput(buf);
 }
 
