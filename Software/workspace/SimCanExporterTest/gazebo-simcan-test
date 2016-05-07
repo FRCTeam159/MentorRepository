@@ -2,5 +2,5 @@
 
 export SWMODEL=$SWEXPORTS/CanExportTest_Exported
 export GAZEBO_MODEL_PATH=$SWMODEL:$WPILIB/simulation/models:/usr/share/gazebo-6.5/models
-gazebo --verbose $SWMODEL/CanExportTest.world
+gazebo --verbose $SWMODEL/Test.world
 
