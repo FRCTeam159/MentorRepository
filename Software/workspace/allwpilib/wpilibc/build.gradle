@@ -8,7 +8,7 @@ evaluationDependsOn(':hal')
 
 ext.shared = 'shared'
 ext.athena = 'Athena'
-ext.simulation = 'simluation'
+ext.simulation = 'simulation'
 
 // Attempts to execute the doxygen command. If there is no exception, doxygen exists, so return true. If there's
 // an IOException, it doesn't exist, so return false

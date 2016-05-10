@@ -4,6 +4,7 @@ project(frc_gazebo_plugins)
 set (PLUGINS
 	clock
 	dc_motor
+    can_motor
 	encoder
 	gyro
 	limit_switch

@@ -1532,7 +1532,7 @@
     </plugin>
     <plugin name="LeftFrame-L1Wheel_motor" filename="libdc_motor.so">
       <joint>LeftFrame-L1Wheel</joint>
-      <topic>/gazebo/frc/simulator/pwm/1</topic>
+      <topic>/gazebo/frc/simulator/can/1</topic>
       <multiplier>35</multiplier>
     </plugin>
     <plugin name="LeftFrame-L1Wheel_encoder" filename="libencoder.so">
@@ -1542,22 +1542,22 @@
     </plugin>
     <plugin name="LeftFrame-L2Wheel_motor" filename="libdc_motor.so">
       <joint>LeftFrame-L2Wheel</joint>
-      <topic>/gazebo/frc/simulator/pwm/1</topic>
+      <topic>/gazebo/frc/simulator/can/1</topic>
       <multiplier>35</multiplier>
     </plugin>
     <plugin name="LeftFrame-L3Wheel_motor" filename="libdc_motor.so">
       <joint>LeftFrame-L3Wheel</joint>
-      <topic>/gazebo/frc/simulator/pwm/1</topic>
+      <topic>/gazebo/frc/simulator/can/1</topic>
       <multiplier>35</multiplier>
     </plugin>
     <plugin name="LeftFrame-L4Wheel_motor" filename="libdc_motor.so">
       <joint>LeftFrame-L4Wheel</joint>
-      <topic>/gazebo/frc/simulator/pwm/1</topic>
+      <topic>/gazebo/frc/simulator/can/1</topic>
       <multiplier>35</multiplier>
     </plugin>
     <plugin name="TopFrame-R1Wheel_motor" filename="libdc_motor.so">
       <joint>TopFrame-R1Wheel</joint>
-      <topic>/gazebo/frc/simulator/pwm/2</topic>
+      <topic>/gazebo/frc/simulator/can/2</topic>
       <multiplier>35</multiplier>
     </plugin>
     <plugin name="TopFrame-R1Wheel_encoder" filename="libencoder.so">
@@ -1567,17 +1567,17 @@
     </plugin>
     <plugin name="TopFrame-R2Wheel_motor" filename="libdc_motor.so">
       <joint>TopFrame-R2Wheel</joint>
-      <topic>/gazebo/frc/simulator/pwm/2</topic>
+      <topic>/gazebo/frc/simulator/can/2</topic>
       <multiplier>35</multiplier>
     </plugin>
     <plugin name="TopFrame-R3Wheel_motor" filename="libdc_motor.so">
       <joint>TopFrame-R3Wheel</joint>
-      <topic>/gazebo/frc/simulator/pwm/2</topic>
+      <topic>/gazebo/frc/simulator/can/2</topic>
       <multiplier>35</multiplier>
     </plugin>
     <plugin name="TopFrame-R4Wheel_motor" filename="libdc_motor.so">
       <joint>TopFrame-R4Wheel</joint>
-      <topic>/gazebo/frc/simulator/pwm/2</topic>
+      <topic>/gazebo/frc/simulator/can/2</topic>
       <multiplier>35</multiplier>
     </plugin>
     <plugin name="Shooter_rangefinder" filename="librangefinder.so">
@@ -1605,12 +1605,12 @@
     </plugin>
     <plugin name="Shooter-PushWheel_motor" filename="libdc_motor.so">
       <joint>Shooter-PushWheel</joint>
-      <topic>/gazebo/frc/simulator/pwm/7</topic>
+      <topic>/gazebo/frc/simulator/can/7</topic>
       <multiplier>50</multiplier>
     </plugin>
     <plugin name="Shooter-LeftFW_motor" filename="libdc_motor.so">
       <joint>Shooter-LeftFW</joint>
-      <topic>/gazebo/frc/simulator/pwm/6</topic>
+      <topic>/gazebo/frc/simulator/can/6</topic>
       <multiplier>500</multiplier>
     </plugin>
     <plugin name="Shooter-LeftFW_encoder" filename="libencoder.so">
@@ -1620,7 +1620,7 @@
     </plugin>
     <plugin name="Shooter-RightFW_motor" filename="libdc_motor.so">
       <joint>Shooter-RightFW</joint>
-      <topic>/gazebo/frc/simulator/pwm/8</topic>
+      <topic>/gazebo/frc/simulator/can/8</topic>
       <multiplier>500</multiplier>
     </plugin>
     <plugin name="Shooter-RightFW_encoder" filename="libencoder.so">
@@ -1630,7 +1630,7 @@
     </plugin>
     <plugin name="Shooter-Gate_motor" filename="libdc_motor.so">
       <joint>Shooter-Gate</joint>
-      <topic>/gazebo/frc/simulator/pwm/5</topic>
+      <topic>/gazebo/frc/simulator/can/5</topic>
       <multiplier>30</multiplier>
     </plugin>
     <plugin name="Shooter-Gate_intlimit" filename="liblimit_switch.so">
@@ -1651,7 +1651,7 @@
     </plugin>
     <plugin name="TopFrame-LoaderArms_motor" filename="libdc_motor.so">
       <joint>TopFrame-LoaderArms</joint>
-      <topic>/gazebo/frc/simulator/pwm/11</topic>
+      <topic>/gazebo/frc/simulator/can/11</topic>
       <multiplier>40</multiplier>
     </plugin>
     <plugin name="TopFrame-LoaderArms_intlimit" filename="liblimit_switch.so">
@@ -1670,27 +1670,27 @@
     </plugin>
     <plugin name="LoaderArms-Roller1_motor" filename="libdc_motor.so">
       <joint>LoaderArms-Roller1</joint>
-      <topic>/gazebo/frc/simulator/pwm/10</topic>
+      <topic>/gazebo/frc/simulator/can/10</topic>
       <multiplier>20</multiplier>
     </plugin>
     <plugin name="LoaderArms-Roller2_motor" filename="libdc_motor.so">
       <joint>LoaderArms-Roller2</joint>
-      <topic>/gazebo/frc/simulator/pwm/10</topic>
+      <topic>/gazebo/frc/simulator/can/10</topic>
       <multiplier>20</multiplier>
     </plugin>
     <plugin name="LoaderArms-Roller3_motor" filename="libdc_motor.so">
       <joint>LoaderArms-Roller3</joint>
-      <topic>/gazebo/frc/simulator/pwm/10</topic>
+      <topic>/gazebo/frc/simulator/can/10</topic>
       <multiplier>20</multiplier>
     </plugin>
     <plugin name="LoaderArms-Roller4_motor" filename="libdc_motor.so">
       <joint>LoaderArms-Roller4</joint>
-      <topic>/gazebo/frc/simulator/pwm/10</topic>
+      <topic>/gazebo/frc/simulator/can/10</topic>
       <multiplier>20</multiplier>
     </plugin>
     <plugin name="LoaderArms-Roller5_motor" filename="libdc_motor.so">
       <joint>LoaderArms-Roller5</joint>
-      <topic>/gazebo/frc/simulator/pwm/10</topic>
+      <topic>/gazebo/frc/simulator/can/10</topic>
       <multiplier>20</multiplier>
     </plugin>
   </model>
