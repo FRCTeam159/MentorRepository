@@ -142,6 +142,8 @@ void ExecHolder::WaitForBallToEnter() {
 			state=GO_TO_FORWARD_LIMIT;
 		}
 	}
+	else
+		Robot::holder->CloseGate();
 }
 
 //==========================================================================================

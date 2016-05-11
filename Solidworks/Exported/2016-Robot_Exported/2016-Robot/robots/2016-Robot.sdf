@@ -1649,6 +1649,11 @@
       <min>0</min>
       <max>0.3</max>
     </plugin>
+    <plugin name="Shooter-Gate_encoder" filename="libencoder.so">
+      <joint>Shooter-Gate</joint>
+      <topic>/gazebo/frc/simulator/dio/9/10</topic>
+      <units>degrees</units>
+    </plugin>
     <plugin name="TopFrame-LoaderArms_motor" filename="libdc_motor.so">
       <joint>TopFrame-LoaderArms</joint>
       <topic>/gazebo/frc/simulator/pwm/11</topic>
