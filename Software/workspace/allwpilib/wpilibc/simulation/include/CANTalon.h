@@ -20,10 +20,11 @@
 #include "SpeedController.h"
 #include "PIDOutput.h"
 #include "PIDSource.h"
-#include "PIDInterface.h"
+#include "PIDController.h"
 #include "MotorSafetyHelper.h"
 #include "LiveWindow/LiveWindowSendable.h"
 #include "tables/ITable.h"
+#include "Encoder.h"
 
 #define PI 3.141516
 #define RPD(x) (x)*2*PI/360
