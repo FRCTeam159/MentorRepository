@@ -1,22 +1,14 @@
 Patches for 2016 gazebo simulation
-
-1) allwpilib-simulation-patches.tar
+1) wpilib.simulation.tar
  - Contains fixes for PID Controller bugs in 2016 allwpilib simulation code
- - Modified source files: 
-   wpilibc/simulation/src/Notifier.cpp
-   wpilibc/simulation/src/PIDController.cpp
- - patch instruction (note: only needed if building)
-   > cp allwpilib-simulation-patches.tar 
-   > cd ~/allwpilib
-   > tar -xf allwpilib-simulation-patches.tar
-
-2) wpilib-simulation-patches.tar
- - Contains rebuilt library that has PID controller bug fixes described above
-   (simulation/lib/libwpilibcSim.so)
- - plugins directory includes soft links to renamed .so files 
-   o in latest 2016 wpilib bundle plugin names were changed from libgz_dc_motor.so to libdc_motor.so etc.
+ - Contains limited CANTalon class support in simulation build
+ - For backwards compatability plugins directory includes soft links to renamed .so files 
+   * in latest 2016 wpilib bundle plugin names were changed from libgz_dc_motor.so to libdc_motor.so etc.
      but Solidworks sdf exporter creates entries in sdf file using old names 
+   * soft links not necessary if sdf file was created using modified gazebo_exporter
  - Patch install instructions
-   > cp wpilib-simulation-patches.tar 
-   > cd ~/wpilib
-   > tar -xf wpilib-simulation-patches.tar 
+   > tar -xf  wpilib.simulation.tar -C ~/wpilib
+2) gazebo_exporter dll
+ - On Windows, copy the dll file to C:\ProgramFiles\GazeboExporter
+ - TODO: add the dll file to the repo
+

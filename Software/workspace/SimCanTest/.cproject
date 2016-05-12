@@ -86,9 +86,8 @@
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1456420515" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
 								<option id="gnu.cpp.compiler.option.include.paths.1508190910" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}/src&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/SimCanExporter/allwpilib/wpilibc/simulation/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/wpilibc/simulation/include}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${WPILIB}/simulation/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/build/install/simulation/include}&quot;"/>
 									<listOptionValue builtIn="false" value="/usr/include"/>
 									<listOptionValue builtIn="false" value="/usr/include/gazebo-6.5"/>
 									<listOptionValue builtIn="false" value="/usr/include/ignition/math2"/>
