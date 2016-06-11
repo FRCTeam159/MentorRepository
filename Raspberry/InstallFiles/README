@@ -1,0 +1,7 @@
+packages for installing GRIP on Raspberry Pi
+1) mjpg-streamer.usr.local.tar
+  - untar (as root) in /usr/local
+2) pi.home.tar
+  - untar in home directory
+  - adds all dynamic libraries required for Opencv and GRIP in ~/vision/libs
+
