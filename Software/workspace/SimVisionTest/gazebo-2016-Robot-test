@@ -1,0 +1,8 @@
+# start gazebo
+
+export GAZEBO_PLUGIN_PATH=$ALLWPIDEV/build/install/simulation/plugins:/usr/lib/x86_64-linux-gnu/gazebo-6.5/plugins:/usr/local/lib/frcsim/plugins
+export LD_LIBRARY_PATH=$ALLWPIDEV/build/simulation/gz_msgs:/usr/lib:/usr/lib/x86_64-linux-gnu/:${GAZEBO_PLUGIN_PATH}
+export SWMODEL=$SWEXPORTS/2016-Robot_Exported
+export GAZEBO_MODEL_PATH=$SWMODEL:$WPILIB/simulation/models:/usr/share/gazebo-6.5/models
+gazebo --verbose $SWMODEL/2016-Robot-test.world
+

@@ -758,14 +758,14 @@
         </geometry>
       </visual>
       <sensor name="ShooterCamera" type="camera">
-        <visualize>0</visualize>
+        <visualize>1</visualize>
         <always_on>1</always_on>
         <pose>-0.124206581565228 0.103144755538481 -0.122064904182657 1.5707963267949 0 3.14159265358979</pose>
         <camera name="Shootercamera">
           <horizontal_fov>1.02974425867665</horizontal_fov>
           <image>
-            <width>320</width>
-            <height>240</height>
+            <width>640</width>
+            <height>480</height>
           </image>
           <clip>
             <near>0.1</near>

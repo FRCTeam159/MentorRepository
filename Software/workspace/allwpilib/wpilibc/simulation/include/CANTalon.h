@@ -26,9 +26,8 @@
 #include "tables/ITable.h"
 #include "Encoder.h"
 
-#define PI 3.141516
-#define RPD(x) (x)*2*PI/360
-#define DPR(x) (x)*180.0/PI
+#define RPD(x) (x)*2*M_PI/360
+#define DPR(x) (x)*180.0/M_PI
 #define SIMPIDRATE 0.01
 #define SIM_ENCODER_TICKS 360
 #define MAXPIDCHNLS 2
