@@ -34,6 +34,7 @@ void StepShooterAngle::Initialize() {
 	std::cout << "Changing Shooter Angle - current:"<< current <<" new:"<<target<<" push:"<<push_speed<<std::endl;
 	Robot::holder->SetPushHoldSpeed(push_speed);
 	Robot::shooter->SetTargetAngle(target);
+	Robot::shooter->EnableAngleController(true);
 }
 
 // Make this return true when this Command no longer needs to run execute()

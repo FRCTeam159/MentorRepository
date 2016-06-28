@@ -23,6 +23,7 @@ public:
     JoystickButton* d_up;    // shoot or grab ball (mode dependent)
     JoystickButton* d_down;  // mode switch button
     JoystickButton* d_mode;  // mode switch button
+    JoystickButton* d_target;  // mode switch button
 	Joystick* joy;
 
 	OI();

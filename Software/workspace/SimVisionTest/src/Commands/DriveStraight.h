@@ -13,11 +13,11 @@
 class DriveStraight: public Command
 {
 protected:
-	double distance;
-	double heading;
+    static double distance;
+    static double heading;
 	bool at_position;
 	bool at_heading;
-	static double speed_error;
+	static double distance_error;
 	static double angle_error;
 public:
 	DriveStraight(double d, double h);

@@ -41,15 +41,20 @@ protected:
     double camera_hoffset;
     double camera_voffset;
     void ClearTargets();
-    bool CheckArrayError(int n);
     double calcTargetHOffset(double range);
     double calcTargetVOffset(double range);
+    void Log();
+    bool auto_targeting=false;
+    bool on_target=false;
+    bool adjusting=false;
+
 public:
     std::shared_ptr<NetworkTable> table;
 
     Vision();
     virtual ~Vision();
     void Init();
+    void Reset();
     void InitDefaultCommand();
     void Update();
     int GetTargets();
@@ -65,6 +70,33 @@ public:
     void PrintTargetOffsets();
     CameraInfo GetCameraInfo() { return camera;}
     TargetInfo GetTargetInfo() { return target;}
+
+    bool GetAutoTargeting() {
+        return auto_targeting;
+    }
+
+    void SetAutoTargeting(bool b) {
+        auto_targeting=b;
+    }
+
+    bool OnTarget() {
+        return on_target;
+    }
+
+    void SetOnTarget(bool b) {
+        on_target=b;
+    }
+    bool Adjusting() {
+        return adjusting;
+    }
+
+    void SetAdjusting(bool b) {
+        adjusting=b;
+    }
+    void AutonomousInit();
+    void TeleopInit();
+    void DisabledInit();
+
 };
 
 #endif /* SRC_SUBSYSTEMS_VISION_H_ */

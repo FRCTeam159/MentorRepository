@@ -9,13 +9,13 @@
 #include <WPILib.h>
 #include "Assignments.h"
 
-#define FWSPEED 100
+#define FWSPEED 75
 #define FP 0.002
 #define FI 0.00001
 #define FD 0.0001
 
 #define AP 0.02
-#define AI 0.0005
+#define AI 0.001
 #define AD 0.1
 
 #define AMIN 0
@@ -64,7 +64,7 @@ Shooter::Shooter() : Subsystem("Shooter"),
 	angle_pid->Reset(); // clear IAccum
 	angle_pid->SetSetpoint(0);
 	angle_pid->SetAbsoluteTolerance(max_angle_error);
-	//angle_pid->SetToleranceBuffer(2);
+	//angle_pid->SetToleranceBuffer(4);
 	initialized=false;
 	Log();
 }
@@ -75,6 +75,7 @@ Shooter::~Shooter(){
 }
 void Shooter::Log() {
 	SmartDashboard::PutBoolean("Shooter Initialized", IsInitialized());
+
 	LogAngle(GetAngle());
 	LogSpeed(GetFWSpeed());
 }
@@ -162,7 +163,6 @@ void Shooter::SetTargetAngle(double a){
 	angle=a;
 	angle_pid->SetSetpoint(angle);
     angle_pid->SetAbsoluteTolerance(max_angle_error);
-	angle_pid->Enable();
 }
 
 // Set the shooter angle
@@ -247,6 +247,18 @@ void Shooter::SetMaxAngleError(double d) {
     max_angle_error=d;
 }
 
+void Shooter::EnableAngleController(bool b) {
+    if(b)
+        angle_pid->Enable();
+    else
+        angle_pid->Disable();
+}
+
+void Shooter::SetAngle(float output) {
+    angleMotor.PIDWrite(output);
+}
+
 void Shooter::SetDefaultMaxAngleError() {
     max_angle_error=MAX_ANGLE_ERROR;
 }
+

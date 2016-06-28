@@ -20,6 +20,7 @@ Vision::Vision() : Subsystem("Vision") {
     table = NetworkTable::GetTable("GRIP/targets");
     camera_hoffset=camera_voffset=0;
     SetCameraSpecs(IMAGE_WIDTH,IMAGE_HEIGHT,FOV);
+    Log();
 }
 
 Vision::~Vision() {
@@ -27,6 +28,7 @@ Vision::~Vision() {
 }
 
 void Vision::Init() {
+    Log();
 }
 
 void Vision::ClearTargets(){
@@ -37,65 +39,38 @@ void Vision::ClearTargets(){
 }
 void Vision::Update() {
     GetTargets();
-    if(ntargets){
-        FindClosestTarget();
-        double d=GetTargetDistance();
-        double v=GetTargetVerticalAngle();
-        double h=GetTargetHorizontalAngle();
-        std::cout << "d:"<<d/12.0<<" h:"<<h<<" v:"<<v<<std::endl;
-    }
-  // else
-  //     std::cout << "Vision::Update() : no targets found"<< std::endl;
-}
-
-bool Vision::CheckArrayError(int n) {
-   n=n>MAX_TARGETS?MAX_TARGETS:n;
-   if(n!=ntargets){
-       std::cout << "Target array error"<< std::endl;
-       ntargets=0;
-       return true;
-   }
-   return false;
 }
 
 int Vision::GetTargets() {
-    ClearTargets();
-    std::vector<double> arr = table->GetNumberArray("area",llvm::ArrayRef<double>());
-    if (arr.size() > 0) {
-        ntargets=arr.size()>MAX_TARGETS?MAX_TARGETS:arr.size();
-        for(int i=0;i<ntargets;i++){
-            targets[i].area=arr[i];
-        }
-        arr = table->GetNumberArray("centerX",llvm::ArrayRef<double>());
-        if(CheckArrayError(arr.size())){
-            return 0;
-        }
-        for(int i=0;i<ntargets;i++){
-            targets[i].centerX=arr[i];
-        }
-        arr = table->GetNumberArray("centerY",llvm::ArrayRef<double>());
-        if(CheckArrayError(arr.size())){
-            return 0;
-        }
-        for(int i=0;i<ntargets;i++){
-            targets[i].centerY=arr[i];
-        }
-        arr = table->GetNumberArray("width",llvm::ArrayRef<double>());
-        if(CheckArrayError(arr.size())){
-            return 0;
-        }
-        for(int i=0;i<ntargets;i++){
-            targets[i].width=arr[i];
-        }
-        arr = table->GetNumberArray("height",llvm::ArrayRef<double>());
-        if(CheckArrayError(arr.size())){
-            return 0;
-        }
-        for(int i=0;i<ntargets;i++){
-            targets[i].height=arr[i];
-        }
-        FindClosestTarget();
+    std::vector<double> arr1 = table->GetNumberArray("area",llvm::ArrayRef<double>());
+    std::vector<double> arr2 = table->GetNumberArray("centerX",llvm::ArrayRef<double>());
+    std::vector<double> arr3 = table->GetNumberArray("centerY",llvm::ArrayRef<double>());
+    std::vector<double> arr4 = table->GetNumberArray("width",llvm::ArrayRef<double>());
+    std::vector<double> arr5 = table->GetNumberArray("height",llvm::ArrayRef<double>());
+    unsigned int size=arr1.size();
+    if(arr2.size() != size || arr3.size() != size || arr4.size() != size || arr5.size() != size ){
+        std::cout << "Target array error"<< std::endl;
+        return ntargets;
     }
+    ClearTargets();
+    ntargets=size;
+    for(int i=0;i<ntargets;i++){
+        targets[i].area=arr1[i];
+    }
+    for(int i=0;i<ntargets;i++){
+        targets[i].centerX=arr2[i];
+    }
+    for(int i=0;i<ntargets;i++){
+        targets[i].centerY=arr3[i];
+    }
+    for(int i=0;i<ntargets;i++){
+        targets[i].width=arr4[i];
+    }
+    for(int i=0;i<ntargets;i++){
+        targets[i].height=arr5[i];
+    }
+    FindClosestTarget();
+    Log();
     return ntargets;
 }
 
@@ -158,7 +133,6 @@ double Vision::GetTargetHorizontalAngle() {
 }
 
 void Vision::PrintRawTargetData() {
-
     std::cout << "area:"  << closest.area
               << " width:" << closest.width
               << " height:"<< closest.height
@@ -176,5 +150,31 @@ void Vision::SetCameraOffsets(double h, double v) {
     camera_voffset=v;
 }
 
+void Vision::Reset() {
+    SetAdjusting(false);
+    SetAutoTargeting(false);
+    SetOnTarget(false);
+    Log();
+}
+
 void Vision::PrintTargetOffsets() {
+}
+
+void Vision::Log() {
+    SmartDashboard::PutBoolean("Target Acquired", OnTarget());
+    SmartDashboard::PutBoolean("AutoTargeting", GetAutoTargeting());
+    SmartDashboard::PutBoolean("Targets Available", ntargets?true:false);
+    SmartDashboard::PutBoolean("Adjusting Shot", Adjusting());
+}
+
+void Vision::AutonomousInit() {
+    Reset();
+}
+
+void Vision::TeleopInit() {
+    Reset();
+}
+
+void Vision::DisabledInit() {
+    Reset();
 }

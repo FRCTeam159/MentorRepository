@@ -5,9 +5,9 @@
 #define TARGET_WIDTH 20    // tape pattern width  (inches)
 #define TARGET_HEIGHT 12   // tape pattern height (inches)
 #define CAMERA_HOFFSET 5   // camera horizontal offset (inches)
-#define CAMERA_VOFFSET 20  // target vertical offset (inches)
-#define IMAGE_WIDTH 640
-#define IMAGE_HEIGHT 480
+#define CAMERA_VOFFSET 15  // target vertical offset (inches)
+#define IMAGE_WIDTH 320
+#define IMAGE_HEIGHT 240
 #define FOV 60.0
 
 std::shared_ptr<DriveTrain> Robot::drivetrain;
@@ -47,6 +47,7 @@ void Robot::AutonomousInit() {
 	shooter->AutonomousInit();
 	holder->AutonomousInit();
 	loader->AutonomousInit();
+    vision->AutonomousInit();
 
 	autonomous->Start();
 }
@@ -62,7 +63,7 @@ void Robot::DisabledInit(){
 	shooter->DisabledInit();
 	holder->DisabledInit();
 	loader->DisabledInit();
-
+    vision->DisabledInit();
 }
 void Robot::DisabledPeriodic(){
 }
@@ -78,6 +79,8 @@ void Robot::TeleopInit() {
 	holder->TeleopInit();
 	drivetrain->TeleopInit();
 	loader->TeleopInit();
+    vision->TeleopInit();
+
 }
 
 void Robot::TeleopPeriodic() {
@@ -109,5 +112,6 @@ void Robot::SetMode(int m) {
 int Robot::GetMode() {
 	return OI::GetMode();
 }
+
 START_ROBOT_CLASS(Robot);
 

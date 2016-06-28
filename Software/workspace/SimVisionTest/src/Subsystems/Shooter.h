@@ -24,7 +24,7 @@ class Shooter: public Subsystem , public PIDSource, public PIDOutput {
 	double flywheel_speed;
 	void Init();
 	bool initialized;
-	double PIDGet();
+
 	void InitDefaultCommand();
 	void GoToLowerLimitSwitch();
 
@@ -58,12 +58,18 @@ public:
 	bool IsInitialized();
 	void Initialize();
 	void SetInitialized();
+	void EnableAngleController(bool b);
 
 	void Execute();
 	void Reset();
+    double PIDGet();
+
 	void PIDWrite(float output);
+    void SetAngle(float output);
+
 	void SetMaxAngleError(double d);
     void SetDefaultMaxAngleError();
+
 
 };
 

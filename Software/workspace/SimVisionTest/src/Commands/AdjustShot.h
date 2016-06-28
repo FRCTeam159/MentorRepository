@@ -15,6 +15,7 @@ class AdjustShot: public Command {
     int ntargets=0;
     bool at_vtarget=false;
     bool at_htarget=false;
+    bool on_target;
 
 public:
     AdjustShot();

@@ -173,6 +173,8 @@ void ShootBall::Reset(){
 	//Robot::shooter->SetTargetAngle(min);
 	Robot::shooter->Reset();
 	Robot::holder->Reset();
+    Robot::vision->Reset();
+
 	finished=true;
 }
 

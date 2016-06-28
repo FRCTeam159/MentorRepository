@@ -27,8 +27,10 @@
 #define DRIVE_TIMEOUT 1
 #define PIDUPDATERATE 0.01
 
-double DriveStraight::speed_error=0;
+double DriveStraight::distance_error=0;
 double DriveStraight::angle_error=0;
+double DriveStraight::distance=0;
+double DriveStraight::heading=0;
 
 DriveStraight::DriveStraight(double d, double h) : Command("DriveStraight"),
 	Acntrl(AP,AI,AD),Dcntrl(DP,DI,DD)
@@ -44,7 +46,7 @@ void DriveStraight::Initialize() {
 	SetTimeout(DRIVE_TIMEOUT*distance+1);
 	Acntrl.Initialize(heading);
 	Dcntrl.Initialize(distance);
-    speed_error=angle_error=0;
+    distance_error=angle_error=0;
 
 	//Robot::drivetrain->DriveStraight(distance*FEET_PER_METER);
 	std::cout << "DriveStraight Started .."<<std::endl;
@@ -63,7 +65,9 @@ bool DriveStraight::IsFinished() {
 	}
 	at_heading=Acntrl.AtTarget();
 	at_position=Dcntrl.AtTarget();
-	return(at_position && at_heading);
+	//return(at_position && at_heading);
+    return(at_position);
+
 }
 
 void DriveStraight::End() {
@@ -105,7 +109,7 @@ double DriveStraight::AngleControl::PIDGet()
 void DriveStraight::AngleControl::PIDWrite(float a)
 {
 	DriveStraight::angle_error=a;
-	double d=DriveStraight::speed_error;
+	double d=DriveStraight::distance_error;
 	double m1=d+a;
 	double m2=d-a;
 	double mx=m1>m2?m1:m2;
@@ -113,7 +117,12 @@ void DriveStraight::AngleControl::PIDWrite(float a)
 	double l=m2*scale;
 	double r=m1*scale;
 #ifdef DEBUG_COMMAND
-	std::cout << "DriveStraight a:"<<a<<" s:"<<d<<" l:"<<l<<" r:"<<r<<std::endl;
+	double s=Robot::drivetrain->GetDistance();
+    double h=Robot::drivetrain->GetHeading();
+	std::cout << "heading:"<<h<<" distance:"<<s
+            <<" err:"<<h-heading<<" "<<s-distance
+	        <<" corr:"<<a<<" "<<d
+	        <<std::endl;
 #endif
 
 	Robot::drivetrain->Drive(l,r);
@@ -154,7 +163,7 @@ double DriveStraight::DistanceControl::PIDGet()
 // ================================================================================
 void DriveStraight::DistanceControl::PIDWrite(float d)
 {
-	DriveStraight::speed_error=d;
+	DriveStraight::distance_error=d;
 }
 void DriveStraight::DistanceControl::Initialize(double d)
 {

@@ -13,6 +13,7 @@
 #include "Commands/ToggleGate.h"
 #include "Commands/ToggleRollers.h"
 #include <Commands/ToggleLoad.h>
+#include <Commands/AdjustShot.h>
 
 int OI::mode=SHOOTING;
 
@@ -35,10 +36,12 @@ OI::OI() :
     d_down= new JoystickButton(joy, 1);
     d_up = new JoystickButton(joy, 4);
 
-    d_mode = new JoystickButton(joy, 6);
+    d_mode = new JoystickButton(joy, 5);
+    d_target = new JoystickButton(joy, 6);
 
     // bind down button to mode toggle
 
+    d_target->ToggleWhenPressed(new AdjustShot());
     d_mode->ToggleWhenPressed(new ToggleMode());
 
     // bind commands based on current mode
@@ -58,3 +61,4 @@ OI::OI() :
 Joystick* OI::GetJoystick() {
 	return joy;
 }
+
