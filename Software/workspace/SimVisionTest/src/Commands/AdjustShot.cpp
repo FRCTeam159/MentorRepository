@@ -25,12 +25,13 @@
 #define VPIDUPDATERATE 0.04
 #else
 #define VP 0.03
-#define VI 0.001
+#define VI 0.0005
 #define VD 0.05
 
 #define HP 0.05
 #define HI 0.001
 #define HD 0.2
+
 
 #define HPIDUPDATERATE 0.01
 #define VPIDUPDATERATE 0.04
@@ -125,6 +126,14 @@ void AdjustShot::AdjustVAngle::PIDWrite(float d) {
 #ifndef HONLY
     double current=Robot::shooter->GetTargetAngle();
     double target=current-d;
+    double max=Robot::shooter->GetMaxAngle();
+    double min=Robot::shooter->GetMinAngle();
+
+    target=target>=max?max:target;
+    target=target<=min?min:target;
+    double push_speed=0.2*target/max;
+
+    Robot::holder->SetPushHoldSpeed(push_speed);
     Robot::shooter->SetTargetAngle(target); // Shooter angle_pid will do the actual correction
 #ifdef DEBUG_COMMAND
     double va=Robot::vision->GetTargetVerticalAngle();

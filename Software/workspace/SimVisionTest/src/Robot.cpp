@@ -35,7 +35,6 @@ void Robot::RobotInit() {
 
 	autonomous.reset(new Autonomous());
 
-	//SmartDashboard::PutData(drivetrain.get());
 	//SmartDashboard::PutData(holder.get());
 	//SmartDashboard::PutData(shooter.get());
 	OI::SetMode(SHOOTING);

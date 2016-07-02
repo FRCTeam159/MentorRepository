@@ -56,6 +56,9 @@ OI::OI() :
     rightBtnCmnd2.WhenPressed(new StepLoaderAngle(5));
     leftBtnCmnd2.WhenPressed(new StepLoaderAngle(-5));
     downBtnCmnd2.WhenPressed(new ToggleRollers());
+
+    SmartDashboard::PutData("ToggleGate",new ToggleGate());
+
 }
 
 Joystick* OI::GetJoystick() {
