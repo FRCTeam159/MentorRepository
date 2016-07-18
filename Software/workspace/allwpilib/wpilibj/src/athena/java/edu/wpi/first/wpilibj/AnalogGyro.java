@@ -165,7 +165,7 @@ public class AnalogGyro extends GyroBase implements Gyro, PIDSource, LiveWindowS
   /**
    * {@inheritDoc}
    */
-  public synchronized double getAngle() {
+  public double getAngle() {
     if (m_analog == null) {
       return 0.0;
     } else {

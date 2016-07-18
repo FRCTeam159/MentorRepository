@@ -69,7 +69,6 @@
 #include "Preferences.h"
 #include "PowerDistributionPanel.h"
 #include "PWM.h"
-#include "PWMSpeedController.h"
 #include "Relay.h"
 #include "Resource.h"
 #include "RobotBase.h"

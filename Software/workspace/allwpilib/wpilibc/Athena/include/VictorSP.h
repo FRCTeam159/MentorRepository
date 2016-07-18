@@ -7,13 +7,27 @@
 
 #pragma once
 
-#include "PWMSpeedController.h"
+#include "SafePWM.h"
+#include "SpeedController.h"
+#include "PIDOutput.h"
 
 /**
  * Vex Robotics Victor SP Speed Controller
  */
-class VictorSP : public PWMSpeedController {
+class VictorSP : public SafePWM, public SpeedController {
  public:
   explicit VictorSP(uint32_t channel);
   virtual ~VictorSP() = default;
+  virtual void Set(float value, uint8_t syncGroup = 0) override;
+  virtual float Get() const override;
+  virtual void Disable() override;
+  virtual void StopMotor() override;
+
+  virtual void PIDWrite(float output) override;
+
+  virtual void SetInverted(bool isInverted) override;
+  virtual bool GetInverted() const override;
+
+ private:
+  bool m_isInverted = false;
 };

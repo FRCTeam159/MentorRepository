@@ -58,7 +58,7 @@ public class HardwareTimer implements Timer.StaticInterface {
   }
 
   class TimerImpl implements Timer.Interface {
-    private double m_startTime;
+    private long m_startTime;
     private double m_accumulatedTime;
     private boolean m_running;
 
@@ -70,8 +70,8 @@ public class HardwareTimer implements Timer.StaticInterface {
       reset();
     }
 
-    private double getMsClock() {
-      return Utility.getFPGATime() / 1000.0;
+    private long getMsClock() {
+      return Utility.getFPGATime() / 1000;
     }
 
     /**

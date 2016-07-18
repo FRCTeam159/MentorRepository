@@ -48,7 +48,7 @@ bool I2C::Transaction(uint8_t *dataToSend, uint8_t sendSize,
   status = i2CTransaction(m_port, m_deviceAddress, dataToSend, sendSize,
                           dataReceived, receiveSize);
   // wpi_setErrorWithContext(status, getHALErrorMessage(status));
-  return status < receiveSize;
+  return status < 0;
 }
 
 /**
@@ -60,7 +60,9 @@ bool I2C::Transaction(uint8_t *dataToSend, uint8_t sendSize,
  * @return Transfer Aborted... false for success, true for aborted.
  */
 bool I2C::AddressOnly() {
-  return Transaction(nullptr, 0, nullptr, 0);
+  int32_t status = 0;
+  status = Transaction(nullptr, 0, nullptr, 0);
+  return status < 0;
 }
 
 /**
@@ -80,7 +82,7 @@ bool I2C::Write(uint8_t registerAddress, uint8_t data) {
   buffer[1] = data;
   int32_t status = 0;
   status = i2CWrite(m_port, m_deviceAddress, buffer, sizeof(buffer));
-  return status < static_cast<int32_t>(sizeof(buffer));
+  return status < 0;
 }
 
 /**
@@ -96,7 +98,7 @@ bool I2C::Write(uint8_t registerAddress, uint8_t data) {
 bool I2C::WriteBulk(uint8_t *data, uint8_t count) {
   int32_t status = 0;
   status = i2CWrite(m_port, m_deviceAddress, data, count);
-  return status < count;
+  return status < 0;
 }
 
 /**
@@ -121,7 +123,10 @@ bool I2C::Read(uint8_t registerAddress, uint8_t count, uint8_t *buffer) {
     wpi_setWPIErrorWithContext(NullParameter, "buffer");
     return true;
   }
-  return Transaction(&registerAddress, sizeof(registerAddress), buffer, count);
+  int32_t status = 0;
+  status =
+      Transaction(&registerAddress, sizeof(registerAddress), buffer, count);
+  return status < 0;
 }
 
 /**
@@ -148,7 +153,7 @@ bool I2C::ReadOnly(uint8_t count, uint8_t *buffer) {
   }
   int32_t status = 0;
   status = i2CRead(m_port, m_deviceAddress, buffer, count);
-  return status < count;
+  return status < 0;
 }
 
 /**
