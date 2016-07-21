@@ -1,0 +1,8 @@
+# start gazebo
+
+export SWMODEL=$SWEXPORTS/2015-Robot_Exported
+export GAZEBO_MODEL_PATH=$SWMODEL:/usr/share/gazebo-6.5/models
+
+gazebo --verbose $SWMODEL/2015-Robot-Field.world
+
+
