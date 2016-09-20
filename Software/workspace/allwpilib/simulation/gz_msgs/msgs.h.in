@@ -13,6 +13,7 @@
 ${message_headers}
 
 #include <gazebo/msgs/msgs.hh>
+#include <boost/algorithm/string.hpp>
 #include <boost/shared_ptr.hpp>
 
 namespace gazebo {

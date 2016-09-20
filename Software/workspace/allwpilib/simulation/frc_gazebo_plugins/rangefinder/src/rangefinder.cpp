@@ -29,7 +29,7 @@ void Rangefinder::Load(physics::ModelPtr model, sdf::ElementPtr sdf) {
   this->model = model;
 
   // Parse SDF properties
-  sensor = boost::dynamic_pointer_cast<sensors::SonarSensor>(
+  sensor = std::dynamic_pointer_cast<sensors::SonarSensor>(
                sensors::get_sensor(sdf->Get<std::string>("sensor")));
   if (sdf->HasElement("topic")) {
     topic = sdf->Get<std::string>("topic");
