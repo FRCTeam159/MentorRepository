@@ -84,23 +84,26 @@
 							<builder arguments="-j5" buildPath="${workspace_loc:/SimTest}/linux_simulate" command="make" id="cdt.managedbuild.target.gnu.builder.base.1516860123" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1618000446" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1456420515" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
-								<option id="gnu.cpp.compiler.option.include.paths.1508190910" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+								<option id="gnu.cpp.compiler.option.include.paths.1508190910" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}/src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/wpilibc/simulation/include}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/build/install/simulation/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/wpilibc/shared/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/build/networktables/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/build/simulation/gz_msgs/generated}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/hal/include}&quot;"/>
 									<listOptionValue builtIn="false" value="/usr/include"/>
-									<listOptionValue builtIn="false" value="/usr/include/gazebo-6.5"/>
+									<listOptionValue builtIn="false" value="/usr/include/gazebo"/>
 									<listOptionValue builtIn="false" value="/usr/include/ignition/math2"/>
-									<listOptionValue builtIn="false" value="/usr/include/sdformat-3.7"/>
+									<listOptionValue builtIn="false" value="/usr/include/sdformat"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.optimization.level.1164201786" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.debugging.level.1878081045" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.dialect.std.1166832300" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" value="gnu.cpp.compiler.dialect.c++11" valueType="enumerated"/>
+								<option id="gnu.cpp.compiler.option.optimization.level.1164201786" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
+								<option id="gnu.cpp.compiler.option.debugging.level.1878081045" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
+								<option id="gnu.cpp.compiler.option.dialect.std.1166832300" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.c++11" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1181878802" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.base.768617053" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base">
-								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.2029488752" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
-								<option id="gnu.c.compiler.option.debugging.level.1640191960" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
+								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.2029488752" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" useByScannerDiscovery="false" valueType="enumerated"/>
+								<option id="gnu.c.compiler.option.debugging.level.1640191960" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1105325926" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.1531162370" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
@@ -114,12 +117,12 @@
 									<listOptionValue builtIn="false" value="pthread"/>
 									<listOptionValue builtIn="false" value=""/>
 								</option>
-								<option id="gnu.cpp.link.option.paths.588769736" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
+								<option id="gnu.cpp.link.option.paths.588769736" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/usr/lib/x86_64-linux-gnu"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/build/networktables/Linux/amd64}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/build/simulation/gz_msgs}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/build/install/simulation/lib}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${WPILIB}/simulation/lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/build/networktables/Linux/amd64}&quot;"/>
 								</option>
 								<option id="gnu.cpp.link.option.other.1613850514" name="Other options (-Xlinker [option])" superClass="gnu.cpp.link.option.other" valueType="stringList">
 									<listOptionValue builtIn="false" value="-rpath ${workspace_loc:/allwpilib/build/install/simulation/lib}"/>
