@@ -1,0 +1,124 @@
+<grip:Pipeline>
+  <sources>
+    <grip:Camera>
+      <property name="address" value="http://localhost:5002/?action=stream"/>
+    </grip:Camera>
+  </sources>
+  <steps>
+    <grip:Step name="Blur">
+      <grip:Input step="0" socket="0"/>
+      <grip:Input step="0" socket="1">
+        <value>BOX</value>
+      </grip:Input>
+      <grip:Input step="0" socket="2">
+        <value>2.8301886792452833</value>
+      </grip:Input>
+      <grip:Output step="0" socket="0" previewed="true"/>
+    </grip:Step>
+    <grip:Step name="RGB Threshold">
+      <grip:Input step="1" socket="0"/>
+      <grip:Input step="1" socket="1">
+        <value>
+          <double>6.774428821859555</double>
+          <double>142.83417693603724</double>
+        </value>
+      </grip:Input>
+      <grip:Input step="1" socket="2">
+        <value>
+          <double>135.33729431614904</double>
+          <double>255.0</double>
+        </value>
+      </grip:Input>
+      <grip:Input step="1" socket="3">
+        <value>
+          <double>117.3599113001524</double>
+          <double>255.0</double>
+        </value>
+      </grip:Input>
+      <grip:Output step="1" socket="0" previewed="true"/>
+    </grip:Step>
+    <grip:Step name="Find Contours">
+      <grip:Input step="2" socket="0"/>
+      <grip:Input step="2" socket="1">
+        <value>true</value>
+      </grip:Input>
+      <grip:Output step="2" socket="0" previewed="true"/>
+    </grip:Step>
+    <grip:Step name="Convex Hulls">
+      <grip:Input step="3" socket="0"/>
+      <grip:Output step="3" socket="0" previewed="true"/>
+    </grip:Step>
+    <grip:Step name="Filter Contours">
+      <grip:Input step="4" socket="0"/>
+      <grip:Input step="4" socket="1">
+        <value>200.0</value>
+      </grip:Input>
+      <grip:Input step="4" socket="2">
+        <value>40.0</value>
+      </grip:Input>
+      <grip:Input step="4" socket="3">
+        <value>10.0</value>
+      </grip:Input>
+      <grip:Input step="4" socket="4">
+        <value>1000.0</value>
+      </grip:Input>
+      <grip:Input step="4" socket="5">
+        <value>10.0</value>
+      </grip:Input>
+      <grip:Input step="4" socket="6">
+        <value>1000.0</value>
+      </grip:Input>
+      <grip:Input step="4" socket="7">
+        <value>
+          <int>0</int>
+          <int>100</int>
+        </value>
+      </grip:Input>
+      <grip:Input step="4" socket="8">
+        <value>20.0</value>
+      </grip:Input>
+      <grip:Input step="4" socket="9">
+        <value>4.0</value>
+      </grip:Input>
+      <grip:Input step="4" socket="10">
+        <value>0.0</value>
+      </grip:Input>
+      <grip:Input step="4" socket="11">
+        <value>1000.0</value>
+      </grip:Input>
+      <grip:Output step="4" socket="0" previewed="true"/>
+    </grip:Step>
+  </steps>
+  <connections>
+    <grip:Connection>
+      <grip:Output source="0" socket="0" previewed="true"/>
+      <grip:Input step="0" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="1" socket="0" previewed="true"/>
+      <grip:Input step="2" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="2" socket="0" previewed="true"/>
+      <grip:Input step="3" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="0" socket="0" previewed="true"/>
+      <grip:Input step="1" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="3" socket="0" previewed="true"/>
+      <grip:Input step="4" socket="0"/>
+    </grip:Connection>
+  </connections>
+  <settings>
+    <teamNumber>159</teamNumber>
+    <publishAddress>Ubuntu14.local</publishAddress>
+    <deployAddress>raspberrypi.local</deployAddress>
+    <deployDir>/home/pi/deploy</deployDir>
+    <deployUser>pi</deployUser>
+    <deployJavaHome>/usr/</deployJavaHome>
+    <deployJvmOptions>-Djava.library.path=/home/pi/vision/lib</deployJvmOptions>
+    <serverPort>8080</serverPort>
+  </settings>
+</grip:Pipeline>
