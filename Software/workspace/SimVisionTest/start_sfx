@@ -1,0 +1,2 @@
+java -jar ~/wpilib/tools/sfx.jar ~/Robotics/MentorRepository/Software/workspace/SimVisionTest/simrobot-GRIP-2.fxsdash
+

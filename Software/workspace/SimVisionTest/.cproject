@@ -83,7 +83,7 @@
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="cdt.managedbuild.target.gnu.platform.base.804843142" name="Debug Platform" osList="linux,hpux,aix,qnx" superClass="cdt.managedbuild.target.gnu.platform.base"/>
 							<builder arguments="-j5" buildPath="${workspace_loc:/SimTest}/linux_simulate" command="make" id="cdt.managedbuild.target.gnu.builder.base.1516860123" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1618000446" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1456420515" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
+							<tool command="g++" id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1456420515" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
 								<option id="gnu.cpp.compiler.option.include.paths.1508190910" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}/src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/wpilibc/simulation/include}&quot;"/>
@@ -107,27 +107,26 @@
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1105325926" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.1531162370" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.842198771" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
-								<option id="gnu.cpp.link.option.libs.507606310" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
+							<tool command="g++" id="cdt.managedbuild.tool.gnu.cpp.linker.base.842198771" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
+								<option id="gnu.cpp.link.option.libs.507606310" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="wpilibcSim"/>
 									<listOptionValue builtIn="false" value="gz_msgs"/>
 									<listOptionValue builtIn="false" value="ntcore"/>
 									<listOptionValue builtIn="false" value="gazebo_client"/>
 									<listOptionValue builtIn="false" value="boost_system"/>
 									<listOptionValue builtIn="false" value="pthread"/>
-									<listOptionValue builtIn="false" value=""/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.588769736" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/usr/lib/x86_64-linux-gnu"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ntcore/native/ntcore/build/libs/ntcore/shared/x64}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/build/networktables/Linux/amd64}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/build/simulation/gz_msgs}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/build/install/simulation/lib}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${WPILIB}/simulation/lib&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/allwpilib/build/networktables/Linux/amd64}&quot;"/>
 								</option>
-								<option id="gnu.cpp.link.option.other.1613850514" name="Other options (-Xlinker [option])" superClass="gnu.cpp.link.option.other" valueType="stringList">
-									<listOptionValue builtIn="false" value="-rpath ${workspace_loc:/allwpilib/build/install/simulation/lib}"/>
-									<listOptionValue builtIn="false" value="-rpath ${workspace_loc:/allwpilib/build/networktables/Linux/amd64}"/>
+								<option id="gnu.cpp.link.option.other.1613850514" name="Other options (-Xlinker [option])" superClass="gnu.cpp.link.option.other" useByScannerDiscovery="false" valueType="stringList">
+									<listOptionValue builtIn="false" value="-rpath &quot;${workspace_loc:/ntcore/native/ntcore/build/libs/ntcore/shared/x64}&quot;"/>
 									<listOptionValue builtIn="false" value="-rpath ${workspace_loc:/allwpilib/build/simulation/gz_msgs}"/>
+									<listOptionValue builtIn="false" value="-rpath ${workspace_loc:/allwpilib/build/install/simulation/lib}"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1475817582" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>

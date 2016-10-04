@@ -67,7 +67,7 @@ double CANTalon::GetTargetError() {
 void CANTalon::Set(float speed, uint8_t syncGroup) {
     SetSpeed(speed);
 }
-float CANTalon::Get() {
+float CANTalon::Get() const {
     return Clamp(impl->Get());
 }
 //========= Controller Interface functions ===================
@@ -297,9 +297,9 @@ double CANTalon::GetPosition() {
     }
 }
 
-void CANTalon::Set(double value) {
-    Set(value, 0);
-}
+//void CANTalon::Set(double value) {
+//    Set(value, 0);
+//}
 double CANTalon::GetVoltage() {
     return Get();
 }

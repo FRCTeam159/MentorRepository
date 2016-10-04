@@ -32,10 +32,11 @@
 #define SIM_ENCODER_TICKS 360
 #define MAXPIDCHNLS 2
 
-class CANTalon: public ITableListener,
-        public LiveWindowSendable,
+class CANTalon:
         public MotorSafety,
-        public PIDOutput,
+        public SpeedController,
+        public ITableListener,
+	    public LiveWindowSendable,
         public PIDSource {
 public:
     // Limited subset of enums from CANTalon and CANSpeedController
@@ -164,7 +165,7 @@ public:
     // Talon interface
 
     virtual void Set(float value, uint8_t syncGroup = 0);
-    virtual float Get();
+    virtual float Get() const override;
     virtual void Disable();
     virtual void PIDWrite(float output) override;
 
@@ -234,7 +235,7 @@ public:
     virtual void SetPosition(double value);
     virtual double GetPosition();
 
-    virtual void Set(double value);
+    //virtual void Set(double value);
     virtual void SetSetpoint(double value);
 
     virtual double GetTargetCorrection();

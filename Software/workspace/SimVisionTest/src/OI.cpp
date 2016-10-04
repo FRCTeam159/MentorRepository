@@ -17,6 +17,7 @@
 
 int OI::mode=SHOOTING;
 
+
 OI::OI() :
 		rightBtnCmnd1(this),
 		rightBtnCmnd2(this),

@@ -43,7 +43,9 @@ task unzipNetworkTables(type: Copy) {
     if (project.hasProperty('makeSim')){
         from zipTree(desktopNetTables)
     }
-    from zipTree(armNetTables)
+    else {
+        from zipTree(armNetTables)
+    }
     into netTablesUnzipLocation
 }
 

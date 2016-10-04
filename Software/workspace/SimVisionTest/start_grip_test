@@ -7,8 +7,11 @@ roxterm --tab --tab-name=sim_ds -e sim_ds;
 roxterm --tab --tab-name=mjpg_streamer -e start_mjpg-streamer;
 sleep 5;
 roxterm --tab --tab-name=FRCUserProgram -e linux_simulate/FRCUserProgram;
-sleep 5;
+sleep 2;
 roxterm --tab --tab-name=GRIP -e start_grip;
+sleep 1;
+roxterm --tab --tab-name=SFX -e start_sfx;
+
 
 
 

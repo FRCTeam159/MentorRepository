@@ -141,7 +141,7 @@
   </connections>
   <settings>
     <teamNumber>159</teamNumber>
-    <publishAddress>Ubuntu14.local</publishAddress>
+    <publishAddress>Ubuntu16.local</publishAddress>
     <deployAddress>raspberrypi.local</deployAddress>
     <deployDir>/home/pi/deploy</deployDir>
     <deployUser>pi</deployUser>
