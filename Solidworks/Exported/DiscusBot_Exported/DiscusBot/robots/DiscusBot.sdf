@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sdf version="1.5">
+  <model name="DiscusBot">
+    <pose>0 0 -0.31496 0 0 0</pose>
+    <plugin name="clock" filename="libclock.so">
+      <topic>/gazebo/frc/time</topic>
+    </plugin>
+    <link name="Chassis">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.117716507183126 -0.00262361448485526 0.0357722103187504 1.5707963267949 -1.04083408558608E-16 3.14159265358977</pose>
+      <must_be_base_link>1</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>58.5681038862846</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>12.6956735405121</ixx>
+          <ixy>0.246243840361059</ixy>
+          <ixz>0.0388596439484185</ixz>
+          <iyy>9.15796969952799</iyy>
+          <iyz>0.0529898457817828</iyz>
+          <izz>15.1040564499364</izz>
+        </inertia>
+      </inertial>
+      <collision name="Chassis_collision">
+        <pose>-0.439164785961926 -0.621188698797679 -1.27685929614077 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DiscusBot/meshes/Chassis_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode>
+              <mu>0</mu>
+              <mu2>0</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="Chassis_visual">
+        <pose>-0.439164785961926 -0.621188698797679 -1.27685929614077 0 0 0</pose>
+        <material>
+          <ambient>0 0 1 1</ambient>
+          <diffuse>0 0 1 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DiscusBot/meshes/Chassis.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <link name="Lifter">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.444511959067907 -0.00303385972048886 0.0147079748282497 1.5707963267949 -1.04083408558608E-16 3.14159265358977</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>1</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.01</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.0139000286494454</ixx>
+          <ixy>0.000650386261384081</ixy>
+          <ixz>0.0000207534456135275</ixz>
+          <iyy>0.0180813239992861</iyy>
+          <iyz>0.0000124502189574139</iyz>
+          <izz>0.00557924343085255</izz>
+        </inertia>
+      </inertial>
+      <collision name="Lifter_collision">
+        <pose>-0.112369334077145 -0.600124463307179 -1.27644905090515 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DiscusBot/meshes/Lifter_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+              <mu2>1</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="Lifter_visual">
+        <pose>-0.112369334077145 -0.600124463307179 -1.27644905090515 0 0 0</pose>
+        <material>
+          <ambient>1 0 0 1</ambient>
+          <diffuse>1 0 0 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DiscusBot/meshes/Lifter.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-Lifter" type="prismatic">
+      <parent>Chassis</parent>
+      <child>Lifter</child>
+      <pose>0.146061959067922 4.44089209850063E-16 -0.244616140279528 0 0 1.5707963267949</pose>
+      <axis>
+        <xyz>1 2.22044604925031E-16 0</xyz>
+        <dynamics>
+          <damping>0.5</damping>
+          <friction>0.5</friction>
+        </dynamics>
+        <limit>
+          <upper>1</upper>
+          <lower>0</lower>
+          <effort>100</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="LFWheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.62499240000001 0.32263333999998 -0.241217118490747 1.5707963267949 -1.04083408558608E-16 3.14159265358977</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.894756464119298</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.00144193695353773</ixx>
+          <ixy>3.42578484569923E-50</ixy>
+          <ixz>6.12234207152071E-35</ixz>
+          <iyy>0.00144193695353773</iyy>
+          <iyz>2.00576852536002E-36</iyz>
+          <izz>0.00251803446769832</izz>
+        </inertia>
+      </inertial>
+      <collision name="LFWheel_collision">
+        <pose>0.0681111068549508 -0.344199369988182 -1.60211625062562 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DiscusBot/meshes/LFWheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+              <mu2>1</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="LFWheel_visual">
+        <pose>0.0681111068549508 -0.344199369988182 -1.60211625062562 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DiscusBot/meshes/LFWheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-LFWheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>LFWheel</child>
+      <pose>0 0 0 0 4.71238899528585 0</pose>
+      <axis>
+        <xyz>1 0 1.49011610828254E-08</xyz>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0</friction>
+        </dynamics>
+        <limit>
+          <effort>30</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="RFWheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.624992400000001 -0.32263334000002 -0.241217118490748 1.5707963267949 -1.04083408558608E-16 3.14159265358977</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.894756464119297</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.00144193695353772</ixx>
+          <ixy>2.61012178719941E-50</ixy>
+          <ixz>7.06558323867667E-35</ixz>
+          <iyy>0.00144193695353772</iyy>
+          <iyz>2.00576852536002E-36</iyz>
+          <izz>0.00251803446769832</izz>
+        </inertia>
+      </inertial>
+      <collision name="RFWheel_collision">
+        <pose>0.0681111068549563 -0.344199369988181 -0.956849570625618 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DiscusBot/meshes/RFWheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+              <mu2>1</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="RFWheel_visual">
+        <pose>0.0681111068549563 -0.344199369988181 -0.956849570625618 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DiscusBot/meshes/RFWheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-RFWheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>RFWheel</child>
+      <pose>0 0 0 0 4.71238898038469 0</pose>
+      <axis>
+        <xyz>1 0 -2.22044604925031E-16</xyz>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0</friction>
+        </dynamics>
+        <limit>
+          <effort>30</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="LRWheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>-0.231292399999987 0.322633340000001 -0.241217118490745 1.5707963267949 -1.04083408558608E-16 3.14159265358977</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.894756464119298</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.00144193695353773</ixx>
+          <ixy>2.28385656379948E-50</ixy>
+          <ixz>6.71008924693186E-35</ixz>
+          <iyy>0.00144193695353773</iyy>
+          <iyz>2.00576852536002E-36</iyz>
+          <izz>0.00251803446769832</izz>
+        </inertia>
+      </inertial>
+      <collision name="LRWheel_collision">
+        <pose>-0.788173693145047 -0.344199369988184 -1.60211625062562 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DiscusBot/meshes/LRWheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+              <mu2>1</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="LRWheel_visual">
+        <pose>-0.788173693145047 -0.344199369988184 -1.60211625062562 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DiscusBot/meshes/LRWheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-LRWheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>LRWheel</child>
+      <pose>-1.11022302462516E-16 -5.55111512312578E-17 -2.22044604925031E-16 0 4.71238898038469 0</pose>
+      <axis>
+        <xyz>1 0 -2.22044604925031E-16</xyz>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0</friction>
+        </dynamics>
+        <limit>
+          <effort>30</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="RRWheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>-0.231292400000005 -0.322633340000002 -0.241217118490748 1.5707963267949 -1.04083408558608E-16 3.14159265358977</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.894756464119297</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.00144193695353772</ixx>
+          <ixy>2.61012178719941E-50</ixy>
+          <ixz>7.06558323867667E-35</ixz>
+          <iyy>0.00144193695353772</iyy>
+          <iyz>2.00576852536002E-36</iyz>
+          <izz>0.00251803446769832</izz>
+        </inertia>
+      </inertial>
+      <collision name="RRWheel_collision">
+        <pose>-0.788173693145049 -0.344199369988181 -0.956849570625617 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DiscusBot/meshes/RRWheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+              <mu2>1</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="RRWheel_visual">
+        <pose>-0.788173693145049 -0.344199369988181 -0.956849570625617 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://DiscusBot/meshes/RRWheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-RRWheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>RRWheel</child>
+      <pose>1.11022302462516E-16 0 0 0 4.71238898038469 0</pose>
+      <axis>
+        <xyz>1 0 -2.22044604925031E-16</xyz>
+        <dynamics>
+          <damping>0.2</damping>
+          <friction>0</friction>
+        </dynamics>
+        <limit>
+          <effort>30</effort>
+        </limit>
+      </axis>
+    </joint>
+    <plugin name="Chassis_gyro" filename="libgyro.so">
+      <link>Chassis</link>
+      <topic>/gazebo/frc/simulator/analog/1</topic>
+      <units>degrees</units>
+      <axis>yaw</axis>
+    </plugin>
+    <plugin name="Chassis-Lifter_motor" filename="libdc_motor.so">
+      <joint>Chassis-Lifter</joint>
+      <topic>/gazebo/frc/simulator/pwm/5</topic>
+      <multiplier>10</multiplier>
+    </plugin>
+    <plugin name="Chassis-Lifter_encoder" filename="libencoder.so">
+      <joint>Chassis-Lifter</joint>
+      <topic>/gazebo/frc/simulator/dio/0/0</topic>
+      <units>degrees</units>
+    </plugin>
+    <plugin name="Chassis-LFWheel_motor" filename="libdc_motor.so">
+      <joint>Chassis-LFWheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/1</topic>
+      <multiplier>20</multiplier>
+    </plugin>
+    <plugin name="Chassis-LFWheel_encoder" filename="libencoder.so">
+      <joint>Chassis-LFWheel</joint>
+      <topic>/gazebo/frc/simulator/dio/1/2</topic>
+      <units>degrees</units>
+    </plugin>
+    <plugin name="Chassis-RFWheel_motor" filename="libdc_motor.so">
+      <joint>Chassis-RFWheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/2</topic>
+      <multiplier>20</multiplier>
+    </plugin>
+    <plugin name="Chassis-RFWheel_encoder" filename="libencoder.so">
+      <joint>Chassis-RFWheel</joint>
+      <topic>/gazebo/frc/simulator/dio/3/4</topic>
+      <units>degrees</units>
+    </plugin>
+    <plugin name="Chassis-LRWheel_motor" filename="libdc_motor.so">
+      <joint>Chassis-LRWheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/3</topic>
+      <multiplier>20</multiplier>
+    </plugin>
+    <plugin name="Chassis-LRWheel_encoder" filename="libencoder.so">
+      <joint>Chassis-LRWheel</joint>
+      <topic>/gazebo/frc/simulator/dio/5/6</topic>
+      <units>degrees</units>
+    </plugin>
+    <plugin name="Chassis-RRWheel_motor" filename="libdc_motor.so">
+      <joint>Chassis-RRWheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/4</topic>
+      <multiplier>20</multiplier>
+    </plugin>
+    <plugin name="Chassis-RRWheel_encoder" filename="libencoder.so">
+      <joint>Chassis-RRWheel</joint>
+      <topic>/gazebo/frc/simulator/dio/7/8</topic>
+      <units>degrees</units>
+    </plugin>
+  </model>
+</sdf>
