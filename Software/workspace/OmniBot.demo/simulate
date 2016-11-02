@@ -1,0 +1,11 @@
+#export SWMODEL=$SWEXPORTS/2015-Robot_Exported
+export SWMODEL=$HOME/Robotics/Solidworks/Exported/OmniBotDemo_Exported
+
+export GAZEBO_MODEL_PATH=$SWMODEL:$WPILIB/simulation/models:/usr/share/gazebo-7/models
+
+roxterm --title="Gazebo Simulation" --tab-name=gazebo -e gazebo --verbose $SWMODEL/OmniBotDemo.world;
+sleep 5;
+roxterm --tab --tab-name=sim_ds -e sim_ds;
+sleep 1;
+roxterm --tab --tab-name=FRCUserProgram -e linux_simulate/FRCUserProgram;
+
