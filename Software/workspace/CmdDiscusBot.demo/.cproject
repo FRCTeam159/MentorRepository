@@ -119,7 +119,7 @@
 									<listOptionValue builtIn="false" value="boost_system"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1677933356" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
-									<listOptionValue builtIn="false" value="/usr/local/wpi/ntcore"/>
+									<listOptionValue builtIn="false" value="/usr/local/wpi/sim/ntcore"/>
 									<listOptionValue builtIn="false" value="/usr/lib/x86_64-linux-gnu"/>
 									<listOptionValue builtIn="false" value="/usr/local/wpi/sim/gz_msgs/build"/>
 									<listOptionValue builtIn="false" value="/usr/local/wpi/sim/lib"/>

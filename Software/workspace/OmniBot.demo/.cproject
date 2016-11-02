@@ -126,6 +126,7 @@
 									<listOptionValue builtIn="false" value="/usr/local/wpi/sim/gz_msgs/build"/>
 									<listOptionValue builtIn="false" value="/usr/local/wpi/sim/ntcore"/>
 									<listOptionValue builtIn="false" value="/usr/local/wpi/sim/lib"/>
+									<listOptionValue builtIn="false" value="&quot;${WPILIB}/user/cpp/lib&quot;"/>
 								</option>
 								<option id="gnu.cpp.link.option.other.1549699992" name="Other options (-Xlinker [option])" superClass="gnu.cpp.link.option.other" useByScannerDiscovery="false" valueType="stringList">
 									<listOptionValue builtIn="false" value="-rpath /usr/local/wpi/sim/lib"/>
