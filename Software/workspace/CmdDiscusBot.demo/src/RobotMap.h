@@ -10,13 +10,13 @@
  * floating around.
  */
  
-const int FRONT_LEFT_MOTOR=1;
-const int FRONT_RIGHT_MOTOR=2;
-const int BACK_LEFT_MOTOR=3;
-const int BACK_RIGHT_MOTOR=4;
+const int FRONT_LEFT=1;
+const int FRONT_RIGHT=2;
+const int BACK_LEFT=3;
+const int BACK_RIGHT=4;
 
-const int LIFTER_MOTOR=5;
-const int FLYWHEEL_MOTOR=6;
+const int LIFTER=5;
+const int FLYWHEEL=6;
 
 #ifdef REAL
 const int LIFTER_UP_BUTTON=5;
@@ -36,6 +36,7 @@ const double LIFTER_UP_SPEED=0.5;
 const double LIFTER_DOWN_SPEED=-0.5;
 
 const int PISTON=7;
+const int GYRO=3;
 
 const double FLYWHEEL_SPEED=1.0;
 

@@ -4,8 +4,8 @@
 
 
 Elevator::Elevator() : Subsystem("Elevator") {
-    motor = new CANTalon(LIFTER_MOTOR);
-	std::cout<<"New Elevator("<<LIFTER_MOTOR<<")"<<std::endl;
+    motor = new CANTalon(LIFTER);
+	std::cout<<"New Elevator("<<LIFTER<<")"<<std::endl;
  }
 
 void Elevator::InitDefaultCommand(){

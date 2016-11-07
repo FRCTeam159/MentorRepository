@@ -12,10 +12,12 @@ class DriveTrain : public Subsystem {
 private:
   RobotDrive* drive;
 
-  CANTalon *frontLeft;
-  CANTalon *frontRight;
-  CANTalon *backLeft;
-  CANTalon *backRight;
+  CANTalon frontLeft;
+  CANTalon frontRight;
+  CANTalon backLeft;
+  CANTalon backRight;
+
+  AnalogGyro gyro;
 
 public:
 	DriveTrain();
@@ -37,7 +39,7 @@ public:
 	 * @param right Speed in range [-1,1]
 	 */
 	void Drive(double x, double y, double z);
-
+	double GetHeading();
 
 };
 

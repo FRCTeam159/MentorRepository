@@ -13,7 +13,7 @@
 
 Shooter::Shooter() : Subsystem("Shooter") {
 	std::cout<<"New Shooter()"<<std::endl;
-	flywheel=new CANTalon(FLYWHEEL_MOTOR);
+	flywheel=new CANTalon(FLYWHEEL);
 	piston=new DoubleSolenoid(PISTON,0,1);
 	flywheel_speed=0;
 }

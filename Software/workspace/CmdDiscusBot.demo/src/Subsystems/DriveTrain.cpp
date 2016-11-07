@@ -2,21 +2,22 @@
 #include "DriveTrain.h"
 #include "RobotMap.h"
 
-DriveTrain::DriveTrain(): Subsystem("DriveTrain") {
+DriveTrain::DriveTrain(): Subsystem("DriveTrain") ,
+	frontLeft(FRONT_LEFT),
+	frontRight(FRONT_RIGHT),
+	backLeft(BACK_LEFT),
+	backRight(BACK_RIGHT),
+	gyro(GYRO)
+{
 	std::cout<<"New DriveTrain()"<<std::endl;
 
-	frontLeft = new CANTalon(FRONT_LEFT_MOTOR);
-	frontRight = new CANTalon(FRONT_RIGHT_MOTOR);
-	backLeft = new CANTalon(BACK_LEFT_MOTOR);
-	backRight = new CANTalon(BACK_RIGHT_MOTOR);
-
-	frontLeft->SetFeedbackDevice(CANTalon::QuadEncoder);
-	frontRight->SetFeedbackDevice(CANTalon::QuadEncoder);
-	backLeft->SetFeedbackDevice(CANTalon::QuadEncoder);
-	backRight->SetFeedbackDevice(CANTalon::QuadEncoder);
+	frontLeft.SetFeedbackDevice(CANTalon::QuadEncoder);
+	frontRight.SetFeedbackDevice(CANTalon::QuadEncoder);
+	backLeft.SetFeedbackDevice(CANTalon::QuadEncoder);
+	backRight.SetFeedbackDevice(CANTalon::QuadEncoder);
 
 
-	drive = new RobotDrive(frontLeft,backLeft,frontRight,backRight);
+	drive = new RobotDrive(&frontLeft,&backLeft,&frontRight,&backRight);
 
 	drive->SetInvertedMotor(RobotDrive::kFrontRightMotor,true);
 	drive->SetInvertedMotor(RobotDrive::kRearRightMotor,true);
@@ -31,6 +32,9 @@ void DriveTrain::InitDefaultCommand() {
 	SetDefaultCommand(new DriveWithJoystick());
 }
 
+double DriveTrain::GetHeading(){
+	return gyro.GetAngle();
+}
 /**
  * The log method puts interesting information to the SmartDashboard.
  */
