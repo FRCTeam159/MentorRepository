@@ -28,18 +28,11 @@ public:
 	 */
 	void InitDefaultCommand();
 
-	/**
-	 * The log method puts interesting information to the SmartDashboard.
-	 */
 	void Log();
 
-	/**
-	 * Tank style driving for the DriveTrain.
-	 * @param left Speed in range [-1,1]
-	 * @param right Speed in range [-1,1]
-	 */
 	void Drive(double x, double y, double z);
 	double GetHeading();
+	double GetPosition();
 
 };
 

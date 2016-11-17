@@ -11,8 +11,6 @@ DriveTrain::DriveTrain(): Subsystem("DriveTrain") ,
 {
 	std::cout<<"New DriveTrain()"<<std::endl;
 
-	frontLeft.SetFeedbackDevice(CANTalon::QuadEncoder);
-	frontRight.SetFeedbackDevice(CANTalon::QuadEncoder);
 	backLeft.SetFeedbackDevice(CANTalon::QuadEncoder);
 	backRight.SetFeedbackDevice(CANTalon::QuadEncoder);
 
@@ -35,6 +33,10 @@ void DriveTrain::InitDefaultCommand() {
 double DriveTrain::GetHeading(){
 	return gyro.GetAngle();
 }
+double DriveTrain::GetPosition() {
+	return (backLeft.GetPosition() + backRight.GetPosition())/2;
+}
+
 /**
  * The log method puts interesting information to the SmartDashboard.
  */

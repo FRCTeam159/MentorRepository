@@ -14,9 +14,9 @@
 #include "OI.h"
 
 class Robot: public IterativeRobot {
-public:
-
 private:
+	Command *autonomousCommand;
+public:
 	LiveWindow *lw = LiveWindow::GetInstance();
 
 	void RobotInit();

@@ -1,14 +1,17 @@
 
 #include "Robot.h"
 #include "CommandBase.h"
+#include "Commands/Autonomous.h"
 
 
 void Robot::RobotInit() {
 	CommandBase::init();
+	autonomousCommand = new Autonomous();
 }
 
 void Robot::AutonomousInit() {
 	std::cout << "Starting Auto" << std::endl;
+	autonomousCommand->Start();
 }
 
 void Robot::AutonomousPeriodic() {
@@ -20,6 +23,7 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
+	autonomousCommand->Cancel();
 	Scheduler::GetInstance()->Run();
 }
 
