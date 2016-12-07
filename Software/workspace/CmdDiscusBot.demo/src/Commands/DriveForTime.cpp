@@ -1,6 +1,6 @@
-#include "DriveStraight.h"
+#include <Commands/DriveForTime.h>
 
-DriveStraight::DriveStraight(double t,double s)
+DriveForTime::DriveForTime(double t,double s)
 {
 	duration=t;
 	speed=s;
@@ -9,21 +9,21 @@ DriveStraight::DriveStraight(double t,double s)
 }
 
 // Called just before this Command runs the first time
-void DriveStraight::Initialize()
+void DriveForTime::Initialize()
 {
 	double start_time=Timer::GetFPGATimestamp();
 	stop_time=start_time+duration;
-	std::cout << "DriveStraight::Started"<<std::endl;
+	std::cout << "DriveForTime::Started"<<std::endl;
 }
 
 // Called repeatedly when this Command is scheduled to run
-void DriveStraight::Execute()
+void DriveForTime::Execute()
 {
 	drivetrain.get()->Drive(speed,0,0);
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool DriveStraight::IsFinished()
+bool DriveForTime::IsFinished()
 {
 	if(Timer::GetFPGATimestamp()>=stop_time)
 		return true;
@@ -31,14 +31,14 @@ bool DriveStraight::IsFinished()
 }
 
 // Called once after isFinished returns true
-void DriveStraight::End()
+void DriveForTime::End()
 {
-	std::cout << "DriveStraight::End"<<std::endl;
+	std::cout << "DriveForTime::End"<<std::endl;
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void DriveStraight::Interrupted()
+void DriveForTime::Interrupted()
 {
 
 }

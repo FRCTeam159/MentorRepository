@@ -4,13 +4,13 @@
 #include "CommandBase.h"
 #include "WPILib.h"
 
-class DriveStraight: public CommandBase
+class DriveForTime: public CommandBase
 {
 	double duration;
 	double speed;
 	double stop_time;
 public:
-	DriveStraight(double t,double s);
+	DriveForTime(double t,double s);
 	void Initialize();
 	void Execute();
 	bool IsFinished();

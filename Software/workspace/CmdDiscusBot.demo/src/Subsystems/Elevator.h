@@ -10,7 +10,8 @@
 class Elevator : public Subsystem {
 private:
    CANTalon *motor;
-
+   double speed;
+   double setpoint;
 public:
     Elevator();
     void InitDefaultCommand();
@@ -19,7 +20,8 @@ public:
 	 * The log method puts interesting information to the SmartDashboard.
 	 */
     void Log();
-    void SetSpeed(float f);
+    void SetSpeed(double f);
+    void SetSetpoint(double s);
 
 };
 

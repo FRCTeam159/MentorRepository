@@ -25,6 +25,7 @@ public:
 	void TeleopInit();
 	void TeleopPeriodic();
 	void TestPeriodic();
+	void DisabledInit();
 };
 
 

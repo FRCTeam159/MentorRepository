@@ -25,7 +25,7 @@ Autonomous::Autonomous() : CommandGroup("Autonomous") {
     AddSequential(new InitShooter()); // make sure shooter limit switch has been found
 	AddSequential(new CloseGate()); // hold the ball
 	AddSequential(new OpenGate()); // pinch the ball
-	AddSequential(new DriveStraight(7,0)); // go forward
+	AddSequential(new DriveForTime(7,0)); // go forward
 	//AddSequential(new Turn(-50)); // turn
 	//AddSequential(new StepShooterAngle(36)); // set angle
     AddSequential(new Turn(-40)); // turn

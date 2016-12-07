@@ -13,6 +13,10 @@ void Elevator::InitDefaultCommand(){
 }
 void Elevator::Log() {
 }
-void Elevator::SetSpeed(float f){
+void Elevator::SetSpeed(double f){
 	motor->Set(f,0);
+}
+
+void Elevator::SetSetpoint(double s) {
+	setpoint=s;
 }

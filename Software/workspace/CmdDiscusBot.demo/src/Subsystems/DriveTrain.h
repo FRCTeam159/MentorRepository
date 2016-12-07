@@ -33,6 +33,9 @@ public:
 	void Drive(double x, double y, double z);
 	double GetHeading();
 	double GetPosition();
+	double GetLeftPosition();
+	double GetRightPosition();
+	void Reset();
 
 };
 

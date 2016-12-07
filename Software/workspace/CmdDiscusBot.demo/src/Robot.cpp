@@ -31,4 +31,9 @@ void Robot::TestPeriodic() {
 	lw->Run();
 }
 
+void Robot::DisabledInit(){
+	std::cout << "DisabledInit" << std::endl;
+	CommandBase::drivetrain.get()->Reset();
+}
+
 START_ROBOT_CLASS(Robot)
