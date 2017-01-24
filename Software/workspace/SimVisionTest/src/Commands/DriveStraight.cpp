@@ -106,7 +106,7 @@ double DriveStraight::AngleControl::PIDGet()
 //  - If either correction > 1 (max motor input) scale the result
 //  - Apply correction using drive-train tank drive function: Drive(left,right)
 // ================================================================================
-void DriveStraight::AngleControl::PIDWrite(float a)
+void DriveStraight::AngleControl::PIDWrite(double a)
 {
 	DriveStraight::angle_error=a;
 	double d=DriveStraight::distance_error;
@@ -161,7 +161,7 @@ double DriveStraight::DistanceControl::PIDGet()
 // - capture the Distance error from the PID and save it to a static variable
 // - Let the AngleControl PID do the actual correction
 // ================================================================================
-void DriveStraight::DistanceControl::PIDWrite(float d)
+void DriveStraight::DistanceControl::PIDWrite(double d)
 {
 	DriveStraight::distance_error=d;
 }

@@ -1,0 +1,8 @@
+cd ~/Robotics/MentorRepository/Software/workspace/SimCanTest;
+roxterm --title="Gazebo Simulation" --tab-name=gazebo -e gazebo-2016-Robot-field;
+sleep 5;
+roxterm --tab --tab-name=sim_ds -e sim_ds;
+sleep 5;
+roxterm --tab --tab-name=FRCUserProgram -e linux_simulate/FRCUserProgram;
+
+

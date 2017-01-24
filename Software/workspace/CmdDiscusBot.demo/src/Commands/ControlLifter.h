@@ -5,14 +5,14 @@
  *      Author: dean
  */
 
-#ifndef SRC_COMMANDS_CONTROLELEVATOR_H_
-#define SRC_COMMANDS_CONTROLELEVATOR_H_
+#ifndef SRC_COMMANDS_CONTROLLIFTER_H_
+#define SRC_COMMANDS_CONTROLLIFTER_H_
 
 #include <CommandBase.h>
 
-class ControlElevator: public CommandBase {
+class ControlLifter: public CommandBase {
 public:
-	ControlElevator();
+	ControlLifter();
 	void Initialize();
 	void Execute();
 	bool IsFinished();
@@ -21,4 +21,4 @@ public:
 
 };
 
-#endif /* SRC_COMMANDS_CONTROLELEVATOR_H_ */
+#endif /* SRC_COMMANDS_CONTROLLIFTER_H_ */

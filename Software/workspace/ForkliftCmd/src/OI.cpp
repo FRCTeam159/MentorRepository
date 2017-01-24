@@ -35,8 +35,8 @@ OI::OI() {
 //    JoystickButton* r1 = new JoystickButton(joy, 12);
 
     // Connect the buttons to commands
-    d_up->WhenPressed(new SetElevatorSetpoint(0.8));
-    d_down->WhenPressed(new SetElevatorSetpoint(-1.0));
+    d_up->WhenPressed(new SetLifterPosition(0.8));
+    d_down->WhenPressed(new SetLifterPosition(-1.0));
 
     //d_right->WhenPressed(new CloseClaw());
     //d_left->WhenPressed(new OpenClaw());

@@ -2,6 +2,13 @@
 #include "Robot.h"
 #include "Assignments.h"
 
+#include <thread>
+
+#include <CameraServer.h>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/core/types.hpp>
+
 #define TARGET_WIDTH 20    // tape pattern width  (inches)
 #define TARGET_HEIGHT 12   // tape pattern height (inches)
 #define CAMERA_HOFFSET 5   // camera horizontal offset (inches)
@@ -16,8 +23,42 @@ std::shared_ptr<Shooter> Robot::shooter;
 std::shared_ptr<Loader> Robot::loader;
 std::shared_ptr<OI> Robot::oi;
 std::shared_ptr<Vision> Robot::vision;
+std::shared_ptr<VisionProcess> Robot::visionprocess;
+
 
 std::unique_ptr<Autonomous> Robot::autonomous;
+
+static void VisionThread() {
+	// Get the USB camera from CameraServer
+	cs::UsbCamera camera = CameraServer::GetInstance()->StartAutomaticCapture();
+	// Set the resolution
+	camera.SetResolution(640, 480);
+
+	// Get a CvSink. This will capture Mats from the Camera
+	cs::CvSink cvSink = CameraServer::GetInstance()->GetVideo();
+	// Setup a CvSource. This will send images back to the Dashboard
+	cs::CvSource outputStream = CameraServer::GetInstance()->
+			PutVideo("Rectangle", 640, 480);
+
+	// Mats are very memory expensive. Lets reuse this Mat.
+	cv::Mat mat;
+
+	while (true) {
+		// Tell the CvSink to grab a frame from the camera and put it
+		// in the source mat.  If there is an error notify the output.
+		if (cvSink.GrabFrame(mat) == 0) {
+			// Send the output the error.
+			outputStream.NotifyError(cvSink.GetError());
+			// skip the rest of the current iteration
+			continue;
+		}
+		// Put a rectangle on the image
+		rectangle(mat, cv::Point(100, 100), cv::Point(400, 400),
+				cv::Scalar(255, 255, 255), 5);
+		// Give the output stream a new image to display
+		outputStream.PutFrame(mat);
+	}
+}
 
 
 void Robot::RobotInit() {
@@ -28,16 +69,22 @@ void Robot::RobotInit() {
 	drivetrain.reset(new DriveTrain());
 	oi.reset(new OI());
     vision.reset(new Vision());
+    visionprocess.reset(new VisionProcess());
 
     vision->SetTargetSpecs(TARGET_WIDTH,TARGET_HEIGHT);
     vision->SetCameraOffsets(CAMERA_HOFFSET,CAMERA_VOFFSET);
     vision->SetCameraSpecs(IMAGE_WIDTH,IMAGE_HEIGHT,FOV);
+
+    visionprocess->Init();
 
 	autonomous.reset(new Autonomous());
 
 	//SmartDashboard::PutData(holder.get());
 	//SmartDashboard::PutData(shooter.get());
 	OI::SetMode(SHOOTING);
+	std::thread visionThread(VisionThread);
+	visionThread.detach();
+
 }
 
 void Robot::AutonomousInit() {

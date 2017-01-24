@@ -213,6 +213,7 @@ void ExecHolder::WaitForBallToLeave() {
 //==========================================================================================
 void ExecHolder::GoToReverseLimit() {
 	Robot::holder->CloseGate();
+
 	if(Robot::holder->IsGateClosed()){
 		DEBUG_PRINT("Gate Closed - Waiting for ball to enter");
 		state=WAIT_FOR_BALL_TO_ENTER;

@@ -78,13 +78,6 @@ double DriveTrain::GetRightPosition() {
 }
 
 void DriveTrain::Reset() {
-//	backLeft.Disable();
-//	backRight.Disable();
-
-	backLeft.Reset();
-	backRight.Reset();
-//	backLeft.Enable();
-//	backRight.Enable();
-
-
+	backLeft.SetPosition(0.0);
+	backRight.SetPosition(0.0);
 }

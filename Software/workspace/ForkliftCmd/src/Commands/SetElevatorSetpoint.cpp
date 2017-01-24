@@ -2,13 +2,13 @@
 #include "Robot.h"
 #include <math.h>
 
-SetElevatorSetpoint::SetElevatorSetpoint(double setpoint) : Command("SetElevatorSetpoint") {
+SetLifterPosition::SetLifterPosition(double setpoint) : Command("SetElevatorSetpoint") {
 	this->setpoint = setpoint;
 	Requires(Robot::elevator);
 }
 
 // Called just before this Command runs the first time
-void SetElevatorSetpoint::Initialize() {
+void SetLifterPosition::Initialize() {
 	Robot::elevator->SetSetpoint(setpoint);
 	std::cout << "SetElevatorSetpoint:"<< this->setpoint <<std::endl;
 
@@ -16,16 +16,16 @@ void SetElevatorSetpoint::Initialize() {
 }
 
 // Called repeatedly when this Command is scheduled to run
-void SetElevatorSetpoint::Execute() {}
+void SetLifterPosition::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
-bool SetElevatorSetpoint::IsFinished() {
+bool SetLifterPosition::IsFinished() {
 	return Robot::elevator->OnTarget();
 }
 
 // Called once after isFinished returns true
-void SetElevatorSetpoint::End() {}
+void SetLifterPosition::End() {}
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void SetElevatorSetpoint::Interrupted() {}
+void SetLifterPosition::Interrupted() {}

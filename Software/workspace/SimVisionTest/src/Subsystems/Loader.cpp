@@ -200,7 +200,7 @@ bool Loader::IsInitialized() {
 double Loader::PIDGet() {
 	return -accel.GetAngle();
 }
-void Loader::PIDWrite(float output){
+void Loader::PIDWrite(double output){
 	liftMotor.PIDWrite(output);
 }
 

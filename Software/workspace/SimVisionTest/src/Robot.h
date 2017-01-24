@@ -17,6 +17,7 @@
 #include <Subsystems/Shooter.h>
 #include <Subsystems/Loader.h>
 #include <Subsystems/Vision.h>
+#include <Subsystems/VisionProcess.h>
 
 #include "OI.h"
 
@@ -38,6 +39,7 @@ public:
 	static std::shared_ptr<Loader> loader;
 	static std::shared_ptr<OI> oi;
     static std::shared_ptr<Vision> vision;
+    static std::shared_ptr<VisionProcess> visionprocess;
 
 	static std::unique_ptr<Autonomous> autonomous;
 	static void SetMode(int m);

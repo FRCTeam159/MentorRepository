@@ -8,11 +8,11 @@
  * the tolerance, but leaves the PID loop running to maintain the position. Other
  * commands using the elevator should make sure they disable PID!
  */
-class SetElevatorSetpoint: public Command {
+class SetLifterPosition: public Command {
 private:
 	double setpoint;
 public:
-	SetElevatorSetpoint(double setpoint);
+	SetLifterPosition(double setpoint);
 	void Initialize();
 	void Execute();
 	bool IsFinished();

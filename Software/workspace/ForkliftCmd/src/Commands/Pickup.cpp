@@ -6,5 +6,5 @@
 
 Pickup::Pickup() : CommandGroup("Pickup") {
 	AddSequential(new CloseClaw());
-	AddSequential(new SetElevatorSetpoint(0.25));
+	AddSequential(new SetLifterPosition(0.25));
 }

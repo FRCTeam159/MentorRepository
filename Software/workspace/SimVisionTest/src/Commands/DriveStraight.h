@@ -34,7 +34,7 @@ public:
 	public:
 		AngleControl(double P, double I, double D);
 		double PIDGet();
-		void PIDWrite(float d);
+		void PIDWrite(double d);
 		bool AtTarget();
 		void Initialize(double d);
 		void End();
@@ -48,7 +48,7 @@ public:
 	public:
 		DistanceControl(double P, double I, double D);
 		double PIDGet();
-		void PIDWrite(float d);
+		void PIDWrite(double d);
 		bool AtTarget();
 		void Initialize(double d);
 		void End();

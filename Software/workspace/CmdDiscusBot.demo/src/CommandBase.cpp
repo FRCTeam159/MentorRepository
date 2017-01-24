@@ -6,7 +6,7 @@
 // Initialize a single static instance of all of your subsystems to NULL
 std::unique_ptr<OI> CommandBase::oi;
 std::shared_ptr<DriveTrain> CommandBase::drivetrain;
-std::shared_ptr<Elevator> CommandBase::elevator;
+std::shared_ptr<Lifter> CommandBase::lifter;
 std::shared_ptr<Shooter> CommandBase::shooter;
 
 CommandBase::CommandBase(const std::string &name) :
@@ -26,7 +26,7 @@ void CommandBase::init()
 	// line should be repeated for each subsystem in the project.
 	oi.reset(new OI());
 	drivetrain.reset(new DriveTrain());
-	elevator.reset(new Elevator());
+	lifter.reset(new Lifter());
 	shooter.reset(new Shooter());
 
 }

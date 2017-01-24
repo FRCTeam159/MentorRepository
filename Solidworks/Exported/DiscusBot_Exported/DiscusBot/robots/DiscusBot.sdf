@@ -70,7 +70,7 @@
         <angular>0</angular>
       </velocity_decay>
       <inertial>
-        <mass>0.01</mass>
+        <mass>0.02</mass>
         <pose>0 0 0 0 0 0</pose>
         <inertia>
           <ixx>0.0139000286494454</ixx>
@@ -118,15 +118,15 @@
     <joint name="Chassis-Lifter" type="prismatic">
       <parent>Chassis</parent>
       <child>Lifter</child>
-      <pose>0.146061959067922 4.44089209850063E-16 -0.244616140279528 0 0 1.5707963267949</pose>
+      <pose>0.146061959067922 0.3 -0.244616140279528 0 0 1.5707963267949</pose>
       <axis>
-        <xyz>1 2.22044604925031E-16 0</xyz>
+        <xyz>1 0 0</xyz>
         <dynamics>
           <damping>0.5</damping>
           <friction>0.5</friction>
         </dynamics>
         <limit>
-          <upper>1</upper>
+          <upper>1.5</upper>
           <lower>0</lower>
           <effort>100</effort>
         </limit>
@@ -414,7 +414,7 @@
     </joint>
     <plugin name="Chassis_gyro" filename="libgyro.so">
       <link>Chassis</link>
-      <topic>/gazebo/frc/simulator/analog/1</topic>
+      <topic>/gazebo/frc/simulator/analog/3</topic>
       <units>degrees</units>
       <axis>yaw</axis>
     </plugin>
@@ -425,9 +425,26 @@
     </plugin>
     <plugin name="Chassis-Lifter_encoder" filename="libencoder.so">
       <joint>Chassis-Lifter</joint>
-      <topic>/gazebo/frc/simulator/dio/0/0</topic>
+      <topic>/gazebo/frc/simulator/dio/9/10</topic>
       <units>degrees</units>
     </plugin>
+    <plugin name="Chassis-Lifter_intlimit" filename="liblimit_switch.so">
+      <joint>Chassis-Lifter</joint>
+      <topic>/gazebo/frc/simulator/dio/10</topic>
+      <type>internal</type>
+      <units>degrees</units>
+      <min>1.1</min>
+      <max>1.2</max>
+    </plugin>
+    <plugin name="Chassis-Lifter_intlimit" filename="liblimit_switch.so">
+      <joint>Chassis-Lifter</joint>
+      <topic>/gazebo/frc/simulator/dio/9</topic>
+      <type>internal</type>
+      <units>degrees</units>
+      <min>0.0</min>
+      <max>0.05</max>
+    </plugin>
+
     <plugin name="Chassis-LFWheel_motor" filename="libdc_motor.so">
       <joint>Chassis-LFWheel</joint>
       <topic>/gazebo/frc/simulator/pwm/1</topic>

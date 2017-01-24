@@ -58,7 +58,7 @@ double Turn::PIDGet()
 #endif
 	return d;
 }
-void Turn::PIDWrite(float d)
+void Turn::PIDWrite(double d)
 {
 #ifdef DEBUG_COMMAND
 	std::cout << "Turn::PIDWrite("<<d<<")"<<std::endl;

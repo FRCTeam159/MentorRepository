@@ -155,7 +155,7 @@ void Notifier::InsertInQueue(bool reschedule)
 			m_queued = true;
 			// BUG 1: wpi version doesn't break here so it keeps inserting in front of all elements
 			// with expiration times > current element
-			break;
+			break;	
 		}
 	}
 

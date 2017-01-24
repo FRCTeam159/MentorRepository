@@ -39,7 +39,14 @@ bool Turn::IsFinished() {
 		std::cout << "Turn Error:  Timeout expired"<<std::endl;
 		return true;
 	}
-	return pid.OnTarget();
+	if( pid.OnTarget()){
+		double d=Robot::drivetrain->GetHeading();
+#ifdef DEBUG_COMMAND
+		std::cout<< "Turn OnTarget target="<<target<<" angle="<<d<<std::endl;
+#endif
+		return true;
+	}
+	return false;
 }
 
 void Turn::End() {
@@ -57,7 +64,7 @@ double Turn::PIDGet()
 #endif
 	return d;
 }
-void Turn::PIDWrite(float d)
+void Turn::PIDWrite(double d)
 {
 #ifdef DEBUG_COMMAND
 	std::cout << "Turn::PIDWrite("<<d<<")"<<std::endl;

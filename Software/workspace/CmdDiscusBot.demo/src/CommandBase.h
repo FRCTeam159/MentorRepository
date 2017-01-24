@@ -1,12 +1,12 @@
 #ifndef COMMAND_BASE_H
 #define COMMAND_BASE_H
 
+#include <Subsystems/Lifter.h>
 #include <string>
 #include "Commands/Command.h"
 #include "OI.h"
 #include "WPILib.h"
 #include "Subsystems/DriveTrain.h"
-#include "Subsystems/Elevator.h"
 #include "Subsystems/Shooter.h"
 
 /**
@@ -46,7 +46,7 @@ public:
 	// Create a single static instance of all of your subsystems
 	static std::unique_ptr<OI> oi;
 	static std::shared_ptr<DriveTrain> drivetrain;
-	static std::shared_ptr<Elevator> elevator;
+	static std::shared_ptr<Lifter> lifter;
 	static std::shared_ptr<Shooter> shooter;
 
 };

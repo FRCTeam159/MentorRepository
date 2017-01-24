@@ -95,7 +95,7 @@ double Shooter::PIDGet() {
 	return accel.GetAngle();
 }
 
-void Shooter::PIDWrite(float output){
+void Shooter::PIDWrite(double output){
 #ifdef DEBUG_ANGLE_PID
 	if(!angle_pid->OnTarget())
 	std::cout<<"Shooter::PIDWrite target:"

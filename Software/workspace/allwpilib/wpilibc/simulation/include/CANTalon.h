@@ -134,7 +134,6 @@ protected:
     virtual void SetVelocity(double value);
     virtual bool OnTarget();
     virtual double GetTargetError();
-    virtual double GetSetpoint();
     virtual void AddEncoder();
     virtual void AddLowerLimit();
     virtual void AddUpperLimit();
@@ -237,6 +236,7 @@ public:
 
     //virtual void Set(double value);
     virtual void SetSetpoint(double value);
+    virtual double GetSetpoint();
 
     virtual double GetTargetCorrection();
 

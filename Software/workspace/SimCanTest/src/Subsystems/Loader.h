@@ -9,6 +9,8 @@
 #define SRC_SUBSYSTEMS_LOADER_H_
 
 #include "WPILib.h"
+#include "CANTalon.h"
+
 
 enum { ROLLERS_OFF,ROLLERS_FORWARD,ROLLERS_REVERSE};
 
@@ -31,7 +33,7 @@ class Loader: public Subsystem, public PIDSource, public PIDOutput {
 	void Disable();
 
 	double PIDGet();
-	void PIDWrite(float output);
+	void PIDWrite(double output);
 
 	void InitDefaultCommand();
 	void SpinRollers();

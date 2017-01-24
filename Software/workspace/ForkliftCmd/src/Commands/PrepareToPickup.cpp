@@ -6,5 +6,5 @@
 
 PrepareToPickup::PrepareToPickup() : CommandGroup("PrepareToPickup") {
 	AddParallel(new OpenClaw());
-	AddSequential(new SetElevatorSetpoint(0));
+	AddSequential(new SetLifterPosition(0));
 }

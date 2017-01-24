@@ -31,7 +31,7 @@ public:
     public:
         AdjustVAngle(double P, double I, double D);
         double PIDGet();
-        void PIDWrite(float d);
+        void PIDWrite(double d);
         bool AtTarget();
         void Initialize();
         void End();
@@ -42,7 +42,7 @@ public:
     public:
         AdjustHAngle(double P, double I, double D);
         double PIDGet();
-        void PIDWrite(float d);
+        void PIDWrite(double d);
         bool AtTarget();
         void Initialize();
         void End();

@@ -19,11 +19,11 @@ void Robot::AutonomousPeriodic() {
 }
 
 void Robot::TeleopInit() {
+	autonomousCommand->Cancel();
 	std::cout << "Starting Teleop" << std::endl;
 }
 
 void Robot::TeleopPeriodic() {
-	autonomousCommand->Cancel();
 	Scheduler::GetInstance()->Run();
 }
 
@@ -33,7 +33,10 @@ void Robot::TestPeriodic() {
 
 void Robot::DisabledInit(){
 	std::cout << "DisabledInit" << std::endl;
+	autonomousCommand->Cancel();
 	CommandBase::drivetrain.get()->Reset();
+	CommandBase::lifter.get()->Reset();
+
 }
 
 START_ROBOT_CLASS(Robot)

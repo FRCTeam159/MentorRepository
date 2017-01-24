@@ -13,14 +13,15 @@ UpdateVisionData::UpdateVisionData() {
 }
 
 void UpdateVisionData::Initialize() {
-    Robot::vision.get()->Update();
+    //Robot::vision.get()->Update();
 }
 
 bool UpdateVisionData::IsFinished() {
-    return true;
+    return false;
 }
 
 void UpdateVisionData::Execute() {
+    Robot::vision.get()->Update();
 }
 
 void UpdateVisionData::End() {

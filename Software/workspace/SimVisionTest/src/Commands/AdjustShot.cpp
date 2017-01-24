@@ -122,7 +122,7 @@ double AdjustShot::AdjustVAngle::PIDGet() {
     return Robot::vision->GetTargetVerticalAngle();
 }
 
-void AdjustShot::AdjustVAngle::PIDWrite(float d) {
+void AdjustShot::AdjustVAngle::PIDWrite(double d) {
 #ifndef HONLY
     double current=Robot::shooter->GetTargetAngle();
     double target=current-d;
@@ -176,7 +176,7 @@ double AdjustShot::AdjustHAngle::PIDGet() {
     return Robot::vision->GetTargetHorizontalAngle();
 }
 
-void AdjustShot::AdjustHAngle::PIDWrite(float d) {
+void AdjustShot::AdjustHAngle::PIDWrite(double d) {
 #ifdef DEBUG_COMMAND
     double ha=Robot::vision->GetTargetHorizontalAngle();
     double err=pid.GetError();//Robot::vision->GetTargetVerticalAngle();

@@ -97,7 +97,7 @@ double Shooter::PIDGet() {
 	return accel.GetAngle();
 }
 
-void Shooter::PIDWrite(float output){
+void Shooter::PIDWrite(double output){
 #ifdef DEBUG_ANGLE_PID
 	if(!angle_pid->OnTarget())
 	std::cout<<"Shooter::PIDWrite target:"
@@ -212,8 +212,6 @@ void Shooter::DisableFlywheels(){
 	rightFWMotor.Disable();
 	leftFWMotor.Reset();
 	rightFWMotor.Reset();
-	leftFWMotor.SetSetpoint(0.0);
-	rightFWMotor.SetSetpoint(0.0);
 	Log();
 }
 
@@ -254,7 +252,7 @@ void Shooter::EnableAngleController(bool b) {
         angle_pid->Disable();
 }
 
-void Shooter::SetAngle(float output) {
+void Shooter::SetAngle(double output) {
     angleMotor.PIDWrite(output);
 }
 

@@ -20,7 +20,7 @@ Autonomous::Autonomous() : CommandGroup("Autonomous") {
 	AddSequential(new CloseGate()); // hold the ball
 	AddSequential(new OpenGate()); // pinch the ball
 	AddSequential(new DriveStraight(7,0)); // go forward
-	AddSequential(new Turn(-50)); // turn
+	AddSequential(new Turn(-50.0)); // turn
 	AddSequential(new StepShooterAngle(36)); // set angle
 	AddSequential(new ShootBall()); // shoot
 	AddSequential(new FullStop()); // end autonomous

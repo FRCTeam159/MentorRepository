@@ -155,7 +155,7 @@ bool Holder::FindZero() {
 		if(gateMotor.IsRevLimitSwitchClosed()){
 			found_zero=true;
 			gateMotor.ConfigLimitMode(CANTalon::kLimitMode_SoftPositionLimits);
-			gateMotor.Reset();
+			gateMotor.SetPosition(0);
 			gateMotor.ConfigSoftPositionLimits(FORWARDLIMITPOSITION,REVERSELIMITPOSITION);
 			return true;
 		}

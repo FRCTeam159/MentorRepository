@@ -53,6 +53,7 @@ int Vision::GetTargets() {
         return ntargets;
     }
     ClearTargets();
+
     ntargets=size;
     for(int i=0;i<ntargets;i++){
         targets[i].area=arr1[i];
@@ -151,6 +152,7 @@ void Vision::SetCameraOffsets(double h, double v) {
 }
 
 void Vision::Reset() {
+	ClearTargets();
     SetAdjusting(false);
     SetAutoTargeting(false);
     SetOnTarget(false);
@@ -163,8 +165,9 @@ void Vision::PrintTargetOffsets() {
 void Vision::Log() {
     SmartDashboard::PutBoolean("Target Acquired", OnTarget());
     SmartDashboard::PutBoolean("AutoTargeting", GetAutoTargeting());
-    SmartDashboard::PutBoolean("Targets Available", ntargets?true:false);
+    SmartDashboard::PutNumber("Targets Available", ntargets);
     SmartDashboard::PutBoolean("Adjusting Shot", Adjusting());
+    //PrintRawTargetData();
 }
 
 void Vision::AutonomousInit() {

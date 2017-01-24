@@ -1,2 +1,3 @@
-cd ~/Robotics/MentorRepository/Vision/GRIP/ui/build/install/ui/bin
-ui ~/Robotics/MentorRepository/Vision/GRIP-projects/gazebo-2016-field-16.grip
+#cd ~/Robotics/MentorRepository/Vision/GRIP/ui/build/install/ui/bin
+#ui ~/Robotics/MentorRepository/Vision/GRIP-projects/gazebo-2016-field-16.grip
+/opt/GRIP/GRIP -f ~/Robotics/MentorRepository/Vision/GRIP-projects/gazebo-2016-field-16.grip

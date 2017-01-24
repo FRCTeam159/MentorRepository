@@ -1,5 +1,5 @@
-#ifndef Elevator_H
-#define Elevator_H
+#ifndef Lifter_H
+#define Lifter_H
 
 #include "WPILib.h"
 
@@ -7,22 +7,24 @@
  * The elevator subsystem uses PID to go to a given height. Unfortunately, in it's current
  * state PID values for simulation are different than in the real world do to minor differences.
  */
-class Elevator : public Subsystem {
+class Lifter : public Subsystem {
 private:
-   CANTalon *motor;
-   double speed;
-   double setpoint;
+   CANTalon motor;
+   double speed=1.0;
+   bool found_zero=false;
+   bool at_rev_limit=false;
+   bool at_fwd_limit=false;
+
 public:
-    Elevator();
+    Lifter();
     void InitDefaultCommand();
 
-	/**
-	 * The log method puts interesting information to the SmartDashboard.
-	 */
     void Log();
     void SetSpeed(double f);
-    void SetSetpoint(double s);
-
+    bool FindZero();
+    bool FoundZero() { return found_zero;}
+    void Reset();
+    double GetPosition();
 };
 
 #endif

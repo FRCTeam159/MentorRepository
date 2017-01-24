@@ -8,6 +8,8 @@
 #ifndef SRC_SUBSYSTEMS_HOLDER_H_
 #define SRC_SUBSYSTEMS_HOLDER_H_
 #include "WPILib.h"
+#include "CANTalon.h"
+
 
 class Holder: public Subsystem {
 	CANTalon gateMotor;

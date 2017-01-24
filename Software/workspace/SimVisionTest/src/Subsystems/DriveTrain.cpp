@@ -134,9 +134,10 @@ void DriveTrain::SetDeadband(double x, double y) {
 
 void DriveTrain::SetDistance(double d){
 	target_distance=d;
-	left_motor.SetPosition(d);
-	right_motor.SetPosition(d);
+	left_motor.SetSetpoint(d);
+	right_motor.SetSetpoint(d);
 }
+
 
 void DriveTrain::Turn(double d){
 	left_motor.Set(d);
@@ -158,6 +159,7 @@ void DriveTrain::Drive(double l,double r){
 void DriveTrain::Reset() {
 	right_motor.Reset();
 	left_motor.Reset();
+	gyro.Reset();
 }
 void DriveTrain::Enable() {
 	right_motor.Enable();

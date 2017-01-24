@@ -23,7 +23,7 @@ public:
 	void Interrupted() { End();}
 
 	double PIDGet();
-	void PIDWrite(float d);
+	void PIDWrite(double d);
 
 };
 

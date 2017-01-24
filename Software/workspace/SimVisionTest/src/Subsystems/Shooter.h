@@ -9,6 +9,7 @@
 #define SRC_SUBSYSTEMS_SHOOTER_H_
 
 #include "WPILib.h"
+#include "CANTalon.h"
 
 class Shooter: public Subsystem , public PIDSource, public PIDOutput {
 	CANTalon angleMotor;
@@ -64,8 +65,8 @@ public:
 	void Reset();
     double PIDGet();
 
-	void PIDWrite(float output);
-    void SetAngle(float output);
+	void PIDWrite(double output);
+    void SetAngle(double output);
 
 	void SetMaxAngleError(double d);
     void SetDefaultMaxAngleError();
