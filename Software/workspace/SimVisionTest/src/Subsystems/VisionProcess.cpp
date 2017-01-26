@@ -129,7 +129,7 @@ void VisionProcess::process(cv::Mat source){
 	std::vector<std::vector<cv::Point> > filtered_hulls;
 	filterContours(hulls, filterContoursMinArea, filterContoursMinPerimeter, filterContoursMinWidth, filterContoursMaxWidth, filterContoursMinHeight, filterContoursMaxHeight, filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices, filterContoursMinRatio, filterContoursMaxRatio, filtered_hulls);
 
-	findRectangles(filtered_hulls, returnRectangles);
+	findRectangles(filtered_hulls, returnRectangles);CameraServer
 }
 /**
  * Softens an image using one of several filters.
