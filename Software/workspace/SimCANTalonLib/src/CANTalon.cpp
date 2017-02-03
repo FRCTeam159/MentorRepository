@@ -57,13 +57,42 @@ double CANTalon::GetTargetError() {
 }
 
 //======== Talon functions ===================
-void CANTalon::Set(double speed) {
-    SetSpeed(speed);
+void CANTalon::Set(double val) {
+	switch (control_mode) {
+	default:
+	case kFollower:
+		break;
+	case kPercentVbus:
+		val=inverted?-val:val;
+		impl->Set(val);
+		break;
+	case kSpeed:
+		//val=inverted?-val:val;
+		SetSetpoint(val);
+		break;
+	case kPosition:
+		SetSetpoint(val);
+		break;
+	}
+   // SetVoltage(speed);
 }
-double CANTalon::Get() const {
+double CANTalon::Get() const{
 	double val=impl->Get();
-	val=val>1?1.0:val;
-	val=val<-1?-1.0:val;
+	switch (control_mode) {
+	default:
+	case kFollower:
+		return 0;
+		break;
+	case kPercentVbus:
+		val=impl->Get();
+		break;
+	case kSpeed:
+		val=GetSpeed();
+		break;
+	case kPosition:
+		val=GetPosition();
+		break;
+	}
     return val;
 }
 //========= Controller Interface functions ===================
@@ -100,9 +129,7 @@ void CANTalon::GetDescription(std::ostringstream& desc) const {
     desc << "CAN " << GetChannel();
 }
 //========= PWM functions ===================
-void CANTalon::SetSpeed(double val) {
-	val=val>1?1.0:val;
-	val=val<-1?-1.0:val;
+void CANTalon::SetVoltage(double val) {
     impl->Set(val);
     m_safetyHelper->Feed();
 }
@@ -115,7 +142,7 @@ void CANTalon::ValueChanged(ITable* source, llvm::StringRef key,
         std::shared_ptr<nt::Value> value, bool isNew) {
     if (!value->IsDouble())
         return;
-    SetSpeed(value->GetDouble());
+    SetVoltage(value->GetDouble());
 }
 std::string CANTalon::GetSmartDashboardType() const {
     return "Speed Controller";
@@ -129,12 +156,12 @@ void CANTalon::UpdateTable() {
 }
 //========== LiveWindowSendable Interface functions ===========
 void CANTalon::StartLiveWindowMode() {
-    SetSpeed(0);
+    SetVoltage(0);
     if (m_table != nullptr)
         m_table->AddTableListener("Value", this, true);
 }
 void CANTalon::StopLiveWindowMode() {
-    SetSpeed(0);
+    SetVoltage(0);
     if (m_table != nullptr)
         m_table->RemoveTableListener(this);
 }
@@ -207,7 +234,7 @@ void CANTalon::PIDWrite(double output) {
     if (IsEnabled() && (debug & 1))
         std::cout << id << " PIDWrite: target:" << GetSetpoint() << " error:"
                 << GetTargetError() << " correction:" << output << std::endl;
-    SetSpeed(output);
+    SetVoltage(output);
     m_safetyHelper->Feed();
 }
 
@@ -279,14 +306,14 @@ void CANTalon::SetPosition(double value) {
 }
 
 // in simulation rate is in degrees/second
-double CANTalon::GetSpeed() {
+double CANTalon::GetSpeed() const {
     if (encoder)
         return encoder->GetRate();
     else
         return 0;
 }
 
-double CANTalon::GetPosition() {
+double CANTalon::GetPosition() const {
     if (encoder)
         return encoder->GetDistance();
     else {

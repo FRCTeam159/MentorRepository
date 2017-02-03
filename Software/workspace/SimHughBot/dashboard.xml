@@ -1,0 +1,42 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="HorizontalAngle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="240" y="288"/>
+		<width>173</width>
+	</widget>
+	<widget field="showColorThreshold" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
+		<location x="49" y="351"/>
+	</widget>
+	<widget field="Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="286" y="320"/>
+		<width>134</width>
+	</widget>
+	<widget field="showGoodRects" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
+		<location x="79" y="325"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="0" y="0"/>
+		<width>342</width>
+		<height>278</height>
+		<property name="Camera Choice" value="Rectangle"/>
+	</static-widget>
+	<widget field="Rectangles" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="286"/>
+	</widget>
+</dashboard>
+<live-window>
+</live-window>
+	<hidden field="HorizontalError"/>
+	<hidden field="TargetCenter.x"/>
+	<hidden field="TargetCenter.y"/>
+	<hidden field="SaturationMax"/>
+	<hidden field="HueMin"/>
+	<hidden field="TargetWidth"/>
+	<hidden field="HorizontalOffset"/>
+	<hidden field="Auto Modes"/>
+	<hidden field="ValueMin"/>
+	<hidden field="TargetHeight"/>
+	<hidden field="HueMax"/>
+	<hidden field="SaturationMin"/>
+	<hidden field="ValueMax"/>
+</xml>

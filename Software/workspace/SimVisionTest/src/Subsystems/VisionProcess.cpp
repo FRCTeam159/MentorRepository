@@ -43,14 +43,13 @@ void VisionProcess::VisionThread(){
 
 	outputStream=CameraServer::GetInstance()->PutVideo("Rectangle", 320, 240);
 	while (true) {//
-		if(!vcap.read(image)) {
+		if(!vcap.read(image))
 			 std::cout << "No frame" << std::endl;
-		}
 		else{
 			process(image);
 			std::vector<cv::Rect> rects=*getRectangles();
 			bool showrects=SmartDashboard::GetBoolean("ShowTargets", false);
-				if(showrects){
+			if(showrects){
 				for (unsigned int i = 0; i < rects.size(); i++) {
 					cv::Rect r= rects [i];
 					rectangle(image, r.tl(), r.br(), cv::Scalar(0, 255, 255), 1);
@@ -129,7 +128,7 @@ void VisionProcess::process(cv::Mat source){
 	std::vector<std::vector<cv::Point> > filtered_hulls;
 	filterContours(hulls, filterContoursMinArea, filterContoursMinPerimeter, filterContoursMinWidth, filterContoursMaxWidth, filterContoursMinHeight, filterContoursMaxHeight, filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices, filterContoursMinRatio, filterContoursMaxRatio, filtered_hulls);
 
-	findRectangles(filtered_hulls, returnRectangles);CameraServer
+	findRectangles(filtered_hulls, returnRectangles);
 }
 /**
  * Softens an image using one of several filters.

@@ -43,7 +43,7 @@ class CANTalon:
 public:
     // Limited subset of enums from CANTalon and CANSpeedController
     enum ControlMode {
-        kPercentVbus, kSpeed, kPosition, UnsetControlMode
+        kPercentVbus, kSpeed, kPosition, kFollower, UnsetControlMode
     };
 
     enum FeedbackDevice {
@@ -229,10 +229,10 @@ public:
 
     virtual double GetVoltage();
 
-    virtual void SetSpeed(double value);
-    virtual double GetSpeed();
+    virtual void SetVoltage(double value);
+    virtual double GetSpeed() const;
     virtual void SetPosition(double value);
-    virtual double GetPosition();
+    virtual double GetPosition()  const;
 
     //virtual void Set(double value);
     virtual void SetSetpoint(double value);

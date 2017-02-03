@@ -1,0 +1,14 @@
+rm -fr /tmp/shooter-camera
+mkdir  /tmp/shooter-camera
+cd ~/Robotics/MentorRepository/Software/workspace/SimHughBot;
+roxterm --title="Gazebo Simulation" --tab-name=gazebo -e gazebo-2017-Robot-field;
+sleep 2;
+roxterm --tab --tab-name=sim_ds -e sim_ds;
+roxterm --tab --tab-name=mjpg_streamer -e start_mjpg-streamer;
+sleep 2;
+roxterm --tab --tab-name=FRCUserProgram -e linux_simulate/FRCUserProgram;
+roxterm --tab --tab-name=SmartDashboard -e start_smartdashboard;
+
+
+
+

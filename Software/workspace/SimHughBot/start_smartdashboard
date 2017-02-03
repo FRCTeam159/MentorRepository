@@ -1,0 +1,3 @@
+cp dashboard.xml ~/wpilib
+java -jar ~/wpilib/tools/SmartDashboard.jar -ip localhost
+
