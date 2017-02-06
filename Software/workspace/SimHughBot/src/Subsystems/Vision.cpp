@@ -6,8 +6,10 @@
 #define RPD(x) (x)*2*M_PI/360
 #define IMAGE_WIDTH 320
 #define IMAGE_HEIGHT 240
-#define FOV 60.0
-#define HOFFSET 0 // camera offset from robot center
+#define FOV 38 //60.0
+#define ASPECT_RATIO (4.0/3.0)
+
+#define HOFFSET 5 // camera offset from robot center
 
 
 using namespace frc;

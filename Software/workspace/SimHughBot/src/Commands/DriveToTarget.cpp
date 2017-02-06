@@ -7,9 +7,9 @@
 #define D 0
 
 #define SCALE 0.1
-#define MIN_DISTANCE 9
+#define MIN_DISTANCE 10
 
-#define DRIVE_TIMEOUT 0.1
+#define DRIVE_TIMEOUT 0.2
 
 DriveToTarget::DriveToTarget() : CommandBase("DriveToTarget"),
     pid(P,I,D,this,this)
@@ -48,9 +48,9 @@ bool DriveToTarget::IsFinished() {
 	}
 	visionSubsystem->GetTargetInfo(target);
 
-	double d=visionSubsystem->GetTargetDistance();
+	double d=GetDistance();
 	int ntargets=visionSubsystem->GetNumTargets();
-	if(ntargets==0 || d<MIN_DISTANCE)
+	if(ntargets==0 || d<=MIN_DISTANCE)
 		return true;
 	return false;
 }
@@ -72,11 +72,23 @@ double DriveToTarget::PIDGet() {
 	return visionSubsystem->GetTargetDistance();
 }
 
+#define DEBUG_COMMAND
+
+double DriveToTarget::GetDistance() {
+	double d1=visionSubsystem->GetTargetDistance();
+	double d2=ultrasonicSubsystem->GetDistance();
+	double d=d1;
+	if(d2>5 && d1<20)
+		d=d2;
+    return d;
+}
+
 void DriveToTarget::PIDWrite(double err) {
-	double d=visionSubsystem->GetTargetDistance();
+	double d=GetDistance();
+
 	double df=(d-MIN_DISTANCE)/(distance-MIN_DISTANCE); // fraction of starting distance remaining
-	double afact=3*(1-df)+1; // bias angle correction towards end of travel
-	double a=-0.001*afact*afact*visionSubsystem->GetTargetAngle();
+	double afact=(1-df)+0.2; // bias angle correction towards end of travel
+	double a=-0.1*pow(afact,4.0)*visionSubsystem->GetTargetAngle();
     double e=-err;
 	double m1=e+a;
 	double m2=e-a;
@@ -84,6 +96,8 @@ void DriveToTarget::PIDWrite(double err) {
 	double scale=mx>1?1/mx:1;
 	double l=m2*scale;
 	double r=m1*scale;
-	cout <<"d:"<<d<<" a:"<<a<<" e:"<<e<<" l:"<<l<<" r:"<<r<<endl;
+#ifdef DEBUG_COMMAND
+	cout<<" dist:"<<d <<" a:"<<a<<" e:"<<e<<" l:"<<l<<" r:"<<r<<endl;
+#endif
 	driveTrain->TankDrive(l,r);
 }

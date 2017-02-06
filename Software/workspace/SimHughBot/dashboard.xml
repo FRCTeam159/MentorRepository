@@ -1,5 +1,8 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="UltraSonicDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="376"/>
+	</widget>
 	<widget field="HorizontalAngle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="240" y="288"/>
 		<width>173</width>
@@ -26,16 +29,11 @@
 </dashboard>
 <live-window>
 </live-window>
-	<hidden field="HorizontalError"/>
-	<hidden field="TargetCenter.x"/>
-	<hidden field="TargetCenter.y"/>
 	<hidden field="SaturationMax"/>
 	<hidden field="HueMin"/>
-	<hidden field="TargetWidth"/>
 	<hidden field="HorizontalOffset"/>
 	<hidden field="Auto Modes"/>
 	<hidden field="ValueMin"/>
-	<hidden field="TargetHeight"/>
 	<hidden field="HueMax"/>
 	<hidden field="SaturationMin"/>
 	<hidden field="ValueMax"/>
