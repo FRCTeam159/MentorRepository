@@ -15,15 +15,15 @@
         <angular>0</angular>
       </velocity_decay>
       <inertial>
-        <mass>1.06856705498057</mass>
+        <mass>2.06856705498057</mass>
         <pose>0 0 0 0 0 0</pose>
         <inertia>
-          <ixx>0.00552336008596137</ixx>
-          <ixy>1.86372756674203E-06</ixy>
-          <ixz>5.32079452234155E-07</ixz>
-          <iyy>0.00552841556056372</iyy>
-          <iyz>1.61818811414474E-06</iyz>
-          <izz>0.0105897549843948</izz>
+          <ixx>0.02</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.02</iyy>
+          <iyz>0</iyz>
+          <izz>0.02</izz>
         </inertia>
       </inertial>
       <collision name="Body_collision">
@@ -35,15 +35,18 @@
           </mesh>
         </geometry>
         <surface>
-          <contact>
-            <ode />
-          </contact>
           <friction>
             <ode>
               <mu>0</mu>
               <mu2>0</mu2>
             </ode>
           </friction>
+		  <contact>
+			<ode>
+			  <kd>1e4</kd>
+			  <kp>2e7</kp>
+			</ode>
+		  </contact>
         </surface>
       </collision>
       <visual name="Body_visual">

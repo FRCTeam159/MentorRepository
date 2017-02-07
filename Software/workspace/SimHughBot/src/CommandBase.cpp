@@ -43,5 +43,6 @@ void CommandBase::TeleopInit() {
 void CommandBase::DisabledInit() {
 	driveTrain->Disable();
 	ultrasonicSubsystem->Disable();
+	gearSubsystem->Close();
 
 }

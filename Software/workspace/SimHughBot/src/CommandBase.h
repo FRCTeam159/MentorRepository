@@ -21,6 +21,7 @@ using namespace std;
  * CommandBase::exampleSubsystem
  */
 class CommandBase: public frc::Command {
+
 public:
 	CommandBase(const std::string& name);
 	CommandBase() = default;

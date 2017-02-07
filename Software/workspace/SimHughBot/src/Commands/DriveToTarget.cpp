@@ -59,6 +59,7 @@ bool DriveToTarget::IsFinished() {
 void DriveToTarget::End() {
 	pid.Disable();
 	driveTrain->Disable();
+	gearSubsystem->Open();
     std::cout << "DriveToTarget End" << std::endl;
 }
 
@@ -78,7 +79,7 @@ double DriveToTarget::GetDistance() {
 	double d1=visionSubsystem->GetTargetDistance();
 	double d2=ultrasonicSubsystem->GetDistance();
 	double d=d1;
-	if(d2>5 && d1<20)
+	if(d1<18)
 		d=d2;
     return d;
 }

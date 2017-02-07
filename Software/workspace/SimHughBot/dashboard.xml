@@ -1,21 +1,31 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="GearPlateOpen" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="353" y="327"/>
+		<width>185</width>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.MjpgStreamViewerImpl">
+		<location x="348" y="12"/>
+		<width>311</width>
+		<height>284</height>
+		<property name="MJPG Server URL" value=" http://localhost:5004/?action=stream"/>
+	</static-widget>
 	<widget field="UltraSonicDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="376"/>
+		<location x="8" y="347"/>
 	</widget>
 	<widget field="HorizontalAngle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="240" y="288"/>
 		<width>173</width>
 	</widget>
 	<widget field="showColorThreshold" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
-		<location x="49" y="351"/>
+		<location x="169" y="317"/>
 	</widget>
 	<widget field="Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="286" y="320"/>
+		<location x="292" y="349"/>
 		<width>134</width>
 	</widget>
 	<widget field="showGoodRects" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
-		<location x="79" y="325"/>
+		<location x="7" y="318"/>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
 		<location x="0" y="0"/>
