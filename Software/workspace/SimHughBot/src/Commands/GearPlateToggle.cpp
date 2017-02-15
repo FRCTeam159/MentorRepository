@@ -1,40 +1,39 @@
-#include "ToggleGearPlate.h"
+#include <Commands/GearPlateToggle.h>
 
-ToggleGearPlate::ToggleGearPlate() {
+GearPlateToggle::GearPlateToggle() {
 	Requires(gearSubsystem.get());
-	std::cout << "new ToggleGearPlate::ToggleGearPlate()"<< std::endl;
+	std::cout << "new GearPlateToggle"<< std::endl;
 }
 
 // Called just before this Command runs the first time
-void ToggleGearPlate::Initialize() {
-
+void GearPlateToggle::Initialize() {
 	if (isOpen){
-		std::cout << "Closing Gear Plate"<< endl;
+		//std::cout << "Closing Gear Plate"<< endl;
 		gearSubsystem->Close();
 	}
 	else{
-		std::cout << "Opening Gear Plate"<< endl;
+		//std::cout << "Opening Gear Plate"<< endl;
 		gearSubsystem->Open();
 	}
 	isOpen=!isOpen;
 }
 
 // Called repeatedly when this Command is scheduled to run
-void ToggleGearPlate::Execute() {
+void GearPlateToggle::Execute() {
 
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool ToggleGearPlate::IsFinished() {
+bool GearPlateToggle::IsFinished() {
 	return true;
 }
 
 // Called once after isFinished returns true
-void ToggleGearPlate::End() {
+void GearPlateToggle::End() {
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void ToggleGearPlate::Interrupted() {
+void GearPlateToggle::Interrupted() {
 	End();
 }

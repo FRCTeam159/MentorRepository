@@ -2,14 +2,14 @@
 
 #define ADJUST_TIMEOUT 0.5
 #define MAX_ANGLE_ERROR 0.5
-#define P 0.5
-#define I 0.01
-#define D 0
+#define P 0.25
+#define I 0.0
+#define D 0.0
 
 #define SCALE 0.1
 #define MIN_DISTANCE 10
 
-#define DRIVE_TIMEOUT 0.2
+#define DRIVE_TIMEOUT 0.6
 
 DriveToTarget::DriveToTarget() : CommandBase("DriveToTarget"),
     pid(P,I,D,this,this)
@@ -22,7 +22,7 @@ DriveToTarget::DriveToTarget() : CommandBase("DriveToTarget"),
 void DriveToTarget::Initialize() {
 	distance=visionSubsystem->GetTargetDistance();
 
-	SetTimeout(DRIVE_TIMEOUT*distance+1);
+	SetTimeout(DRIVE_TIMEOUT*distance/12+1);
     int ntargets = visionSubsystem->GetNumTargets();
     if (ntargets>0){
        std::cout << "DriveToTarget Started ..." << std::endl;
@@ -70,7 +70,9 @@ void DriveToTarget::Interrupted() {
 }
 
 double DriveToTarget::PIDGet() {
-	return visionSubsystem->GetTargetDistance();
+	double d=visionSubsystem->GetTargetDistance();
+	double df=(d-MIN_DISTANCE)/(distance-MIN_DISTANCE);
+	return d;
 }
 
 #define DEBUG_COMMAND
@@ -79,18 +81,21 @@ double DriveToTarget::GetDistance() {
 	double d1=visionSubsystem->GetTargetDistance();
 	double d2=ultrasonicSubsystem->GetDistance();
 	double d=d1;
-	if(d1<18)
-		d=d2;
+//	if(d1<18)
+//		d=d2;
     return d;
 }
 
 void DriveToTarget::PIDWrite(double err) {
 	double d=GetDistance();
+	int n=visionSubsystem->GetNumTargets();
 
 	double df=(d-MIN_DISTANCE)/(distance-MIN_DISTANCE); // fraction of starting distance remaining
-	double afact=(1-df)+0.2; // bias angle correction towards end of travel
+	double afact=(1-df)+0.1; // bias angle correction towards end of travel
 	double a=-0.1*pow(afact,4.0)*visionSubsystem->GetTargetAngle();
-    double e=-err;
+	if(n==0)
+		a=0;
+    double e=-0.5*err;
 	double m1=e+a;
 	double m2=e-a;
 	double mx=m1>m2?m1:m2;
@@ -98,7 +103,7 @@ void DriveToTarget::PIDWrite(double err) {
 	double l=m2*scale;
 	double r=m1*scale;
 #ifdef DEBUG_COMMAND
-	cout<<" dist:"<<d <<" a:"<<a<<" e:"<<e<<" l:"<<l<<" r:"<<r<<endl;
+	cout<<"n:"<<n<<" dist:"<<d <<" a:"<<a<<" e:"<<e<<" l:"<<l<<" r:"<<r<<endl;
 #endif
 	driveTrain->TankDrive(l,r);
 }

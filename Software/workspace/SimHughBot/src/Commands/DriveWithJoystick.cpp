@@ -16,8 +16,8 @@ void DriveWithJoystick::Initialize()
 
 // Called repeatedly when this Command is scheduled to run
 void DriveWithJoystick::Execute()
-#define MINTHRESHOLD 0.25
-#define MINOUTPUT 0.1
+#define MINTHRESHOLD 0.3
+#define MINOUTPUT 0.0
 {
 	// Get axis values
 	Joystick *stick = oi->GetJoystick();

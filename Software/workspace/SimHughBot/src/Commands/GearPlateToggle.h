@@ -3,10 +3,10 @@
 
 #include "../CommandBase.h"
 
-class ToggleGearPlate : public CommandBase {
+class GearPlateToggle : public CommandBase {
 	bool isOpen=false;
 public:
-	ToggleGearPlate();
+	GearPlateToggle();
 	void Initialize();
 	void Execute();
 	bool IsFinished();

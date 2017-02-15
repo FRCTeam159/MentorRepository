@@ -9,6 +9,7 @@ shared_ptr<DriveTrain> CommandBase::driveTrain;
 shared_ptr<GearSubsystem> CommandBase::gearSubsystem;
 shared_ptr<Vision> CommandBase::visionSubsystem;
 shared_ptr<UltrasonicSubsystem>CommandBase::ultrasonicSubsystem;
+shared_ptr<FuelSubsystem>CommandBase::fuelSubsystem;
 
 unique_ptr<OI> CommandBase::oi = std::make_unique<OI>();
 
@@ -24,6 +25,8 @@ void CommandBase::RobotInit(){
 	driveTrain.reset(new DriveTrain());
 	gearSubsystem.reset(new GearSubsystem());
 	ultrasonicSubsystem.reset(new UltrasonicSubsystem());
+	fuelSubsystem.reset(new FuelSubsystem());
+
 	ultrasonicSubsystem->Init();
 
 
@@ -38,11 +41,14 @@ void CommandBase::AutonomousInit() {
 void CommandBase::TeleopInit() {
 	driveTrain->Enable();
 	ultrasonicSubsystem->Enable();
+	fuelSubsystem->Enable();
 }
 
 void CommandBase::DisabledInit() {
 	driveTrain->Disable();
 	ultrasonicSubsystem->Disable();
+	fuelSubsystem->Disable();
+
 	gearSubsystem->Close();
 
 }

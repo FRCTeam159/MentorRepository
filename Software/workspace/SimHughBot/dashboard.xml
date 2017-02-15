@@ -1,8 +1,28 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="BallPusher" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="425" y="312"/>
+		<width>103</width>
+	</widget>
+	<widget field="HighGear" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="425" y="340"/>
+		<width>93</width>
+	</widget>
+	<widget field="LeftWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="323" y="377"/>
+		<width>303</width>
+		<height>214</height>
+		<property name="Buffer Size (samples)" value="1000"/>
+	</widget>
+	<widget field="RightWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="20" y="377"/>
+		<width>294</width>
+		<height>206</height>
+		<property name="Buffer Size (samples)" value="1000"/>
+	</widget>
 	<widget field="GearPlateOpen" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="353" y="327"/>
-		<width>185</width>
+		<location x="425" y="284"/>
+		<width>133</width>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.MjpgStreamViewerImpl">
 		<location x="348" y="12"/>
@@ -12,17 +32,18 @@
 	</static-widget>
 	<widget field="UltraSonicDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="8" y="347"/>
+		<width>191</width>
 	</widget>
 	<widget field="HorizontalAngle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="240" y="288"/>
+		<location x="229" y="284"/>
 		<width>173</width>
 	</widget>
 	<widget field="showColorThreshold" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
 		<location x="169" y="317"/>
 	</widget>
 	<widget field="Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="292" y="349"/>
-		<width>134</width>
+		<location x="220" y="349"/>
+		<width>116</width>
 	</widget>
 	<widget field="showGoodRects" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
 		<location x="7" y="318"/>
@@ -34,17 +55,18 @@
 		<property name="Camera Choice" value="Rectangle"/>
 	</static-widget>
 	<widget field="Rectangles" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="286"/>
+		<location x="30" y="277"/>
+		<width>116</width>
 	</widget>
 </dashboard>
 <live-window>
 </live-window>
+	<hidden field="HueMax"/>
 	<hidden field="SaturationMax"/>
 	<hidden field="HueMin"/>
+	<hidden field="SaturationMin"/>
 	<hidden field="HorizontalOffset"/>
 	<hidden field="Auto Modes"/>
 	<hidden field="ValueMin"/>
-	<hidden field="HueMax"/>
-	<hidden field="SaturationMin"/>
 	<hidden field="ValueMax"/>
 </xml>

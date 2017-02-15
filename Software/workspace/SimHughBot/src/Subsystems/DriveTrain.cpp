@@ -4,10 +4,10 @@
 #include "WPILib.h"
 
 #define P 1
-#define I 0.0
-#define D 0.0
+#define I 0.01
+#define D 0.2
 
-#define SPEED
+//#define SPEED
 
 #ifdef SIMULATION
 #define DRIVE_ENCODER_TICKS 360
@@ -29,11 +29,11 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 
 #ifdef SPEED
 	SetControlMode(CANTalon::kSpeed);
+	frontRight.SetPID(P,I,D);
+	backLeft.SetPID(P,I,D);
 #else
 	SetControlMode(CANTalon::kPercentVbus);
 #endif
-	frontRight.SetPID(P,I,D);
-	backLeft.SetPID(P,I,D);
 
 	//frontRight.SetDebug(2);
 	frontRight.ConfigEncoderCodesPerRev(DRIVE_ENCODER_TICKS);
@@ -43,6 +43,10 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 	SetLowGear();
 
 	SetExpiration(0.2);
+
+	Publish(true);
+
+
 }
 void DriveTrain::InitDefaultCommand()
 {
@@ -55,7 +59,11 @@ void DriveTrain::TankDrive(float left, float right) {
 	frontRight.Set(-right);
 	backRight.Set(FRONTRIGHT);
 
+	Publish(false);
+
 	m_safetyHelper->Feed();
+
+
 }
 
 // Put methods for controlling this subsystem
@@ -100,26 +108,31 @@ void DriveTrain::CustomArcade(float xAxis, float yAxis, float zAxis, bool square
 			right = -std::max(-xAxis, -yAxis);
 		}
 	}
-
+	if(inlowgear){
+		right*=0.5;
+		left*=0.5;
+	}
 	// Make sure values are between -1 and 1
+#ifndef SPEED
 	left = coerce(-1, 1, left);
 	right = coerce(-1, 1, right);
+#endif
 	frontLeft.Set(BACKLEFT);
 	backLeft.Set(left);
 	frontRight.Set(-right);
 	backRight.Set(FRONTRIGHT);
 
+	Publish(false);
+
+
 	m_safetyHelper->Feed();
 }
 
 float DriveTrain::coerce(float min, float max, float x) {
-	if (x < min) {
+	if (x < min)
 		x = min;
-	}
-
-	else if (x > max) {
+	else if (x > max)
 		x = max;
-	}
 	return x;
 }
 
@@ -166,22 +179,16 @@ void DriveTrain::GetDescription(std::ostringstream& desc) const {
 }
 
 void DriveTrain::StopMotor() {
-  //backRight.StopMotor();
   backLeft.StopMotor();
   frontRight.StopMotor();
-  //frontLeft.StopMotor();
   m_safetyHelper->Feed();
 }
 
 void DriveTrain::Enable() {
-	//backRight.Enable();
-	//frontLeft.Enable();
 	frontRight.Enable();
 	backLeft.Enable();
 }
 void DriveTrain::Disable() {
-	//backRight.Disable();
-	//frontLeft.Disable();
 	frontRight.Disable();
 	backLeft.Disable();
 }
@@ -190,12 +197,21 @@ void DriveTrain::SetControlMode(CANTalon::ControlMode controlMode) {
 	mode=controlMode;
 	frontRight.SetControlMode(controlMode);
 	backLeft.SetControlMode(controlMode);
-#ifdef SIMULATION
-	//frontLeft.SetControlMode(controlMode);
-	//backRight.SetControlMode(controlMode);
-#else
+#ifndef SIMULATION
 	frontLeft.SetControlMode(CANTalon::kFollower);
 	backRight.SetControlMode(CANTalon::kFollower);
 #endif
 }
 
+void DriveTrain::Publish(bool init) {
+	if(init){
+		frc::SmartDashboard::PutNumber("LeftWheels",0);
+		frc::SmartDashboard::PutNumber("RightWheels", 0);
+		frc::SmartDashboard::PutBoolean("HighGear", false);
+
+	}else{
+		frc::SmartDashboard::PutNumber("LeftWheels", backLeft.GetVoltage());
+		frc::SmartDashboard::PutNumber("RightWheels", frontRight.GetVoltage());
+		frc::SmartDashboard::PutBoolean("HighGear", !inlowgear);
+	}
+}

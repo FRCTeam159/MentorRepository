@@ -9,7 +9,7 @@
 #define FOV 38 //60.0
 #define ASPECT_RATIO (4.0/3.0)
 
-#define HOFFSET 5 // camera offset from robot center
+#define HOFFSET 6.0 // camera offset from robot center
 
 
 using namespace frc;
@@ -164,32 +164,44 @@ void Vision::VisionThread(){
 }
 
 std::vector<cv::Rect> Vision::GoodRects(std::vector<cv::Rect> rects) {
-	if(rects.size()<3)
+	if(rects.size()<2){
 		return rects;
+	}
 	std::vector<cv::Rect> goodrects;
-	int goodFactor=5;
+	int gfw=5;
+	double maxarea=0;
+	cv::Rect Rect2=rects[0];
+
 	for (unsigned int i = 0; i < rects.size(); i++) {
 		int score = 0;
-		cv::Rect Rect1=rects [i];
+		cv::Rect Rect1=rects[i];
 		int cx1=0.5*(Rect1.tl().x+Rect1.br().x);
 		int cy1=0.5*(Rect1.tl().y+Rect1.br().y);
 		double w1=rects[i].width;
+		double area=Rect1.area();
+
+		if(i>0 && area>maxarea){
+			Rect2=Rect1;
+			maxarea=area;
+		}
 		for (unsigned int j = 0; j < rects.size(); j++) {
 			if (i==j)
 				continue;
-			cv::Rect Rect2=rects [j];
+			cv::Rect Rect2=rects[j];
 			int cx2=0.5*(Rect2.tl().x+Rect2.br().x);
 			int cy2=0.5*(Rect2.tl().y+Rect2.br().y);
 			int dx=cx1-cx2;
 			int dy=cy1-cy2;
 			int d=sqrt(dx*dx+dy*dy);
-			double r=d/w1;
-			if (r<goodFactor)
+			double r1=d/w1;
+			if (r1<gfw )
 				score++;
 		}
 		if (score>0)
 			goodrects.push_back(Rect1);
 	}
+	if(goodrects.size()==0)
+		goodrects.push_back(Rect2);
 	return goodrects;
 }
 
@@ -214,8 +226,15 @@ void Vision::CalcTargetInfo(int n,cv::Point top, cv::Point bottom, TargetInfo &i
 		info.ActualWidth=(n==1?2.0:10.25);	//inches
 		info.Distance=cameraInfo.fovFactor*cameraInfo.screenHeight*targetInfo.ActualHeight/targetInfo.Height;
 		// convert camera offset to pixels
-	    double adjust=cameraInfo.fovFactor*cameraInfo.screenWidth*cameraInfo.HorizontalOffset/info.Distance;
-	    double p=info.Center.x+adjust-0.5*cameraInfo.screenWidth;
+		double xoffset=0;
+		if(n==1){
+			if(info.HorizontalOffset<0)
+				xoffset-=0.5*info.Height;
+			else
+				xoffset+=0.5*info.Height;
+		}
+	    double cam_adjust=cameraInfo.fovFactor*cameraInfo.screenWidth*cameraInfo.HorizontalOffset/info.Distance;
+	    double p=info.Center.x+xoffset+cam_adjust-0.5*cameraInfo.screenWidth;
 	    info.HorizontalAngle=p*cameraInfo.fov/cameraInfo.screenWidth;
 	}
 }

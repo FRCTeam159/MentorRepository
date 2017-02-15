@@ -67,7 +67,7 @@ void CANTalon::Set(double val) {
 		impl->Set(val);
 		break;
 	case kSpeed:
-		//val=inverted?-val:val;
+		val=inverted?-val:val;
 		SetSetpoint(val);
 		break;
 	case kPosition:

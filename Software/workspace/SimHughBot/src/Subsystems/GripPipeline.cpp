@@ -54,7 +54,7 @@ void GripPipeline::process(cv::Mat source0){
 	std::vector<std::vector<cv::Point> > filterContoursContours = convexHullsOutput;
 	double filterContoursMinArea = 5.0;  // default Double
 	double filterContoursMinPerimeter = 0;  // default Double
-	double filterContoursMinWidth = 2.0;  // default Double
+	double filterContoursMinWidth = 5.0;  // default Double
 	double filterContoursMaxWidth = 100;  // default Double
 	double filterContoursMinHeight = 5.0;  // default Double
 	double filterContoursMaxHeight = 1000;  // default Double

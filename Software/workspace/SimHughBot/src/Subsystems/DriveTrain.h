@@ -23,6 +23,7 @@ private:
 	bool inlowgear=false;
 	void InitDrive();
 	float coerce(float min, float max, float x);
+	void Publish(bool);
 public:
 	DriveTrain();
 	void Drive(float xAxis, float yAxis, float zAxis);

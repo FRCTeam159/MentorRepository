@@ -15,7 +15,7 @@
         <angular>0</angular>
       </velocity_decay>
       <inertial>
-        <mass>2.06856705498057</mass>
+        <mass>1.06856705498057</mass>
         <pose>0 0 0 0 0 0</pose>
         <inertia>
           <ixx>0.02</ixx>

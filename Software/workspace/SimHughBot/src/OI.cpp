@@ -1,7 +1,8 @@
+#include <Commands/GearPlateToggle.h>
+#include <Commands/BallPusherToggle.h>
+
 #include "OI.h"
 #include "RobotMap.h"
-#include "Commands/ToggleGearPlate.h"
-
 #include <WPILib.h>
 
 
@@ -9,8 +10,10 @@ OI::OI() {
 	stick = new Joystick(STICK);
 	// Process operator interface input here.
 
-	JoystickButton* d_up = new JoystickButton(stick, 2);
-	d_up->WhenPressed(new ToggleGearPlate());
+	JoystickButton* btn = new JoystickButton(stick, GEARTOGGLEBUTTON);
+	btn->WhenPressed(new GearPlateToggle());
+	btn = new JoystickButton(stick, FUALTOGGLEBUTTON);
+	btn->WhenPressed(new BallPusherToggle());
 }
 
 Joystick* OI::GetJoystick() {
