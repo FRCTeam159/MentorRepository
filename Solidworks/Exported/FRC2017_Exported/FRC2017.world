@@ -19,7 +19,7 @@
       <pose>0 0 -0.927 0 0 0</pose>
     </include>
     <include>
-      <uri>model://SimBot2</uri>
+      <uri>model://SimBot</uri>
       <pose>0.3256 -7.36 0.022 0 0 1.579</pose>
     </include>
     <include>

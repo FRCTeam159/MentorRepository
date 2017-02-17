@@ -1,35 +1,36 @@
 #include <Subsystems/FuelSubsystem.h>
 #include "RobotMap.h"
-#include <Commands/BallPusherToggle.h>
+#include "Commands/FuelMonitor.h"
 
 #define PUSHER_SPEED 0.5
 FuelSubsystem::FuelSubsystem() : Subsystem("FuelSubsystem"),
-	FuelPusherMotor(FUELMOTOR) {
+	fuelPusherMotor(FUELMOTOR) {
+	fuelPusherMotor.ConfigLimitMode(CANTalon::kLimitMode_SwitchInputsOnly);
+	fuelPusherMotor.ConfigRevLimitSwitchNormallyOpen(false);
+	fuelPusherMotor.ConfigFwdLimitSwitchNormallyOpen(false);
 }
 
 void FuelSubsystem::InitDefaultCommand() {
 	Enable();
-	frc::SmartDashboard::PutBoolean("BallPusher",false);
-	SetDefaultCommand(new BallPusherToggle());
+	SetDefaultCommand(new FuelMonitor());
 }
 
-void FuelSubsystem::PushFuel() {
+void FuelSubsystem::SetVoltage(double value) {
+	fuelPusherMotor.Set(value);
 }
 
-void FuelSubsystem::PusherOff() {
-	FuelPusherMotor.Set(-PUSHER_SPEED);
-	frc::SmartDashboard::PutBoolean("BallPusher",false);
+bool FuelSubsystem::AtUpperLimit() {
+	return fuelPusherMotor.IsFwdLimitSwitchClosed();
 }
 
-void FuelSubsystem::PusherOn() {
-	FuelPusherMotor.Set(PUSHER_SPEED);
-	frc::SmartDashboard::PutBoolean("BallPusher",true);
+bool FuelSubsystem::AtLowerLimit() {
+	return fuelPusherMotor.IsRevLimitSwitchClosed();
 }
 
 void FuelSubsystem::Disable() {
-	FuelPusherMotor.Disable();
+	fuelPusherMotor.Disable();
 }
 
 void FuelSubsystem::Enable() {
-	FuelPusherMotor.Enable();
+	fuelPusherMotor.Enable();
 }

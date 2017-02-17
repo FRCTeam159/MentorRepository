@@ -12,6 +12,8 @@
 #include "Subsystems/UltrasonicSubsystem.h"
 #include "Subsystems/GearSubsystem.h"
 #include "Subsystems/Vision.h"
+#include "Subsystems/ClimbingSubsystem.h"
+
 using namespace std;
 
 /**
@@ -37,6 +39,7 @@ public:
 	static std::shared_ptr<FuelSubsystem> fuelSubsystem;
 	static std::unique_ptr<OI> oi;
 	static std::shared_ptr<UltrasonicSubsystem> ultrasonicSubsystem;
+	static std::shared_ptr<ClimbingSubsystem> climbingSubsystem;
 
 };
 

@@ -26,7 +26,6 @@ private:
 	void Publish(bool);
 public:
 	DriveTrain();
-	void Drive(float xAxis, float yAxis, float zAxis);
 	void TankDrive(float xAxis, float yAxis);
 	void CustomArcade(float xAxis, float yAxis, float zAxis, bool squaredInputs);
 
@@ -46,6 +45,7 @@ public:
 	void GetDescription(std::ostringstream& desc) const override;
 	void Enable();
 	void Disable();
+	double GetDistance();
 };
 
 #endif

@@ -6,14 +6,14 @@
 
 class FuelSubsystem : public Subsystem {
 private:
-	CANTalon FuelPusherMotor;
+	CANTalon fuelPusherMotor;
 
 public:
 	FuelSubsystem();
 	void InitDefaultCommand();
-	void PushFuel();
-	void PusherOff();
-	void PusherOn();
+	void SetVoltage(double);
+	bool AtUpperLimit();
+	bool AtLowerLimit();
 
 	void Enable();
 	void Disable();

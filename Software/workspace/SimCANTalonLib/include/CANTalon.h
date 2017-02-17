@@ -227,7 +227,8 @@ public:
 
     virtual double PIDGet();
 
-    virtual double GetVoltage();
+    virtual float GetOutputVoltage();
+    virtual float GetOutputCurrent();
 
     virtual void SetVoltage(double value);
     virtual double GetSpeed() const;

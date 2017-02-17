@@ -1,5 +1,4 @@
 #include <Commands/GearPlateToggle.h>
-#include <Commands/BallPusherToggle.h>
 
 #include "OI.h"
 #include "RobotMap.h"
@@ -12,8 +11,6 @@ OI::OI() {
 
 	JoystickButton* btn = new JoystickButton(stick, GEARTOGGLEBUTTON);
 	btn->WhenPressed(new GearPlateToggle());
-	btn = new JoystickButton(stick, FUALTOGGLEBUTTON);
-	btn->WhenPressed(new BallPusherToggle());
 }
 
 Joystick* OI::GetJoystick() {

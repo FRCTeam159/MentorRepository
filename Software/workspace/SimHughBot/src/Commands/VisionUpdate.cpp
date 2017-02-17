@@ -6,14 +6,13 @@
 #include "Subsystems/GripPipeline.h"
 
 VisionUpdate::VisionUpdate() {
-	// Use Requires() here to declare subsystem dependencies
-	// eg. Requires(Robot::chassis.get());
 	Requires(visionSubsystem.get());
+	std::cout << "new VisionUpdate"<< std::endl;
 }
 
 // Called just before this Command runs the first time
 void VisionUpdate::Initialize() {
-	// Get the USB camera from CameraServer
+	cout << "VisionUpdate Started .."<<endl;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -28,11 +27,11 @@ bool VisionUpdate::IsFinished() {
 
 // Called once after isFinished returns true
 void VisionUpdate::End() {
-
+	cout << "VisionUpdate End"<<endl;
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void VisionUpdate::Interrupted() {
-
+	End();
 }

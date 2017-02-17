@@ -15,6 +15,9 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/core/types.hpp>
+#include "Commands/DriveToTarget.h"
+#include "Commands/DriveForTime.h"
+#include "Commands/Turn.h"
 
 
 class Robot: public frc::IterativeRobot {
@@ -22,11 +25,8 @@ class Robot: public frc::IterativeRobot {
 public:
 	void RobotInit() override {
 		CommandBase::RobotInit();
-		// chooser.AddDefault("Default Auto", new ExampleCommand());
-		// chooser.AddObject("My Auto", new MyAutoCommand());
-		frc::SmartDashboard::PutData("Auto Modes", &chooser);
+		frc::SmartDashboard::PutString("AutoMode", "Default");
 	}
-
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
 	 * You can use it to reset any subsystem information you want to clear when
@@ -52,19 +52,29 @@ public:
 	 * to the if-else structure below with additional strings & commands.
 	 */
 	void AutonomousInit() override {
-//		std::string autoSelected = frc::SmartDashboard::GetString("Auto Selector", "Default");
-//		if (autoSelected == "My Auto") {
-//			autonomousCommand.reset(new Autonomous());
-//			cout<<"Chose My Auto"<<endl;
-//		}
-//		else {
-//			autonomousCommand.reset(new Autonomous());
-//			cout<<"Chose default auto"<<endl;
-//		}
-		CommandBase::AutonomousInit();
+		std::string autoSelected = frc::SmartDashboard::GetString("AutoMode", "Default");
+		CommandGroup *autonomous=new Autonomous();
+		if (autoSelected == "Right") {
+			autonomous->AddSequential(new DriveForTime(4.0,0.45));
+			autonomous->AddSequential(new Turn(-0.27));
+			cout<<"Chose::Right Auto"<<endl;
+		}
+		else if(autoSelected == "Left"){
+			autonomous->AddSequential(new DriveForTime(4.0,0.45));
+			autonomous->AddSequential(new Turn(0.27));
+			cout<<"Chose::Left Auto"<<endl;
+		}
+		else if(autoSelected == "Center"){
+			cout<<"Chose::Center Auto"<<endl;
+		}
+		else{
+			cout<<"Chose::Default Auto"<<endl;
+		}
+		autonomous->AddSequential(new DriveToTarget());
 
-		//autonomousCommand.reset(chooser.GetSelected());
-		autonomousCommand.reset(new Autonomous());
+		autonomousCommand.reset(autonomous);
+
+		CommandBase::AutonomousInit();
 
 		if (autonomousCommand.get() != nullptr) {
 			autonomousCommand->Start();
@@ -100,7 +110,7 @@ public:
 
 private:
 	std::unique_ptr<frc::Command> autonomousCommand;
-	frc::SendableChooser<frc::Command*> chooser;
+	frc::SendableChooser<Command*> chooser;
 	std::unique_ptr<frc::Command> disabledCommand;
 };
 

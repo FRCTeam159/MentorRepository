@@ -7,9 +7,9 @@
 #define D 0.0
 
 #define SCALE 0.1
-#define MIN_DISTANCE 10
+#define MIN_DISTANCE 9
 
-#define DRIVE_TIMEOUT 0.6
+#define DRIVE_TIMEOUT 0.7
 
 DriveToTarget::DriveToTarget() : CommandBase("DriveToTarget"),
     pid(P,I,D,this,this)
@@ -71,7 +71,7 @@ void DriveToTarget::Interrupted() {
 
 double DriveToTarget::PIDGet() {
 	double d=visionSubsystem->GetTargetDistance();
-	double df=(d-MIN_DISTANCE)/(distance-MIN_DISTANCE);
+	//double df=(d-MIN_DISTANCE)/(distance-MIN_DISTANCE);
 	return d;
 }
 
@@ -79,11 +79,12 @@ double DriveToTarget::PIDGet() {
 
 double DriveToTarget::GetDistance() {
 	double d1=visionSubsystem->GetTargetDistance();
+#ifdef USE_ULTRASONIC
 	double d2=ultrasonicSubsystem->GetDistance();
-	double d=d1;
-//	if(d1<18)
-//		d=d2;
-    return d;
+	if(d1<18)
+		return d2;
+#endif
+    return d1;
 }
 
 void DriveToTarget::PIDWrite(double err) {
@@ -92,7 +93,7 @@ void DriveToTarget::PIDWrite(double err) {
 
 	double df=(d-MIN_DISTANCE)/(distance-MIN_DISTANCE); // fraction of starting distance remaining
 	double afact=(1-df)+0.1; // bias angle correction towards end of travel
-	double a=-0.1*pow(afact,4.0)*visionSubsystem->GetTargetAngle();
+	double a=-0.2*df*pow(afact,4.0)*visionSubsystem->GetTargetAngle();
 	if(n==0)
 		a=0;
     double e=-0.5*err;

@@ -16,6 +16,7 @@ void GearPlateToggle::Initialize() {
 		gearSubsystem->Open();
 	}
 	isOpen=!isOpen;
+	std::cout << "GearPlateToggle Started .."<< std::endl;
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -30,6 +31,7 @@ bool GearPlateToggle::IsFinished() {
 
 // Called once after isFinished returns true
 void GearPlateToggle::End() {
+	std::cout << "GearPlateToggle End"<< std::endl;
 }
 
 // Called when another command which requires one or more of the same

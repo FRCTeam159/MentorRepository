@@ -290,7 +290,7 @@ double CANTalon::ReturnPIDInput() {
         return GetSpeed();
     default:
     case kPercentVbus:
-        return GetVoltage();
+        return GetOutputVoltage();
     }
 }
 
@@ -325,8 +325,11 @@ double CANTalon::GetPosition() const {
 //void CANTalon::Set(double value) {
 //    Set(value, 0);
 //}
-double CANTalon::GetVoltage() {
-    return Get();
+float CANTalon::GetOutputVoltage() {
+    return (float)impl->Get();
+}
+float CANTalon::GetOutputCurrent() {
+    return (float)(10*impl->Get());
 }
 
 void CANTalon::EnableControl() {

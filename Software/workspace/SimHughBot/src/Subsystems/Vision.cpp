@@ -6,10 +6,10 @@
 #define RPD(x) (x)*2*M_PI/360
 #define IMAGE_WIDTH 320
 #define IMAGE_HEIGHT 240
-#define FOV 38 //60.0
+#define FOV 39 //60.0
 #define ASPECT_RATIO (4.0/3.0)
 
-#define HOFFSET 6.0 // camera offset from robot center
+#define HOFFSET 5.0 // camera offset from robot center
 
 
 using namespace frc;
@@ -229,9 +229,9 @@ void Vision::CalcTargetInfo(int n,cv::Point top, cv::Point bottom, TargetInfo &i
 		double xoffset=0;
 		if(n==1){
 			if(info.HorizontalOffset<0)
-				xoffset-=0.5*info.Height;
+				xoffset-=0.35*info.Height;
 			else
-				xoffset+=0.5*info.Height;
+				xoffset+=0.35*info.Height;
 		}
 	    double cam_adjust=cameraInfo.fovFactor*cameraInfo.screenWidth*cameraInfo.HorizontalOffset/info.Distance;
 	    double p=info.Center.x+xoffset+cam_adjust-0.5*cameraInfo.screenWidth;

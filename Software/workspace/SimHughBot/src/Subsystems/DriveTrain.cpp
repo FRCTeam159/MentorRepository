@@ -14,6 +14,10 @@
 #else
 #define DRIVE_ENCODER_TICKS 900
 #endif
+#define WHEEL_DIAMETER 3.0
+
+#define FEETPERTICK (DRIVE_ENCODER_TICKS*12.0/M_PI/WHEEL_DIAMETER)
+
 DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 		frontLeft(FRONTLEFT),   // slave  1
 		frontRight(FRONTRIGHT), // master 4
@@ -36,8 +40,8 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 #endif
 
 	//frontRight.SetDebug(2);
-	frontRight.ConfigEncoderCodesPerRev(DRIVE_ENCODER_TICKS);
-	backLeft.ConfigEncoderCodesPerRev(DRIVE_ENCODER_TICKS);
+	frontRight.ConfigEncoderCodesPerRev(FEETPERTICK);
+	backLeft.ConfigEncoderCodesPerRev(FEETPERTICK);
 
 	gearPneumatic = new DoubleSolenoid(GEARSHIFTID,0,1);
 	SetLowGear();
@@ -187,31 +191,44 @@ void DriveTrain::StopMotor() {
 void DriveTrain::Enable() {
 	frontRight.Enable();
 	backLeft.Enable();
+	frontRight.Reset();
+	backLeft.Reset();
+
 }
 void DriveTrain::Disable() {
 	frontRight.Disable();
 	backLeft.Disable();
+	frontRight.Reset();
+	backLeft.Reset();
 }
 
 void DriveTrain::SetControlMode(CANTalon::ControlMode controlMode) {
 	mode=controlMode;
 	frontRight.SetControlMode(controlMode);
 	backLeft.SetControlMode(controlMode);
-#ifndef SIMULATION
 	frontLeft.SetControlMode(CANTalon::kFollower);
 	backRight.SetControlMode(CANTalon::kFollower);
-#endif
 }
 
 void DriveTrain::Publish(bool init) {
 	if(init){
 		frc::SmartDashboard::PutNumber("LeftWheels",0);
 		frc::SmartDashboard::PutNumber("RightWheels", 0);
+		frc::SmartDashboard::PutNumber("Travel", 0);
 		frc::SmartDashboard::PutBoolean("HighGear", false);
 
 	}else{
-		frc::SmartDashboard::PutNumber("LeftWheels", backLeft.GetVoltage());
-		frc::SmartDashboard::PutNumber("RightWheels", frontRight.GetVoltage());
+		frc::SmartDashboard::PutNumber("LeftWheels", backLeft.GetOutputVoltage());
+		frc::SmartDashboard::PutNumber("RightWheels", frontRight.GetOutputVoltage());
+		frc::SmartDashboard::PutNumber("Travel", GetDistance());
 		frc::SmartDashboard::PutBoolean("HighGear", !inlowgear);
 	}
+}
+
+double DriveTrain::GetDistance() {
+	double d1=-frontRight.GetPosition();
+	double d2=backLeft.GetPosition();
+	double x=0.5*(d1+d2);
+	return round(x * 100) / 100.0;
+
 }

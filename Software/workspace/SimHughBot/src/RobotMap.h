@@ -17,13 +17,15 @@ const int FRONTRIGHT = 4;
 const int BACKLEFT = 2;
 const int BACKRIGHT = 3;
 const int FUELMOTOR = 5;
+const int CLIMBING_MOTOR=6;
 
 const int STICK = 0;
 
 const int LOWGEAR_BUTTON = 4;
 const int HIGHGEAR_BUTTON = 6;
 const int GEARTOGGLEBUTTON=2;
-const int FUALTOGGLEBUTTON=1;
+const int FUELPUSHERBUTTON=1;
+const int CLIMBERBUTTON=3;
 
 const int GEARSHIFTID=0;
 
