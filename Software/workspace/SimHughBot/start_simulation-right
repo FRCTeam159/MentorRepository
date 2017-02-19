@@ -1,7 +1,7 @@
 rm -fr /tmp/shooter-camera
 mkdir  /tmp/shooter-camera
 cd ~/Robotics/MentorRepository/Software/workspace/SimHughBot;
-roxterm --title="Gazebo Simulation" --tab-name=gazebo -e gazebo-2017-Robot-field;
+roxterm --title="Gazebo Simulation" --tab-name=gazebo -e gazebo-2017-Robot-field-right;
 sleep 2;
 roxterm --tab --tab-name=sim_ds -e sim_ds;
 roxterm --tab --tab-name=target_camera -e start_targeting_camera;

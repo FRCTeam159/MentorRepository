@@ -16,7 +16,7 @@
 #endif
 #define WHEEL_DIAMETER 3.0
 
-#define FEETPERTICK (DRIVE_ENCODER_TICKS*12.0/M_PI/WHEEL_DIAMETER)
+#define TICKS_PER_INCH (DRIVE_ENCODER_TICKS/M_PI/WHEEL_DIAMETER)
 
 DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 		frontLeft(FRONTLEFT),   // slave  1
@@ -40,8 +40,8 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 #endif
 
 	//frontRight.SetDebug(2);
-	frontRight.ConfigEncoderCodesPerRev(FEETPERTICK);
-	backLeft.ConfigEncoderCodesPerRev(FEETPERTICK);
+	frontRight.ConfigEncoderCodesPerRev(TICKS_PER_INCH);
+	backLeft.ConfigEncoderCodesPerRev(TICKS_PER_INCH);
 
 	gearPneumatic = new DoubleSolenoid(GEARSHIFTID,0,1);
 	SetLowGear();
@@ -188,18 +188,30 @@ void DriveTrain::StopMotor() {
   m_safetyHelper->Feed();
 }
 
+void DriveTrain::Reset() {
+	frontRight.Reset();
+	backLeft.Reset();
+}
 void DriveTrain::Enable() {
 	frontRight.Enable();
 	backLeft.Enable();
+	Publish(true);
+}
+void DriveTrain::EndTravel() {
 	frontRight.Reset();
 	backLeft.Reset();
-
+	frontRight.Disable();
+	backLeft.Disable();
 }
+
 void DriveTrain::Disable() {
 	frontRight.Disable();
 	backLeft.Disable();
 	frontRight.Reset();
 	backLeft.Reset();
+	distance=0;
+	angle=0;
+	Publish(true);
 }
 
 void DriveTrain::SetControlMode(CANTalon::ControlMode controlMode) {
@@ -216,19 +228,38 @@ void DriveTrain::Publish(bool init) {
 		frc::SmartDashboard::PutNumber("RightWheels", 0);
 		frc::SmartDashboard::PutNumber("Travel", 0);
 		frc::SmartDashboard::PutBoolean("HighGear", false);
+		frc::SmartDashboard::PutNumber("Angle", 0);
 
 	}else{
 		frc::SmartDashboard::PutNumber("LeftWheels", backLeft.GetOutputVoltage());
 		frc::SmartDashboard::PutNumber("RightWheels", frontRight.GetOutputVoltage());
 		frc::SmartDashboard::PutNumber("Travel", GetDistance());
 		frc::SmartDashboard::PutBoolean("HighGear", !inlowgear);
+		frc::SmartDashboard::PutNumber("Angle", GetAngle());
 	}
 }
 
 double DriveTrain::GetDistance() {
 	double d1=-frontRight.GetPosition();
 	double d2=backLeft.GetPosition();
-	double x=0.5*(d1+d2);
+	double x=0.5*(d1+d2)+distance;
 	return round(x * 100) / 100.0;
+}
+double DriveTrain::GetRightDistance() {
+	return frontRight.GetPosition();
+}
+double DriveTrain::GetLeftDistance() {
+	return backLeft.GetPosition();
+}
 
+double DriveTrain::GetAngle() {
+	return angle;
+}
+
+void DriveTrain::SetAngle(double a) {
+	angle=a;
+}
+
+void DriveTrain::SetDistance(double d) {
+	distance=d;
 }

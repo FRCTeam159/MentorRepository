@@ -1,10 +1,13 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="375" y="624"/>
+	</widget>
 	<widget field="AutoMode" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="23" y="606"/>
+		<location x="32" y="620"/>
 	</widget>
 	<widget field="Travel" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="354" y="347"/>
+		<location x="265" y="624"/>
 		<width>104</width>
 	</widget>
 	<widget field="HighGear" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
@@ -41,7 +44,7 @@
 		<location x="28" y="353"/>
 	</widget>
 	<widget field="Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="220" y="349"/>
+		<location x="220" y="348"/>
 		<width>116</width>
 	</widget>
 	<widget field="showGoodRects" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
@@ -60,19 +63,13 @@
 </dashboard>
 <live-window>
 </live-window>
-	<hidden field="TargetCenter.x"/>
-	<hidden field="TargetCenter.y"/>
 	<hidden field="SaturationMax"/>
-	<hidden field="HueMin"/>
-	<hidden field="TargetWidth"/>
 	<hidden field="climberCurrentThreshold"/>
-	<hidden field="climberCurrent"/>
+	<hidden field="HueMin"/>
 	<hidden field="climberVoltage"/>
 	<hidden field="HorizontalOffset"/>
-	<hidden field="Auto Modes"/>
 	<hidden field="UltraSonicDistance"/>
 	<hidden field="ValueMin"/>
-	<hidden field="TargetHeight"/>
 	<hidden field="HueMax"/>
 	<hidden field="SaturationMin"/>
 	<hidden field="ValueMax"/>

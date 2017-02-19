@@ -1,4 +1,4 @@
-roxterm --title="Gazebo Simulation" --tab-name=gazebo -e gazebo-2017-Robot-field-left;
+roxterm --title="Gazebo Simulation" --tab-name=gazebo -e gazebo-2017-Robot-field-left-auto;
 sleep 2;
 roxterm --tab --tab-name=sim_ds -e sim_ds;
 roxterm --tab --tab-name=target_camera -e start_targeting_camera;

@@ -17,6 +17,9 @@
 #include <opencv2/core/types.hpp>
 #include "Commands/DriveToTarget.h"
 #include "Commands/DriveForTime.h"
+#include "Commands/DriveStraight.h"
+#include "Commands/TurnToAngle.h"
+
 #include "Commands/Turn.h"
 
 
@@ -25,7 +28,7 @@ class Robot: public frc::IterativeRobot {
 public:
 	void RobotInit() override {
 		CommandBase::RobotInit();
-		frc::SmartDashboard::PutString("AutoMode", "Default");
+		frc::SmartDashboard::PutString("AutoMode", "Right");
 	}
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
@@ -51,17 +54,25 @@ public:
 	 * chooser code above (like the commented example) or additional comparisons
 	 * to the if-else structure below with additional strings & commands.
 	 */
+#define TURNANGLE 30
+#define DRIVEDISTANCE 5.5*12
+
 	void AutonomousInit() override {
-		std::string autoSelected = frc::SmartDashboard::GetString("AutoMode", "Default");
+		std::string autoSelected = frc::SmartDashboard::GetString("AutoMode", "Right");
 		CommandGroup *autonomous=new Autonomous();
 		if (autoSelected == "Right") {
-			autonomous->AddSequential(new DriveForTime(4.0,0.45));
-			autonomous->AddSequential(new Turn(-0.27));
+			//autonomous->AddSequential(new DriveForTime(4.0,0.45));
+			autonomous->AddSequential(new DriveStraight(DRIVEDISTANCE));
+			//autonomous->AddSequential(new Turn(-0.27));
+			autonomous->AddSequential(new TurnToAngle(-TURNANGLE));
+
 			cout<<"Chose::Right Auto"<<endl;
 		}
 		else if(autoSelected == "Left"){
-			autonomous->AddSequential(new DriveForTime(4.0,0.45));
-			autonomous->AddSequential(new Turn(0.27));
+			//autonomous->AddSequential(new DriveForTime(4.0,0.45));
+			autonomous->AddSequential(new DriveStraight(DRIVEDISTANCE));
+			//autonomous->AddSequential(new Turn(0.27));
+			autonomous->AddSequential(new TurnToAngle(TURNANGLE));
 			cout<<"Chose::Left Auto"<<endl;
 		}
 		else if(autoSelected == "Center"){

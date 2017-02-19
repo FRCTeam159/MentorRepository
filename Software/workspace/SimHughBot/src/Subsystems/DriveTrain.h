@@ -19,7 +19,8 @@ private:
 	CANTalon backRight;
 	DoubleSolenoid *gearPneumatic;
 	CANTalon::ControlMode mode;
-
+	double angle=0;
+	double distance=0;
 	bool inlowgear=false;
 	void InitDrive();
 	float coerce(float min, float max, float x);
@@ -46,6 +47,14 @@ public:
 	void Enable();
 	void Disable();
 	double GetDistance();
+	double GetLeftDistance();
+	double GetRightDistance();
+	double GetAngle();
+	void SetAngle(double a);
+	void SetDistance(double d);
+	void EndTravel();
+
+	void Reset();
 };
 
 #endif

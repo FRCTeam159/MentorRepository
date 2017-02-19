@@ -58,7 +58,7 @@ bool DriveToTarget::IsFinished() {
 // Called once after isFinished returns true
 void DriveToTarget::End() {
 	pid.Disable();
-	driveTrain->Disable();
+	driveTrain->EndTravel();
 	gearSubsystem->Open();
     std::cout << "DriveToTarget End" << std::endl;
 }
