@@ -1,13 +1,20 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Heading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="624" y="413"/>
+		<width>239</width>
+		<height>207</height>
+	</widget>
 	<widget field="Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="375" y="624"/>
+		<location x="319" y="620"/>
+		<width>95</width>
 	</widget>
 	<widget field="AutoMode" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="32" y="620"/>
+		<width>147</width>
 	</widget>
 	<widget field="Travel" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="265" y="624"/>
+		<location x="200" y="620"/>
 		<width>104</width>
 	</widget>
 	<widget field="HighGear" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
@@ -15,7 +22,7 @@
 		<width>93</width>
 	</widget>
 	<widget field="LeftWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="345" y="401"/>
+		<location x="326" y="401"/>
 		<width>303</width>
 		<height>214</height>
 		<property name="Buffer Size (samples)" value="1000"/>
@@ -63,13 +70,18 @@
 </dashboard>
 <live-window>
 </live-window>
+	<hidden field="TargetCenter.x"/>
+	<hidden field="TargetCenter.y"/>
 	<hidden field="SaturationMax"/>
 	<hidden field="climberCurrentThreshold"/>
 	<hidden field="HueMin"/>
+	<hidden field="TargetWidth"/>
+	<hidden field="climberCurrent"/>
 	<hidden field="climberVoltage"/>
 	<hidden field="HorizontalOffset"/>
 	<hidden field="UltraSonicDistance"/>
 	<hidden field="ValueMin"/>
+	<hidden field="TargetHeight"/>
 	<hidden field="HueMax"/>
 	<hidden field="SaturationMin"/>
 	<hidden field="ValueMax"/>

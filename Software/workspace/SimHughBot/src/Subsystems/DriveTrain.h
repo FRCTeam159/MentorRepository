@@ -17,6 +17,7 @@ private:
 	CANTalon frontRight;
 	CANTalon backLeft;
 	CANTalon backRight;
+	AnalogGyro gyro;
 	DoubleSolenoid *gearPneumatic;
 	CANTalon::ControlMode mode;
 	double angle=0;
@@ -53,6 +54,7 @@ public:
 	void SetAngle(double a);
 	void SetDistance(double d);
 	void EndTravel();
+	double GetHeading();
 
 	void Reset();
 };

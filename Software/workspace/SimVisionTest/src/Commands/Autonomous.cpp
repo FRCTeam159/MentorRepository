@@ -28,7 +28,7 @@ Autonomous::Autonomous() : CommandGroup("Autonomous") {
 	AddSequential(new DriveStraight(7,0)); // go forward
 	//AddSequential(new Turn(-50)); // turn
 	//AddSequential(new StepShooterAngle(36)); // set angle
-    AddSequential(new Turn(-40)); // turn
+    AddSequential(new TurnForTime(-40)); // turn
     AddSequential(new StepShooterAngle(25)); // set angle
    //AddParallel(new UpdateVisionData());
 

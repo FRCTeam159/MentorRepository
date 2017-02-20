@@ -11,11 +11,11 @@
 #include <WPILib.h>
 #include <Commands/Command.h>
 
-class Turn: public Command, public PIDSource, public PIDOutput{
+class TurnForTime: public Command, public PIDSource, public PIDOutput{
 	PIDController pid;
 	double target;
 public:
-	Turn(double a);
+	TurnForTime(double a);
 	void Initialize();
 	bool IsFinished();
 	void Execute() {}

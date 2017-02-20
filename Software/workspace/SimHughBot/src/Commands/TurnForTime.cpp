@@ -1,27 +1,27 @@
-#include "Turn.h"
+#include <Commands/TurnForTime.h>
 
 static double initTime=0;
 #define ENDTIME 2.0
-Turn::Turn(double a) {
+TurnForTime::TurnForTime(double a) {
 	angle=a;
 	Requires(driveTrain.get());
 	std::cout << "new Turn("<<angle<<")"<< std::endl;
 }
 
 // Called just before this Command runs the first time
-void Turn::Initialize() {
+void TurnForTime::Initialize() {
 	std::cout << "Turn Started .."<< std::endl;
 	initTime = Timer::GetFPGATimestamp();
 
 }
 
 // Called repeatedly when this Command is scheduled to run
-void Turn::Execute() {
+void TurnForTime::Execute() {
 	driveTrain->TankDrive(angle, -angle);
 }
 
 // Make this return true when this Command no longer needs to run execute()
-bool Turn::IsFinished() {
+bool TurnForTime::IsFinished() {
 	double newtime=Timer::GetFPGATimestamp();
 	if(newtime>=initTime+ENDTIME)
 		return true;
@@ -29,12 +29,12 @@ bool Turn::IsFinished() {
 }
 
 // Called once after isFinished returns true
-void Turn::End() {
+void TurnForTime::End() {
 	std::cout << "Turn End"<< std::endl;
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
-void Turn::Interrupted() {
+void TurnForTime::Interrupted() {
 	End();
 }

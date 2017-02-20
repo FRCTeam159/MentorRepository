@@ -5,15 +5,16 @@
 #define I 0.005
 #define D 0.0
 
-#define WIDTH 25
-#define LENGTH 25
-
+#define WIDTH 25 // horizontal distance between wheels (side-to-side)
+#define LENGTH 8 // vertical distance between center wheels only (i.e the wheels with encoders)
 
 TurnToAngle::TurnToAngle(double a) : CommandBase("DriveStraight"),
 	pid(P,I,D,this,this)
 {
 	Requires(driveTrain.get());
 	angle = a;
+	// radius of travel circle = 1/2 diagonal of rectangle containing center wheels
+  	radius = 0.5*sqrt(WIDTH*WIDTH+LENGTH*LENGTH);
 	std::cout << "new TurnToAngle("<<a<<")"<< std::endl;
 }
 
@@ -23,8 +24,8 @@ void TurnToAngle::Initialize() {
 	driveTrain->Reset();
 	driveTrain->SetDistance(d);
   	pid.Reset();
-  	radius = 0.5*sqrt(WIDTH*WIDTH+LENGTH*LENGTH);// radius of robot bounding circle
-	double a = 2*angle*M_PI*radius/360; // arc length given radius and turn angle
+  	// arc length (wheel travel distance) given radius and turn angle
+	double a = angle*2.0*M_PI*radius/360;
   	pid.SetSetpoint(a);
 	pid.SetAbsoluteTolerance(0.5);
 	pid.Enable();
@@ -34,7 +35,7 @@ void TurnToAngle::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void TurnToAngle::Execute() {
-
+   // nothing to do: action is in PID control loop
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -54,16 +55,17 @@ void TurnToAngle::Interrupted() {
 	End();
 }
 double TurnToAngle::PIDGet() {
-	double l=driveTrain->GetLeftDistance();
-	double r=driveTrain->GetRightDistance();
-	double d = 0.5*sqrt(l*l+r*r);
+	double l = driveTrain->GetLeftDistance();
+	double r = driveTrain->GetRightDistance();
+	double d = 0.5 * (fabs(l) + fabs(r)); // average wheel travel distance
 
-    d= angle <0? - d: d;
-    double a = d*360/M_PI/radius/2;
+	d = angle < 0 ? -d : d;
+	double a = d * 360 / M_PI / radius / 2;
 
-    driveTrain->SetAngle(a);
-
-	std::cout << "TurnToAngle::PIDGet("<<d<<","<<a<<")"<<std::endl;
+	driveTrain->SetAngle(a);
+#ifdef DEBUG_COMMAND
+	std::cout << "TurnToAngle::PIDGet:" << l << "," << r << ","<<d<<","<<a << std::endl;
+#endif
 	return d;
 }
 

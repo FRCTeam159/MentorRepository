@@ -22,7 +22,8 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 		frontLeft(FRONTLEFT),   // slave  1
 		frontRight(FRONTRIGHT), // master 4
 		backLeft(BACKLEFT),     // master 2
-		backRight(BACKRIGHT)    // slave  3
+		backRight(BACKRIGHT),    // slave  3
+		gyro(3)
 {
 	InitDrive();
 
@@ -30,6 +31,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 	backLeft.ConfigLimitMode(CANTalon::kLimitMode_SrxDisableSwitchInputs);
 	frontRight.SetFeedbackDevice(CANTalon::QuadEncoder);
 	backLeft.SetFeedbackDevice(CANTalon::QuadEncoder);
+	gyro.Reset();
 
 #ifdef SPEED
 	SetControlMode(CANTalon::kSpeed);
@@ -191,6 +193,7 @@ void DriveTrain::StopMotor() {
 void DriveTrain::Reset() {
 	frontRight.Reset();
 	backLeft.Reset();
+	gyro.Reset();
 }
 void DriveTrain::Enable() {
 	frontRight.Enable();
@@ -214,6 +217,10 @@ void DriveTrain::Disable() {
 	Publish(true);
 }
 
+double DriveTrain::GetHeading() {
+	return gyro.GetAngle();
+}
+
 void DriveTrain::SetControlMode(CANTalon::ControlMode controlMode) {
 	mode=controlMode;
 	frontRight.SetControlMode(controlMode);
@@ -229,6 +236,7 @@ void DriveTrain::Publish(bool init) {
 		frc::SmartDashboard::PutNumber("Travel", 0);
 		frc::SmartDashboard::PutBoolean("HighGear", false);
 		frc::SmartDashboard::PutNumber("Angle", 0);
+		frc::SmartDashboard::PutNumber("Heading", 0);
 
 	}else{
 		frc::SmartDashboard::PutNumber("LeftWheels", backLeft.GetOutputVoltage());
@@ -236,6 +244,7 @@ void DriveTrain::Publish(bool init) {
 		frc::SmartDashboard::PutNumber("Travel", GetDistance());
 		frc::SmartDashboard::PutBoolean("HighGear", !inlowgear);
 		frc::SmartDashboard::PutNumber("Angle", GetAngle());
+		frc::SmartDashboard::PutNumber("Heading", GetHeading());
 	}
 }
 

@@ -11,6 +11,7 @@
 
 #include <thread>
 #include <CameraServer.h>
+#include <Commands/TurnForTime.h>
 #include <IterativeRobot.h>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/core.hpp>
@@ -20,7 +21,6 @@
 #include "Commands/DriveStraight.h"
 #include "Commands/TurnToAngle.h"
 
-#include "Commands/Turn.h"
 
 
 class Robot: public frc::IterativeRobot {
@@ -54,7 +54,7 @@ public:
 	 * chooser code above (like the commented example) or additional comparisons
 	 * to the if-else structure below with additional strings & commands.
 	 */
-#define TURNANGLE 30
+#define TURNANGLE 60
 #define DRIVEDISTANCE 5.5*12
 
 	void AutonomousInit() override {

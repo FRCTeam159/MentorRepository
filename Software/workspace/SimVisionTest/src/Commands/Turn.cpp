@@ -18,14 +18,14 @@
 //#define DEBUG_COMMAND
 #define PIDUPDATERATE 0.01
 
-Turn::Turn(double a)  : Command("Turn"), pid(AP,AI,AD,this,this,PIDUPDATERATE)
+TurnForTime::TurnForTime(double a)  : Command("Turn"), pid(AP,AI,AD,this,this,PIDUPDATERATE)
 {
 	target=a;
 	Requires(Robot::drivetrain.get());
 	std::cout << "new Turn("<<target<<")"<< std::endl;
 }
 
-void Turn::Initialize() {
+void TurnForTime::Initialize() {
 	SetTimeout(TURN_TIMEOUT);
 	std::cout << "Turn Started .."<<std::endl;
 	pid.Reset();
@@ -34,7 +34,7 @@ void Turn::Initialize() {
 	//pid.SetToleranceBuffer(2);
 	pid.Enable();
 }
-bool Turn::IsFinished() {
+bool TurnForTime::IsFinished() {
 	if(IsTimedOut()){
 		std::cout << "Turn Error:  Timeout expired"<<std::endl;
 		return true;
@@ -49,14 +49,14 @@ bool Turn::IsFinished() {
 	return false;
 }
 
-void Turn::End() {
+void TurnForTime::End() {
 	double h=Robot::drivetrain->GetHeading();
 	std::cout << TimeSinceInitialized()<< "  Turn End("<<h<<")"<<std::endl;
 	pid.Disable();
 	Robot::drivetrain->EndTravel();
 }
 
-double Turn::PIDGet()
+double TurnForTime::PIDGet()
 {
 	double d=Robot::drivetrain->GetHeading();
 #ifdef DEBUG_COMMAND
@@ -64,7 +64,7 @@ double Turn::PIDGet()
 #endif
 	return d;
 }
-void Turn::PIDWrite(double d)
+void TurnForTime::PIDWrite(double d)
 {
 #ifdef DEBUG_COMMAND
 	std::cout << "Turn::PIDWrite("<<d<<")"<<std::endl;

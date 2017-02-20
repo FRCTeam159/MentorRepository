@@ -46,13 +46,15 @@ void DriveStraight::Interrupted() {
 
 double DriveStraight::PIDGet() {
 	double s=driveTrain->GetDistance();
+#ifdef DEBUG_COMMAND
     std::cout << "DriveStraight::PIDGet("<<s<<")"<< std::endl;
-
+#endif
 	return s;
 }
 
 void DriveStraight::PIDWrite(double d) {
+#ifdef DEBUG_COMMAND
     std::cout << "DriveStraight::PIDWrite("<<d<<")"<< std::endl;
-
+#endif
 	driveTrain->TankDrive(d,d);
 }

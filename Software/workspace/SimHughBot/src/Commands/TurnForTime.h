@@ -3,10 +3,10 @@
 
 #include "../CommandBase.h"
 
-class Turn : public CommandBase {
+class TurnForTime : public CommandBase {
 	double angle=0;
 public:
-	Turn(double angle);
+	TurnForTime(double angle);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
