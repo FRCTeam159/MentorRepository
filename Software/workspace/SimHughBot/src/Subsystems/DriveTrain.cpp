@@ -218,7 +218,11 @@ void DriveTrain::Disable() {
 }
 
 double DriveTrain::GetHeading() {
+#ifdef SIMULATION // need sign change since chassis pose is inverted
+	return -gyro.GetAngle();
+#else
 	return gyro.GetAngle();
+#endif
 }
 
 void DriveTrain::SetControlMode(CANTalon::ControlMode controlMode) {

@@ -1,9 +1,9 @@
 <xml version="1.0">
 <dashboard>
 	<widget field="Heading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="624" y="413"/>
+		<location x="530" y="390"/>
 		<width>239</width>
-		<height>207</height>
+		<height>221</height>
 	</widget>
 	<widget field="Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="319" y="620"/>
@@ -22,15 +22,15 @@
 		<width>93</width>
 	</widget>
 	<widget field="LeftWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="326" y="401"/>
-		<width>303</width>
+		<location x="269" y="394"/>
+		<width>261</width>
 		<height>214</height>
 		<property name="Buffer Size (samples)" value="1000"/>
 	</widget>
 	<widget field="RightWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="31" y="395"/>
-		<width>294</width>
-		<height>206</height>
+		<location x="16" y="395"/>
+		<width>246</width>
+		<height>203</height>
 		<property name="Buffer Size (samples)" value="1000"/>
 	</widget>
 	<widget field="GearPlateOpen" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">

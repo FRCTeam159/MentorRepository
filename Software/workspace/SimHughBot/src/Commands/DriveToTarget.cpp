@@ -75,7 +75,7 @@ double DriveToTarget::PIDGet() {
 	return d;
 }
 
-#define DEBUG_COMMAND
+//#define DEBUG_COMMAND
 
 double DriveToTarget::GetDistance() {
 	double d1=visionSubsystem->GetTargetDistance();

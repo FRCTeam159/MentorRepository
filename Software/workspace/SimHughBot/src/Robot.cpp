@@ -28,7 +28,7 @@ class Robot: public frc::IterativeRobot {
 public:
 	void RobotInit() override {
 		CommandBase::RobotInit();
-		frc::SmartDashboard::PutString("AutoMode", "Right");
+		frc::SmartDashboard::PutString("AutoMode", "Center");
 	}
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
@@ -55,17 +55,16 @@ public:
 	 * to the if-else structure below with additional strings & commands.
 	 */
 #define TURNANGLE 60
-#define DRIVEDISTANCE 5.5*12
+#define DRIVEDISTANCE 5.5*12  // distance to baseline in inches (from robot center)
 
 	void AutonomousInit() override {
-		std::string autoSelected = frc::SmartDashboard::GetString("AutoMode", "Right");
+		std::string autoSelected = frc::SmartDashboard::GetString("AutoMode", "Center");
 		CommandGroup *autonomous=new Autonomous();
 		if (autoSelected == "Right") {
 			//autonomous->AddSequential(new DriveForTime(4.0,0.45));
 			autonomous->AddSequential(new DriveStraight(DRIVEDISTANCE));
 			//autonomous->AddSequential(new Turn(-0.27));
 			autonomous->AddSequential(new TurnToAngle(-TURNANGLE));
-
 			cout<<"Chose::Right Auto"<<endl;
 		}
 		else if(autoSelected == "Left"){

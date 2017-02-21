@@ -6,7 +6,10 @@
 #define RPD(x) (x)*2*M_PI/360
 #define IMAGE_WIDTH 320
 #define IMAGE_HEIGHT 240
-#define FOV 39 //60.0
+#define DFOV 60   // diagonal spec
+#define HFOV 49.6 // measured 44.28
+#define VFOV 30.2 //
+
 #define ASPECT_RATIO (4.0/3.0)
 
 #define HOFFSET 5.0 // camera offset from robot center
@@ -28,7 +31,7 @@ static 	GripPipeline gp;
 
 
 Vision::Vision() : Subsystem("VisionSubsystem") {
-	SetCameraInfo(IMAGE_WIDTH,IMAGE_HEIGHT,FOV,HOFFSET);
+	SetCameraInfo(IMAGE_WIDTH,IMAGE_HEIGHT,HFOV,HOFFSET);
 }
 
 void Vision::InitDefaultCommand() {
@@ -209,7 +212,7 @@ void Vision::SetCameraInfo(int width, int height, double fov, double hoff) {
 	cameraInfo.screenWidth = width;
 	cameraInfo.screenHeight = height;
 	cameraInfo.fov = fov;
-	cameraInfo.fovFactor = 1/(2*tan(RPD(fov/2.0)));
+	cameraInfo.fovFactor = cameraInfo.screenWidth/(2*tan(RPD(fov/2.0)));
 	cameraInfo.HorizontalOffset=hoff;
 	cout<<"fovFactor: "<<cameraInfo.fovFactor<<endl;
 }
@@ -224,7 +227,7 @@ void Vision::CalcTargetInfo(int n,cv::Point top, cv::Point bottom, TargetInfo &i
 		info.HorizontalOffset=targetInfo.Center.x-cameraInfo.screenWidth/2;
 		info.ActualHeight=5.0;
 		info.ActualWidth=(n==1?2.0:10.25);	//inches
-		info.Distance=cameraInfo.fovFactor*cameraInfo.screenHeight*targetInfo.ActualHeight/targetInfo.Height;
+		info.Distance=cameraInfo.fovFactor*targetInfo.ActualHeight/targetInfo.Height;
 		// convert camera offset to pixels
 		double xoffset=0;
 		if(n==1){
@@ -233,7 +236,7 @@ void Vision::CalcTargetInfo(int n,cv::Point top, cv::Point bottom, TargetInfo &i
 			else
 				xoffset+=0.35*info.Height;
 		}
-	    double cam_adjust=cameraInfo.fovFactor*cameraInfo.screenWidth*cameraInfo.HorizontalOffset/info.Distance;
+	    double cam_adjust=cameraInfo.fovFactor*cameraInfo.HorizontalOffset/info.Distance;
 	    double p=info.Center.x+xoffset+cam_adjust-0.5*cameraInfo.screenWidth;
 	    info.HorizontalAngle=p*cameraInfo.fov/cameraInfo.screenWidth;
 	}

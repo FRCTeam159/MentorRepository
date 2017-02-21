@@ -2,11 +2,14 @@
 
 
 #define P 0.1
-#define I 0.005
-#define D 0.0
+#define I 0.0
+#define D 0.1
 
 #define WIDTH 25 // horizontal distance between wheels (side-to-side)
 #define LENGTH 8 // vertical distance between center wheels only (i.e the wheels with encoders)
+
+#define USE_GYRO
+#define DEBUG_COMMAND
 
 TurnToAngle::TurnToAngle(double a) : CommandBase("DriveStraight"),
 	pid(P,I,D,this,this)
@@ -20,14 +23,18 @@ TurnToAngle::TurnToAngle(double a) : CommandBase("DriveStraight"),
 
 // Called just before this Command runs the first time
 void TurnToAngle::Initialize() {
+#ifdef USE_GYRO
+	double a=angle;
+#else
 	double d = driveTrain->GetDistance();
 	driveTrain->Reset();
 	driveTrain->SetDistance(d);
+	double a = angle*2.0*M_PI*radius/360;
+#endif
   	pid.Reset();
   	// arc length (wheel travel distance) given radius and turn angle
-	double a = angle*2.0*M_PI*radius/360;
   	pid.SetSetpoint(a);
-	pid.SetAbsoluteTolerance(0.5);
+	pid.SetAbsoluteTolerance(1);
 	pid.Enable();
 	driveTrain->Enable();
 	std::cout << "TurnToAngle Started: "<< a <<std::endl;
@@ -55,6 +62,14 @@ void TurnToAngle::Interrupted() {
 	End();
 }
 double TurnToAngle::PIDGet() {
+#ifdef USE_GYRO
+	double a=driveTrain->GetHeading();
+#ifdef DEBUG_COMMAND
+	std::cout << "TurnToAngle::PIDGet:" << a << std::endl;
+#endif
+
+	return driveTrain->GetHeading();
+#else
 	double l = driveTrain->GetLeftDistance();
 	double r = driveTrain->GetRightDistance();
 	double d = 0.5 * (fabs(l) + fabs(r)); // average wheel travel distance
@@ -67,11 +82,11 @@ double TurnToAngle::PIDGet() {
 	std::cout << "TurnToAngle::PIDGet:" << l << "," << r << ","<<d<<","<<a << std::endl;
 #endif
 	return d;
+#endif
 }
 
 void TurnToAngle::PIDWrite(double a) {
-
     std::cout << "TurnToAngle::PIDWrite("<<a<<")"<< std::endl;
-
 	driveTrain->TankDrive(a,-a);
+
 }
