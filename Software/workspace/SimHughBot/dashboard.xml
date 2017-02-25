@@ -1,24 +1,21 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="AutoMode" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="625" y="321"/>
+		<width>141</width>
+		<property name="Background" value="250.133.17.255"/>
+	</widget>
 	<widget field="Heading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
 		<location x="530" y="390"/>
 		<width>239</width>
 		<height>221</height>
 	</widget>
-	<widget field="Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="319" y="620"/>
-		<width>95</width>
-	</widget>
-	<widget field="AutoMode" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="32" y="620"/>
-		<width>147</width>
-	</widget>
 	<widget field="Travel" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="200" y="620"/>
+		<location x="486" y="312"/>
 		<width>104</width>
 	</widget>
 	<widget field="HighGear" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="470" y="323"/>
+		<location x="358" y="357"/>
 		<width>93</width>
 	</widget>
 	<widget field="LeftWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
@@ -83,6 +80,7 @@
 	<hidden field="ValueMin"/>
 	<hidden field="TargetHeight"/>
 	<hidden field="HueMax"/>
+	<hidden field="Angle"/>
 	<hidden field="SaturationMin"/>
 	<hidden field="ValueMax"/>
 </xml>

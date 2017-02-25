@@ -116,6 +116,7 @@
 								<option id="gnu.cpp.link.option.other.1613850514" name="Other options (-Xlinker [option])" superClass="gnu.cpp.link.option.other" useByScannerDiscovery="false" valueType="stringList">
 									<listOptionValue builtIn="false" value="-rpath ${WPILIB}/simulation/lib"/>
 								</option>
+								<option id="gnu.cpp.link.option.flags.2115795752" superClass="gnu.cpp.link.option.flags" useByScannerDiscovery="false" value="-Wl,-rpath" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1475817582" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
