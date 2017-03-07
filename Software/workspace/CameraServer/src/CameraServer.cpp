@@ -7,11 +7,12 @@
 
 #include "CameraServer.h"
 
-#include "Utility.h"
-#include "WPIErrors.h"
 #include "llvm/SmallString.h"
 #include "llvm/raw_ostream.h"
 #include "ntcore_cpp.h"
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
 
 using namespace frc;
 
@@ -579,12 +580,12 @@ cs::CvSink CameraServer::GetVideo() {
   {
     std::lock_guard<std::mutex> lock(m_mutex);
     if (m_primarySourceName.empty()) {
-      wpi_setWPIErrorWithContext(CameraServerError, "no camera available");
+      std::cout << "no camera available "<<std::endl;
       return cs::CvSink{};
     }
     auto it = m_sources.find(m_primarySourceName);
     if (it == m_sources.end()) {
-      wpi_setWPIErrorWithContext(CameraServerError, "no camera available");
+      std::cout << "no camera available "<<std::endl;
       return cs::CvSink{};
     }
     source = it->second;
@@ -602,10 +603,7 @@ cs::CvSink CameraServer::GetVideo(const cs::VideoSource& camera) {
     if (it != m_sinks.end()) {
       auto kind = it->second.GetKind();
       if (kind != cs::VideoSink::kCv) {
-        llvm::SmallString<64> buf;
-        llvm::raw_svector_ostream err{buf};
-        err << "expected OpenCV sink, but got " << kind;
-        wpi_setWPIErrorWithContext(CameraServerError, err.str());
+    	std::cout << "expected OpenCV sink, but got "<<kind<<std::endl;
         return cs::CvSink{};
       }
       return *static_cast<cs::CvSink*>(&it->second);
@@ -624,10 +622,7 @@ cs::CvSink CameraServer::GetVideo(llvm::StringRef name) {
     std::lock_guard<std::mutex> lock(m_mutex);
     auto it = m_sources.find(name);
     if (it == m_sources.end()) {
-      llvm::SmallString<64> buf;
-      llvm::raw_svector_ostream err{buf};
-      err << "could not find camera " << name;
-      wpi_setWPIErrorWithContext(CameraServerError, err.str());
+  	  std::cout << "could not find camera  "<<name<<std::endl;
       return cs::CvSink{};
     }
     source = it->second;

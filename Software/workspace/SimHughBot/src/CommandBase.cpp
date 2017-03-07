@@ -22,14 +22,13 @@ void CommandBase::RobotInit(){
 	// Create a single static instance of all of your subsystems. The following
 	// line should be repeated for each subsystem in the project.
 	visionSubsystem.reset(new Vision());
-	visionSubsystem->Init();
 	driveTrain.reset(new DriveTrain());
 	gearSubsystem.reset(new GearSubsystem());
 	ultrasonicSubsystem.reset(new UltrasonicSubsystem());
 	fuelSubsystem.reset(new FuelSubsystem());
 	climbingSubsystem.reset(new ClimbingSubsystem());
 	ultrasonicSubsystem->Init();
-
+	visionSubsystem->Init();
 
 	oi.reset(new OI());
 }

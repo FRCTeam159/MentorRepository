@@ -12,7 +12,6 @@
 #include <string>
 #include <vector>
 
-#include "ErrorBase.h"
 #include "cscore.h"
 #include "llvm/DenseMap.h"
 #include "llvm/StringMap.h"
@@ -25,7 +24,7 @@ namespace frc {
  * Singleton class for creating and keeping camera servers.
  * Also publishes camera information to NetworkTables.
  */
-class CameraServer : public ErrorBase {
+class CameraServer {
  public:
   static constexpr uint16_t kBasePort = 1181;
   static constexpr int kSize640x480 = 0;

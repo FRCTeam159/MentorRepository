@@ -30,7 +30,7 @@ struct CameraInfo {
     double fov_factor;
 };
 
-class Vision: public Subsystem {
+class ImageProc: public Subsystem {
 protected:
 
     CameraInfo camera;
@@ -51,8 +51,8 @@ protected:
 public:
     std::shared_ptr<NetworkTable> table;
 
-    Vision();
-    virtual ~Vision();
+    ImageProc();
+    virtual ~ImageProc();
     void Init();
     void Reset();
     void InitDefaultCommand();

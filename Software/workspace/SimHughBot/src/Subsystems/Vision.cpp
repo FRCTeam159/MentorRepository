@@ -27,22 +27,25 @@ cs::CvSource Vision::outputStream;
 
 static 	GripPipeline gp;
 
-#define CAMERASENABLED
-
 
 Vision::Vision() : Subsystem("VisionSubsystem") {
 	SetCameraInfo(IMAGE_WIDTH,IMAGE_HEIGHT,HFOV,HOFFSET);
 }
 
 void Vision::InitDefaultCommand() {
-#ifdef CAMERASENABLED
 	// Set the default command for a subsystem here.
 	SetDefaultCommand(new VisionUpdate());
-#endif
 }
 
 void Vision::Init() {
 	table=NetworkTable::GetTable("datatable");
+#define APP_TEST
+#ifdef APP_TEST
+	//std::system("../ImageProc/Ubuntu/ImageProc &");
+#else
+	std::thread visionThread(VisionThread);
+	visionThread.detach();
+#endif
 	frc::SmartDashboard::PutBoolean("showColorThreshold", false);
 	frc::SmartDashboard::PutNumber("HueMax", hsvThresholdHue[1]);
 	frc::SmartDashboard::PutNumber("HueMin", hsvThresholdHue[0]);
@@ -56,7 +59,6 @@ void Vision::Init() {
 	frc::SmartDashboard::PutNumber("Distance", 0);
 	frc::SmartDashboard::PutNumber("HorizontalOffset", 0);
 	frc::SmartDashboard::PutNumber("HorizontalAngle", 0);
-#ifdef CAMERASENABLED
 #ifndef SIMULATION
 	camera1 = CameraServer::GetInstance()->StartAutomaticCapture("Logitech",0);
 	camera2 = CameraServer::GetInstance()->StartAutomaticCapture("DriverCam",1);
@@ -67,18 +69,13 @@ void Vision::Init() {
 	//camera.SetFPS(1);
 	camera1.SetFPS(10);
 #endif
-	std::thread visionThread(VisionThread);
-	visionThread.detach();
-#endif
+	//ssh pi@rapberrypi.local -c "/home/pi/vision/start_grip.sh
 }
-
-#define SHOW_COLOR_THRESHOLD
 
 void Vision::Process() {
 	GetTargetInfo (targetInfo);
 	PublishTargetInfo(targetInfo);
 }
-
 
 void Vision::VisionThread(){
 	std::shared_ptr<NetworkTable> table2=NetworkTable::GetTable("datatable");
@@ -102,7 +99,6 @@ void Vision::VisionThread(){
 
 	cv::Point tl=cv::Point(10, 10);
 	cv::Point br=cv::Point(20, 20);
-
 
 	while(true){
 #ifdef SIMULATION
@@ -253,6 +249,8 @@ int Vision::GetNumTargets() {
 }
 
 void Vision::GetTargetInfo(TargetInfo & info) {
+	bool showColorThreshold=SmartDashboard::GetBoolean("showColorThreshold", false);
+	table->PutBoolean("showColorThreshold",showColorThreshold);
 	cv::Point top;
 	cv::Point bot;
 	int n=table->GetNumber("NumRects", 0);
