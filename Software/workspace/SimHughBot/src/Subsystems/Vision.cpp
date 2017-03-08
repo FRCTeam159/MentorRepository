@@ -39,7 +39,7 @@ void Vision::InitDefaultCommand() {
 
 void Vision::Init() {
 	table=NetworkTable::GetTable("datatable");
-#define APP_TEST
+//#define APP_TEST
 #ifdef APP_TEST
 	//std::system("../ImageProc/Ubuntu/ImageProc &");
 #else
@@ -57,7 +57,7 @@ void Vision::Init() {
 	frc::SmartDashboard::PutNumber("Rectangles", 0);
 	frc::SmartDashboard::PutBoolean("showGoodRects", true);
 	frc::SmartDashboard::PutNumber("Distance", 0);
-	frc::SmartDashboard::PutNumber("HorizontalOffset", 0);
+	frc::SmartDashboard::PutNumber("HOffset", HOFFSET);
 	frc::SmartDashboard::PutNumber("HorizontalAngle", 0);
 #ifndef SIMULATION
 	camera1 = CameraServer::GetInstance()->StartAutomaticCapture("Logitech",0);
@@ -73,8 +73,8 @@ void Vision::Init() {
 }
 
 void Vision::Process() {
-	GetTargetInfo (targetInfo);
-	PublishTargetInfo(targetInfo);
+	GetTargetInfo ();
+	PublishTargetInfo();
 }
 
 void Vision::VisionThread(){
@@ -213,32 +213,33 @@ void Vision::SetCameraInfo(int width, int height, double fov, double hoff) {
 	cout<<"fovFactor: "<<cameraInfo.fovFactor<<endl;
 }
 
-void Vision::CalcTargetInfo(int n,cv::Point top, cv::Point bottom, TargetInfo &info) {
-	info.numrects=n;
-	if(n>0){
-		info.Height=bottom.y-top.y; // screen y is inverted
-		info.Width=bottom.x-top.x;
-		info.Center.x=0.5*(bottom.x+top.x);
-		info.Center.y=0.5*(bottom.y+top.y);
-		info.HorizontalOffset=targetInfo.Center.x-cameraInfo.screenWidth/2;
-		info.ActualHeight=5.0;
-		info.ActualWidth=(n==1?2.0:10.25);	//inches
-		info.Distance=cameraInfo.fovFactor*targetInfo.ActualHeight/targetInfo.Height;
-		// convert camera offset to pixels
-		double xoffset=0;
-		if(n==1){
-			if(info.HorizontalOffset<0)
-				xoffset-=0.35*info.Height;
-			else
-				xoffset+=0.35*info.Height;
-		}
-	    double cam_adjust=cameraInfo.fovFactor*cameraInfo.HorizontalOffset/info.Distance;
-	    double p=info.Center.x+xoffset+cam_adjust-0.5*cameraInfo.screenWidth;
-	    info.HorizontalAngle=p*cameraInfo.fov/cameraInfo.screenWidth;
-	}
+void Vision::CalcTargetInfo(int n,cv::Point top, cv::Point bottom) {
+	targetInfo.numrects=n;
+	//if(n>0){
+		targetInfo.Height=bottom.y-top.y; // screen y is inverted
+		targetInfo.Width=bottom.x-top.x;
+		targetInfo.Center.x=0.5*(bottom.x+top.x);
+		targetInfo.Center.y=0.5*(bottom.y+top.y);
+		targetInfo.HorizontalOffset=targetInfo.Center.x-cameraInfo.screenWidth/2;
+		targetInfo.ActualHeight=5.0;
+		targetInfo.ActualWidth=(n==1?2.0:10.25);	//inches
+		targetInfo.Distance=cameraInfo.fovFactor*targetInfo.ActualHeight/targetInfo.Height;
+		GetTargetAngle();
+	//}
 }
 
 double Vision::GetTargetAngle() {
+	cameraInfo.HorizontalOffset=frc::SmartDashboard::GetNumber("HOffset", HOFFSET);
+	double xoffset=0;
+	if(targetInfo.numrects==1){
+		if(targetInfo.HorizontalOffset<0)
+			xoffset-=0.3*targetInfo.Height;
+		else
+			xoffset+=0.3*targetInfo.Height;
+	}
+    double cam_adjust=cameraInfo.fovFactor*cameraInfo.HorizontalOffset/targetInfo.Distance;
+    double p=targetInfo.Center.x+xoffset+cam_adjust-0.5*cameraInfo.screenWidth;
+    targetInfo.HorizontalAngle=p*cameraInfo.fov/cameraInfo.screenWidth;
 	return targetInfo.HorizontalAngle;
 }
 double Vision::GetTargetDistance() {
@@ -248,7 +249,7 @@ int Vision::GetNumTargets() {
 	return targetInfo.numrects;
 }
 
-void Vision::GetTargetInfo(TargetInfo & info) {
+void Vision::GetTargetInfo() {
 	bool showColorThreshold=SmartDashboard::GetBoolean("showColorThreshold", false);
 	table->PutBoolean("showColorThreshold",showColorThreshold);
 	cv::Point top;
@@ -258,20 +259,16 @@ void Vision::GetTargetInfo(TargetInfo & info) {
 	top.y=table->GetNumber("TopLeftY", 10);
 	bot.x=table->GetNumber("BotRightX",20);
 	bot.y=table->GetNumber("BotRightY",20);
-
-	CalcTargetInfo(n,top,bot,info);
+	CalcTargetInfo(n,top,bot);
 }
 
-void Vision::PublishTargetInfo(TargetInfo &info) {
-	frc::SmartDashboard::PutNumber("Distance", info.Distance);
-	frc::SmartDashboard::PutNumber("HorizontalOffset", info.HorizontalOffset);
-	frc::SmartDashboard::PutNumber("HorizontalAngle", info.HorizontalAngle);
-	frc::SmartDashboard::PutNumber("TargetHeight", info.Height);
-	frc::SmartDashboard::PutNumber("TargetWidth", info.Width);
-	frc::SmartDashboard::PutNumber("TargetCenter.x", info.Center.x);
-	frc::SmartDashboard::PutNumber("TargetCenter.y", info.Center.y);
-
+void Vision::PublishTargetInfo() {
+	frc::SmartDashboard::PutNumber("Distance", targetInfo.Distance);
+	frc::SmartDashboard::PutNumber("HorizontalOffset", targetInfo.HorizontalOffset);
+	frc::SmartDashboard::PutNumber("HorizontalAngle", targetInfo.HorizontalAngle);
+	frc::SmartDashboard::PutNumber("TargetHeight", targetInfo.Height);
+	frc::SmartDashboard::PutNumber("TargetWidth", targetInfo.Width);
+	frc::SmartDashboard::PutNumber("TargetCenter.x", targetInfo.Center.x);
+	frc::SmartDashboard::PutNumber("TargetCenter.y", targetInfo.Center.y);
 }
 
-	// Put methods for controlling this subsystem
-// here. Call these from Commands.

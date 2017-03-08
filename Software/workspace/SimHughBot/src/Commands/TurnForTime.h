@@ -4,9 +4,12 @@
 #include "../CommandBase.h"
 
 class TurnForTime : public CommandBase {
-	double angle=0;
+	double speed;
+	double time;
+	double targetTime;
+	double currentTime;
 public:
-	TurnForTime(double angle);
+	TurnForTime(double t, double s);
 	void Initialize();
 	void Execute();
 	bool IsFinished();

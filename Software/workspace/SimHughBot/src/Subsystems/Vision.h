@@ -62,9 +62,9 @@ public:
 	double GetTargetAngle();
 	int GetNumTargets();
 	void SetCameraInfo(int width, int height, double fov, double hoff);
-	void CalcTargetInfo(int n,cv::Point top, cv::Point bottom, TargetInfo &info);
-	void GetTargetInfo(TargetInfo &info);
-	void PublishTargetInfo(TargetInfo &info);
+	void CalcTargetInfo(int n,cv::Point top, cv::Point bottom);
+	void GetTargetInfo();
+	void PublishTargetInfo();
 
 
 };

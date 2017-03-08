@@ -7,7 +7,7 @@ class DriveToTarget : public CommandBase, public PIDSource, public PIDOutput{
 	PIDController pid;
 	double distance;
 	double angle;
-	Vision::TargetInfo target;
+	//Vision::TargetInfo target;
 	double GetDistance();
 
 public:

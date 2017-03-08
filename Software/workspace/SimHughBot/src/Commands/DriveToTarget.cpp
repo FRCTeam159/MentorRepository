@@ -46,7 +46,8 @@ bool DriveToTarget::IsFinished() {
 		std::cout << "DriveToTarget Error:  Timeout expired"<<std::endl;
 		return true;
 	}
-	visionSubsystem->GetTargetInfo(target);
+
+	//visionSubsystem->GetTargetInfo(target);
 
 	double d=GetDistance();
 	int ntargets=visionSubsystem->GetNumTargets();
@@ -93,7 +94,8 @@ void DriveToTarget::PIDWrite(double err) {
 
 	double df=(d-MIN_DISTANCE)/(distance-MIN_DISTANCE); // fraction of starting distance remaining
 	double afact=(1-df)+0.1; // bias angle correction towards end of travel
-	double a=-0.2*df*pow(afact,2.0)*visionSubsystem->GetTargetAngle();
+	//double a=-0.2*df*pow(afact,2.0)*visionSubsystem->GetTargetAngle();
+	double a=-0.1*df*visionSubsystem->GetTargetAngle();
 	if(n==0)
 		a=0;
     double e=-0.5*err;

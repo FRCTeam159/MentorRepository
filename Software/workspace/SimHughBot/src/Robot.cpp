@@ -20,7 +20,7 @@
 #include "Commands/DriveForTime.h"
 #include "Commands/DriveStraight.h"
 #include "Commands/TurnToAngle.h"
-
+#include "Commands/TurnForTime.h"
 
 
 class Robot: public frc::IterativeRobot {
@@ -61,24 +61,23 @@ public:
 		std::string autoSelected = frc::SmartDashboard::GetString("AutoMode", "Center");
 		CommandGroup *autonomous=new Autonomous();
 		if (autoSelected == "Right") {
-			//autonomous->AddSequential(new DriveForTime(4.0,0.45));
-			autonomous->AddSequential(new DriveStraight(DRIVEDISTANCE));
-			//autonomous->AddSequential(new Turn(-0.27));
-			autonomous->AddSequential(new TurnToAngle(-TURNANGLE));
+			autonomous->AddSequential(new DriveForTime(4,0.5));
+			//autonomous->AddSequential(new DriveStraight(DRIVEDISTANCE));
+			//autonomous->AddSequential(new TurnToAngle(-TURNANGLE));
+			autonomous->AddSequential(new TurnForTime(1,-0.5));
+
 			cout<<"Chose::Right Auto"<<endl;
 		}
 		else if(autoSelected == "Left"){
-			//autonomous->AddSequential(new DriveForTime(4.0,0.45));
-			autonomous->AddSequential(new DriveStraight(DRIVEDISTANCE));
-			//autonomous->AddSequential(new Turn(0.27));
-			autonomous->AddSequential(new TurnToAngle(TURNANGLE));
+			autonomous->AddSequential(new DriveForTime(3.5,0.5));
+			//autonomous->AddSequential(new DriveStraight(DRIVEDISTANCE));
+			//autonomous->AddSequential(new TurnToAngle(TURNANGLE));
+			autonomous->AddSequential(new TurnForTime(1,0.5));
 			cout<<"Chose::Left Auto"<<endl;
 		}
-		else if(autoSelected == "Center"){
+		else {
+			autonomous->AddSequential(new DriveForTime(2.5,0.5));
 			cout<<"Chose::Center Auto"<<endl;
-		}
-		else{
-			cout<<"Chose::Default Auto"<<endl;
 		}
 		autonomous->AddSequential(new DriveToTarget());
 
