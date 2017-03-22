@@ -21,8 +21,10 @@ const int CLIMBING_MOTOR=6;
 
 const int STICK = 0;
 
+const int AUTOTARGET_BUTTON = 6;
+
 const int LOWGEAR_BUTTON = 4;
-const int HIGHGEAR_BUTTON = 6;
+const int HIGHGEAR_BUTTON = 3;
 const int GEARTOGGLEBUTTON=2;
 const int FUELPUSHERBUTTON=1;
 const int CLIMBERBUTTON=3;

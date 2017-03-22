@@ -1,16 +1,9 @@
 #ifndef Vision_H
 #define Vision_H
-#include "Subsystems/GripPipeline.h"
-
 #include <Commands/Subsystem.h>
-#include <CameraServer.h>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/core/core.hpp>
 #include <opencv2/core/types.hpp>
-#include "llvm/ArrayRef.h"
-#include "llvm/StringRef.h"
 
-using namespace grip;
+//using namespace grip;
 
 class Vision : public Subsystem {
 public:
@@ -38,20 +31,13 @@ public:
 	TargetInfo targetInfo;
 
 private:
-	static cs::UsbCamera camera1;
-	static cs::UsbCamera camera2;
-	static cs::CvSink cvSink;
-	static cs::CvSource outputStream;
 
-
-	static llvm::ArrayRef<double>  hsvThresholdHue;
-	static llvm::ArrayRef<double>  hsvThresholdSaturation;
-	static llvm::ArrayRef<double>  hsvThresholdValue;
-	static void VisionThread();
 	std::shared_ptr<NetworkTable> table;
 
+#ifndef APP_TEST
 	static std::vector<cv::Rect> GoodRects(std::vector<cv::Rect> r);
-
+#endif
+	static void VisionThread();
 
 public:
 	Vision();
@@ -65,8 +51,6 @@ public:
 	void CalcTargetInfo(int n,cv::Point top, cv::Point bottom);
 	void GetTargetInfo();
 	void PublishTargetInfo();
-
-
 };
 
 #endif  // Vision_H

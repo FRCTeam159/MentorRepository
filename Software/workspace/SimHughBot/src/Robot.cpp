@@ -21,14 +21,36 @@
 #include "Commands/DriveStraight.h"
 #include "Commands/TurnToAngle.h"
 #include "Commands/TurnForTime.h"
+#include "Commands/DeliverGear.h"
+
+
+//#define TUNE_AUTO
+#define DRIVE_TIME 3.0
+#define TURN_TIME 1.0
+#define TURNANGLE 60
+#define DRIVE_FORWARD 0.2
+#define DRIVE_BACKWARD -0.1
+
+#define DRIVEDISTANCE 5.5*12  // distance to baseline in inches (from robot center)
 
 
 class Robot: public frc::IterativeRobot {
-
+	double rightDrive=0.47;
+	double rightTurn=0.4;
+	double leftDrive=0.46;
+	double leftTurn=0.35;
 public:
 	void RobotInit() override {
 		CommandBase::RobotInit();
 		frc::SmartDashboard::PutString("AutoMode", "Center");
+		frc::SmartDashboard::PutBoolean("Targeting", false);
+
+#ifdef TUNE_AUTO
+		frc::SmartDashboard::PutNumber("leftDrive", leftDrive);
+		frc::SmartDashboard::PutNumber("leftTurn",leftTurn);
+		frc::SmartDashboard::PutNumber("rightDrive", rightDrive);
+		frc::SmartDashboard::PutNumber("rightTurn",rightTurn);
+#endif
 	}
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
@@ -43,44 +65,48 @@ public:
 		frc::Scheduler::GetInstance()->Run();
 	}
 
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * GetString code to get the auto name from the text box below the Gyro.
-	 *
-	 * You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the if-else structure below with additional strings & commands.
-	 */
-#define TURNANGLE 60
-#define DRIVEDISTANCE 5.5*12  // distance to baseline in inches (from robot center)
 
 	void AutonomousInit() override {
 		std::string autoSelected = frc::SmartDashboard::GetString("AutoMode", "Center");
+#ifdef TUNE_AUTO
+		leftDrive = frc::SmartDashboard::GetNumber("leftDrive", 0.5);
+		leftTurn = frc::SmartDashboard::GetNumber("leftTurn",0.32);
+		rightDrive = frc::SmartDashboard::GetNumber("rightDrive", 0.47);
+		rightTurn = frc::SmartDashboard::GetNumber("rightTurn",0.32);
+#endif
 		CommandGroup *autonomous=new Autonomous();
 		if (autoSelected == "Right") {
-			autonomous->AddSequential(new DriveForTime(4,0.5));
-			//autonomous->AddSequential(new DriveStraight(DRIVEDISTANCE));
-			//autonomous->AddSequential(new TurnToAngle(-TURNANGLE));
-			autonomous->AddSequential(new TurnForTime(1,-0.5));
-
-			cout<<"Chose::Right Auto"<<endl;
+			// practice-bot: leftDrive=0.45 turnVoltage=0.32
+#ifdef TUNE_AUTO
+			autonomous->AddSequential(new DriveForTime(DRIVE_TIME,rightDrive));
+			autonomous->AddSequential(new TurnForTime(TURN_TIME, rightTurn));
+#else
+			autonomous->AddSequential(new DriveForTime(DRIVE_TIME,0.5));
+			autonomous->AddSequential(new TurnForTime(TURN_TIME, -0.45));
+#endif
+			autonomous->AddSequential(new DeliverGear());
+			cout<<"Right Auto"<<endl;
 		}
 		else if(autoSelected == "Left"){
-			autonomous->AddSequential(new DriveForTime(3.5,0.5));
-			//autonomous->AddSequential(new DriveStraight(DRIVEDISTANCE));
-			//autonomous->AddSequential(new TurnToAngle(TURNANGLE));
-			autonomous->AddSequential(new TurnForTime(1,0.5));
-			cout<<"Chose::Left Auto"<<endl;
+			// practice-bot: leftDrive=0.45 turnVoltage=0.25
+#ifdef TUNE_AUTO
+			autonomous->AddSequential(new DriveForTime(DRIVE_TIME,leftDrive));
+			autonomous->AddSequential(new TurnForTime(TURN_TIME, -leftTurn));
+#else
+			autonomous->AddSequential(new DriveForTime(DRIVE_TIME,0.45));
+			autonomous->AddSequential(new TurnForTime(TURN_TIME, 0.4));
+#endif
+			autonomous->AddSequential(new DeliverGear());
+			cout<<"Left Auto"<<endl;
 		}
-		else {
-			autonomous->AddSequential(new DriveForTime(2.5,0.5));
-			cout<<"Chose::Center Auto"<<endl;
+		else if(autoSelected == "Center") {
+			cout<<"Center Auto"<<endl;
+			autonomous->AddSequential(new DriveForTime(1.5, 0.4));
+			autonomous->AddSequential(new DeliverGear());
 		}
-		autonomous->AddSequential(new DriveToTarget());
-
+		else{
+			cout<<"Auto Mode Disabled"<<endl;
+		}
 		autonomousCommand.reset(autonomous);
 
 		CommandBase::AutonomousInit();

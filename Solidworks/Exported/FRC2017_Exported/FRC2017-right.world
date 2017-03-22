@@ -20,7 +20,7 @@
     </include>
     <include>
       <uri>model://SimBot</uri>
-      <pose>0.3256 -7.36 0.022 0 0 1.579</pose>
+      <pose>0.67 -7.36 0.022 0 0 1.579</pose>
     </include>
     <include>
       <name>spike1</name>
@@ -55,7 +55,7 @@
       <include>
       <name>gear</name>
       <uri>model://Gear</uri>
-      <pose>0.692 -7.414 0.395 1.562 -0.042 0.0059</pose>
+      <pose>1.04 -7.414 0.387 1.5833 -0.98 -0.0</pose>
     </include>
 </world>
 </sdf>

@@ -15,15 +15,15 @@
         <angular>0</angular>
       </velocity_decay>
       <inertial>
-        <mass>1.06856705498057</mass>
+        <mass>2</mass>
         <pose>0 0 0 0 0 0</pose>
         <inertia>
-          <ixx>0.02</ixx>
+          <ixx>0.1</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>0.02</iyy>
+          <iyy>0.1</iyy>
           <iyz>0</iyz>
-          <izz>0.02</izz>
+          <izz>0.1</izz>
         </inertia>
       </inertial>
       <collision name="Body_collision">

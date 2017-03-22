@@ -1,7 +1,13 @@
 #include <Commands/VisionUpdate.h>
 #include "Vision.h"
-#include "../RobotMap.h"
+#include "RobotMap.h"
 #include "Subsystems/GripPipeline.h"
+#include <CameraServer.h>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/core/core.hpp>
+#include "llvm/ArrayRef.h"
+#include "llvm/StringRef.h"
+
 
 #define RPD(x) (x)*2*M_PI/360
 #define IMAGE_WIDTH 320
@@ -12,20 +18,10 @@
 
 #define ASPECT_RATIO (4.0/3.0)
 
-#define HOFFSET 5.0 // camera offset from robot center
+#define HOFFSET 8.0 // camera offset from robot center
 
 
 using namespace frc;
-
-llvm::ArrayRef<double>  Vision::hsvThresholdHue = {70, 110};
-llvm::ArrayRef<double>  Vision::hsvThresholdSaturation = {100, 255};
-llvm::ArrayRef<double>  Vision::hsvThresholdValue = {100, 255};
-cs::UsbCamera Vision::camera1;
-cs::UsbCamera Vision::camera2;
-cs::CvSink Vision::cvSink;
-cs::CvSource Vision::outputStream;
-
-static 	GripPipeline gp;
 
 
 Vision::Vision() : Subsystem("VisionSubsystem") {
@@ -41,27 +37,20 @@ void Vision::Init() {
 	table=NetworkTable::GetTable("datatable");
 //#define APP_TEST
 #ifdef APP_TEST
+	frc::SmartDashboard::PutBoolean("showColorThreshold", false);
+	frc::SmartDashboard::PutNumber("Rectangles", 0);
+	frc::SmartDashboard::PutBoolean("showGoodRects", true);
 	//std::system("../ImageProc/Ubuntu/ImageProc &");
 #else
 	std::thread visionThread(VisionThread);
 	visionThread.detach();
 #endif
-	frc::SmartDashboard::PutBoolean("showColorThreshold", false);
-	frc::SmartDashboard::PutNumber("HueMax", hsvThresholdHue[1]);
-	frc::SmartDashboard::PutNumber("HueMin", hsvThresholdHue[0]);
-	//frc::SmartDashboard::PutNumberArray("hue", hsvThresholdHue);
-	frc::SmartDashboard::PutNumber("SaturationMax", hsvThresholdSaturation[1]);
-	frc::SmartDashboard::PutNumber("SaturationMin", hsvThresholdSaturation[0]);
-	frc::SmartDashboard::PutNumber("ValueMax", hsvThresholdValue[1]);
-	frc::SmartDashboard::PutNumber("ValueMin", hsvThresholdValue[0]);
-	frc::SmartDashboard::PutNumber("Rectangles", 0);
-	frc::SmartDashboard::PutBoolean("showGoodRects", true);
 	frc::SmartDashboard::PutNumber("Distance", 0);
 	frc::SmartDashboard::PutNumber("HOffset", HOFFSET);
 	frc::SmartDashboard::PutNumber("HorizontalAngle", 0);
 #ifndef SIMULATION
-	camera1 = CameraServer::GetInstance()->StartAutomaticCapture("Logitech",0);
-	camera2 = CameraServer::GetInstance()->StartAutomaticCapture("DriverCam",1);
+	cs::UsbCamera camera1 = CameraServer::GetInstance()->StartAutomaticCapture("Logitech",0);
+	cs::UsbCamera camera2 = CameraServer::GetInstance()->StartAutomaticCapture("DriverCam",1);
 
 	// Set the resolution
 	camera1.SetResolution(320, 240);
@@ -77,6 +66,7 @@ void Vision::Process() {
 	PublishTargetInfo();
 }
 
+#ifndef APP_TEST
 void Vision::VisionThread(){
 	std::shared_ptr<NetworkTable> table2=NetworkTable::GetTable("datatable");
 #ifdef SIMULATION
@@ -90,15 +80,31 @@ void Vision::VisionThread(){
         std::cout << "Video Stream captured "<<videoStreamAddress << std::endl;
 #else
 	// Get a CvSink. This will capture Mats from the Camera
-	cvSink = CameraServer::GetInstance()->GetVideo("Logitech");
+	cs::CvSink cvSink = CameraServer::GetInstance()->GetVideo("Logitech");
 #endif
 	// Setup a CvSource. This will send images back to the Dashboard
-	outputStream = CameraServer::GetInstance()->PutVideo("Rectangle", 320, 240);
+	cs::CvSource outputStream = CameraServer::GetInstance()->PutVideo("Rectangle", 320, 240);
 
 	cv::Mat mat;
 
 	cv::Point tl=cv::Point(10, 10);
 	cv::Point br=cv::Point(20, 20);
+
+	llvm::ArrayRef<double>  hsvThresholdHue = {70, 110};
+	llvm::ArrayRef<double>  hsvThresholdSaturation = {100, 255};
+	llvm::ArrayRef<double>  hsvThresholdValue = {100, 255};
+
+	frc::SmartDashboard::PutNumber("HueMax", hsvThresholdHue[1]);
+	frc::SmartDashboard::PutNumber("HueMin", hsvThresholdHue[0]);
+	frc::SmartDashboard::PutNumber("SaturationMax", hsvThresholdSaturation[1]);
+	frc::SmartDashboard::PutNumber("SaturationMin", hsvThresholdSaturation[0]);
+	frc::SmartDashboard::PutNumber("ValueMax", hsvThresholdValue[1]);
+	frc::SmartDashboard::PutNumber("ValueMin", hsvThresholdValue[0]);
+	frc::SmartDashboard::PutBoolean("showColorThreshold", false);
+	frc::SmartDashboard::PutNumber("Rectangles", 0);
+	frc::SmartDashboard::PutBoolean("showGoodRects", true);
+
+	GripPipeline gp;
 
 	while(true){
 #ifdef SIMULATION
@@ -203,7 +209,7 @@ std::vector<cv::Rect> Vision::GoodRects(std::vector<cv::Rect> rects) {
 		goodrects.push_back(Rect2);
 	return goodrects;
 }
-
+#endif
 void Vision::SetCameraInfo(int width, int height, double fov, double hoff) {
 	cameraInfo.screenWidth = width;
 	cameraInfo.screenHeight = height;
@@ -233,9 +239,11 @@ double Vision::GetTargetAngle() {
 	double xoffset=0;
 	if(targetInfo.numrects==1){
 		if(targetInfo.HorizontalOffset<0)
-			xoffset-=0.3*targetInfo.Height;
+			xoffset-=2*targetInfo.Width;
+			//xoffset-=0.3*targetInfo.Height;
 		else
-			xoffset+=0.3*targetInfo.Height;
+			xoffset+=2*targetInfo.Width;
+			//xoffset+=0.3*targetInfo.Height;
 	}
     double cam_adjust=cameraInfo.fovFactor*cameraInfo.HorizontalOffset/targetInfo.Distance;
     double p=targetInfo.Center.x+xoffset+cam_adjust-0.5*cameraInfo.screenWidth;
@@ -250,8 +258,6 @@ int Vision::GetNumTargets() {
 }
 
 void Vision::GetTargetInfo() {
-	bool showColorThreshold=SmartDashboard::GetBoolean("showColorThreshold", false);
-	table->PutBoolean("showColorThreshold",showColorThreshold);
 	cv::Point top;
 	cv::Point bot;
 	int n=table->GetNumber("NumRects", 0);
@@ -260,6 +266,13 @@ void Vision::GetTargetInfo() {
 	bot.x=table->GetNumber("BotRightX",20);
 	bot.y=table->GetNumber("BotRightY",20);
 	CalcTargetInfo(n,top,bot);
+#ifdef APP_TEST
+	bool showColorThreshold=SmartDashboard::GetBoolean("showColorThreshold", false);
+	bool showGoodRects=SmartDashboard::GetBoolean("showGoodRects", true);
+	table->PutBoolean("showGoodRects",showGoodRects);
+	table->PutBoolean("showColorThreshold",showColorThreshold);
+	frc::SmartDashboard::PutNumber("Rectangles", n);
+#endif
 }
 
 void Vision::PublishTargetInfo() {

@@ -180,6 +180,21 @@ void DriveTrain::SetSafetyEnabled(bool enabled) {
   m_safetyHelper->SetSafetyEnabled(enabled);
 }
 
+void DriveTrain::DisableDrive() {
+	backRight.Disable();
+	backLeft.Disable();
+	frontRight.Disable();
+	frontLeft.Disable();
+}
+
+void DriveTrain::EnableDrive() {
+	Reset();
+	backRight.Enable();
+	backLeft.Enable();
+	frontRight.Enable();
+	frontLeft.Enable();
+}
+
 void DriveTrain::GetDescription(std::ostringstream& desc) const {
   desc << "DriveTrain";
 }

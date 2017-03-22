@@ -35,9 +35,9 @@
      <include>
       <name>spike3</name>
       <uri>model://SpikePanel</uri>
-      <pose>-1.844 -5.009 0.026 0 0 -2.61</pose>
+      <pose>-1.8126 -4.97 0.026 0 0 -2.61</pose>
     </include>
-  <include>
+    <include>
       <name>tape1</name>
       <uri>model://TAPE2017</uri>
       <pose>-0.18536 -4.85795 0.41079 0.0116 -0.001119 -0.54</pose>
@@ -55,7 +55,7 @@
       <include>
       <name>gear</name>
       <uri>model://Gear</uri>
-      <pose>-3.07483 -7.42411 0.386712 1.56178 -0.29245 0.008741</pose>
+      <pose>-3.071 -7.42417 0.3869 1.562 0.336 0.0066</pose>
     </include>
 </world>
 </sdf>

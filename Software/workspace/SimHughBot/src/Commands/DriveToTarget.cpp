@@ -1,36 +1,47 @@
 #include "Commands/DriveToTarget.h"
+#include "RobotMap.h"
 
 #define ADJUST_TIMEOUT 0.5
 #define MAX_ANGLE_ERROR 0.5
-#define P 0.25
-#define I 0.0
+#define P 0.7
+#define I 0.01
 #define D 0.0
 
 #define SCALE 0.1
-#define MIN_DISTANCE 9
+#define MIN_DISTANCE 14
 
-#define DRIVE_TIMEOUT 0.7
+#define DRIVE_TIMEOUT 0.2
 
 DriveToTarget::DriveToTarget() : CommandBase("DriveToTarget"),
     pid(P,I,D,this,this)
 {
 	Requires(driveTrain.get());
     std::cout << "new DriveToTarget"<< std::endl;
+    error=false;
 }
 
 // Called just before this Command runs the first time
 void DriveToTarget::Initialize() {
-	distance=visionSubsystem->GetTargetDistance();
+	bool istargeting=frc::SmartDashboard::GetBoolean("Targeting", false);
+	if(istargeting){
+		std::cout << "DriveToTarget: called twice ? "<<std::endl;
+		return;
+	}
 
-	SetTimeout(DRIVE_TIMEOUT*distance/12+1);
+	distance=visionSubsystem->GetTargetDistance();
+	frc::SmartDashboard::PutBoolean("Targeting", true);
+	driveTrain->EnableDrive();
+	SetTimeout(DRIVE_TIMEOUT*distance+1);
     int ntargets = visionSubsystem->GetNumTargets();
     if (ntargets>0){
        std::cout << "DriveToTarget Started ..." << std::endl;
       	pid.Reset();
 		pid.SetSetpoint(MIN_DISTANCE);
 		pid.Enable();
+	    error=false;
     }
     else{
+        error=true;
     	std::cout << "DriveToTarget Error(no targets) cancelling ..." << std::endl;
     	End();
     }
@@ -42,16 +53,20 @@ void DriveToTarget::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveToTarget::IsFinished() {
-	if(IsTimedOut()){
-		std::cout << "DriveToTarget Error:  Timeout expired"<<std::endl;
+	if(error){
 		return true;
 	}
-
+	if(IsTimedOut()){
+		std::cout << "DriveToTarget: Timeout expired"<<std::endl;
+        error=true;
+		return true;
+	}
 	//visionSubsystem->GetTargetInfo(target);
-
+#define MAX_DIST_ERR 2
 	double d=GetDistance();
+	double err=d-MIN_DISTANCE;
 	int ntargets=visionSubsystem->GetNumTargets();
-	if(ntargets==0 || d<=MIN_DISTANCE)
+	if(ntargets==0 || err<MAX_DIST_ERR)
 		return true;
 	return false;
 }
@@ -59,21 +74,24 @@ bool DriveToTarget::IsFinished() {
 // Called once after isFinished returns true
 void DriveToTarget::End() {
 	pid.Disable();
-	driveTrain->EndTravel();
-	gearSubsystem->Open();
+	driveTrain->DisableDrive();
+	if(!error)
+		gearSubsystem->Open();
     std::cout << "DriveToTarget End" << std::endl;
+	frc::SmartDashboard::PutBoolean("Targeting", false);
+    error=false;
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void DriveToTarget::Interrupted() {
+    error=true;
+    std::cout << "DriveToTarget Interrupted" << std::endl;
 	End();
 }
 
 double DriveToTarget::PIDGet() {
-	double d=visionSubsystem->GetTargetDistance();
-	//double df=(d-MIN_DISTANCE)/(distance-MIN_DISTANCE);
-	return d;
+	return visionSubsystem->GetTargetDistance();
 }
 
 //#define DEBUG_COMMAND
@@ -93,9 +111,9 @@ void DriveToTarget::PIDWrite(double err) {
 	int n=visionSubsystem->GetNumTargets();
 
 	double df=(d-MIN_DISTANCE)/(distance-MIN_DISTANCE); // fraction of starting distance remaining
-	double afact=(1-df)+0.1; // bias angle correction towards end of travel
-	//double a=-0.2*df*pow(afact,2.0)*visionSubsystem->GetTargetAngle();
-	double a=-0.1*df*visionSubsystem->GetTargetAngle();
+	//double afact=(1-df)+0.1; // bias angle correction towards end of travel
+	double a=-0.01*df*visionSubsystem->GetTargetAngle();
+	// double a=-0.1*df*pow(afact,2.0)*visionSubsystem->GetTargetAngle();
 	if(n==0)
 		a=0;
     double e=-0.5*err;

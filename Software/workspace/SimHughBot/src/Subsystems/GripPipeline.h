@@ -1,4 +1,6 @@
 #pragma once
+#ifndef APP_TEST
+
 #include <opencv2/objdetect/objdetect.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -15,7 +17,7 @@
 #include "llvm/StringRef.h"
 #include "llvm/ArrayRef.h"
 
-namespace grip {
+//namespace grip {
 
 /**
 * A representation of the different types of blurs that can be used.
@@ -78,7 +80,7 @@ class GripPipeline {
 		llvm::ArrayRef<double> getHSVValue() {return hsvThresholdValue;}
 };
 
-
-} // end namespace grip
+#endif
+//} // end namespace grip
 
 

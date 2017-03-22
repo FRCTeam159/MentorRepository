@@ -20,8 +20,10 @@ void FuelMonitor::Execute() {
 	switch(state){
 	default:
 	case WAITFORBUTTON:
-		if(stick->GetRawButton(FUELPUSHERBUTTON))
+		if(stick->GetRawButton(FUELPUSHERBUTTON)){
+			cout << "FuelMonitor Push Started .."<<endl;
 			state=WAITFORUPPERLIMIT;
+		}
 		else
 			fuelSubsystem->SetVoltage(0);
 		break;
@@ -32,8 +34,10 @@ void FuelMonitor::Execute() {
 			fuelSubsystem->SetVoltage(FORWARDVOLTAGE);
 		break;
 	case WAITFORLOWERLIMIT:
-		if(fuelSubsystem->AtLowerLimit())
+		if(fuelSubsystem->AtLowerLimit()){
+			cout << "FuelMonitor Push Finished"<<endl;
 			state= WAITFORBUTTON;
+		}
 		else
 			fuelSubsystem->SetVoltage(REVERSEVOLTAGE);
 		break;

@@ -1,7 +1,12 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Targeting" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="581" y="347"/>
+		<width>154</width>
+		<height>30</height>
+	</widget>
 	<widget field="HOffset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="495" y="347"/>
+		<location x="454" y="344"/>
 		<width>110</width>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
@@ -37,7 +42,7 @@
 		<property name="Buffer Size (samples)" value="1000"/>
 	</widget>
 	<widget field="GearPlateOpen" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="336" y="350"/>
+		<location x="310" y="347"/>
 		<width>133</width>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.MjpgStreamViewerImpl">
@@ -71,7 +76,6 @@
 	<hidden field="climberCurrentThreshold"/>
 	<hidden field="HueMin"/>
 	<hidden field="climberVoltage"/>
-	<hidden field="HorizontalOffset"/>
 	<hidden field="UltraSonicDistance"/>
 	<hidden field="ValueMin"/>
 	<hidden field="HighGear"/>

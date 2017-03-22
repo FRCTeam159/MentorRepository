@@ -34,6 +34,9 @@ public:
 	void InitDefaultCommand();
 	void SetLowGear();
 	void SetHighGear();
+	void DisableDrive();
+	void EnableDrive();
+	
 	void SetControlMode(CANTalon::ControlMode);
 
 	// required MotorSafety functions

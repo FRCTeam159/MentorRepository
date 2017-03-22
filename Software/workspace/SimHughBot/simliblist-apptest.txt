@@ -1,0 +1,8 @@
+ntcore
+wpilibcSim
+gz_msgs
+gazebo_client
+boost_system
+CANTalon
+opencv_core
+

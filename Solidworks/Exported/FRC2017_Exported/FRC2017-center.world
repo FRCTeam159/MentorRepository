@@ -30,7 +30,7 @@
     <include>
       <name>spike2</name>
       <uri>model://SpikePanel</uri>
-      <pose>-1.037 -5.412 0.00523 0 0 -1.56</pose>
+      <pose>-1.0404 -5.412 0.005635 0 0 -1.56</pose>
     </include>
      <include>
       <name>spike3</name>
@@ -55,7 +55,7 @@
       <include>
       <name>gear</name>
       <uri>model://Gear</uri>
-      <pose>-0.9549 -7.4045 0.3867 1.5875 -0.0078 0.0104</pose>
+      <pose>-0.9726 -7.403 0.3863 1.57 0.279 0.0197</pose>
     </include>
 </world>
 </sdf>

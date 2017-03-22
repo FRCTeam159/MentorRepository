@@ -9,6 +9,7 @@ class DriveToTarget : public CommandBase, public PIDSource, public PIDOutput{
 	double angle;
 	//Vision::TargetInfo target;
 	double GetDistance();
+	bool error=false;
 
 public:
 	DriveToTarget();
