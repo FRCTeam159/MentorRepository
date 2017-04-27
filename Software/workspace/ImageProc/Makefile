@@ -1,0 +1,42 @@
+# Makefile for Pi build
+# - on Pi: mkdir ~/ImageProc
+# - on Ubuntu: scp -R Makefile src to pi@raspberrypi.local:ImagProc
+# - on Pi: cd ~/ImagProc; make
+RM := rm -rf
+
+LIBS := -lntcore -lopencv_core -lopencv_imgproc -lopencv_video -lopencv_videoio -lCameraServer -lcscore
+
+CPP_SRCS := src/GripPipeline.cpp src/ImageProc.cpp 
+
+OBJS := GripPipeline.o ImageProc.o 
+
+
+# Add inputs and outputs from these tool invocations to the build variables 
+
+# All Target
+all: ImageProc
+
+# Tool invocations
+ImageProc: $(OBJS) Makefile
+	@echo 'Building target: $@'
+	g++ -Wl,-rpath, -Xlinker -rpath /usr/local/lib -o "ImageProc" -L/usr/local/lib $(OBJS) $(LIBS) 
+	@echo 'Finished building target: $@'
+	@echo ' '
+
+# Other Targets
+clean:
+	-$(RM) $(OBJS) *.d ImageProc
+	-@echo ' '
+
+# Each subdirectory must supply rules for building sources it contributes
+%.o: src/%.cpp
+	@echo 'Building file: $<'
+	@echo 'Invoking: Cross G++ Compiler'
+	g++ -std=c++11 -I"/home/pi/ImageProc/src" -I/usr/local/include -I/usr/local/include/cscore -O0 -g3 -Wall -c -fmessage-length=0 -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+
+GripPipeline.o: src/GripPipeline.cpp src/GripPipeline.h src/GripPipeline.h
+ImageProc.o: src/ImageProc.cpp src/ImageProc.h src/GripPipeline.h
+
