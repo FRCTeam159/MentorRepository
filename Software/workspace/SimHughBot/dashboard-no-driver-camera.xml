@@ -1,0 +1,78 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="Targeting" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="581" y="347"/>
+		<width>154</width>
+		<height>30</height>
+	</widget>
+	<widget field="HOffset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="454" y="344"/>
+		<width>110</width>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="10" y="3"/>
+		<width>349</width>
+		<height>310</height>
+		<property name="Camera Choice" value=""/>
+	</static-widget>
+	<widget field="AutoMode" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="583" y="311"/>
+		<width>141</width>
+		<property name="Background" value="250.133.17.255"/>
+	</widget>
+	<widget field="Heading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="530" y="390"/>
+		<width>239</width>
+		<height>221</height>
+	</widget>
+	<widget field="Travel" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="468" y="313"/>
+		<width>104</width>
+	</widget>
+	<widget field="LeftWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="269" y="394"/>
+		<width>261</width>
+		<height>214</height>
+		<property name="Buffer Size (samples)" value="1000"/>
+	</widget>
+	<widget field="RightWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="16" y="395"/>
+		<width>246</width>
+		<height>203</height>
+		<property name="Buffer Size (samples)" value="1000"/>
+	</widget>
+	<widget field="GearPlateOpen" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="310" y="347"/>
+		<width>133</width>
+	</widget>
+	<widget field="HorizontalAngle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="288" y="311"/>
+		<width>173</width>
+	</widget>
+	<widget field="showColorThreshold" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
+		<location x="7" y="343"/>
+	</widget>
+	<widget field="Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="182" y="342"/>
+		<width>116</width>
+	</widget>
+	<widget field="showGoodRects" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
+		<location x="23" y="311"/>
+	</widget>
+	<widget field="Rectangles" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="166" y="312"/>
+		<width>116</width>
+	</widget>
+</dashboard>
+<live-window>
+</live-window>
+	<hidden field="rightTurn"/>
+	<hidden field="rightDrive"/>
+	<hidden field="climberCurrentThreshold"/>
+	<hidden field="leftTurn"/>
+	<hidden field="climberVoltage"/>
+	<hidden field="UltraSonicDistance"/>
+	<hidden field="HighGear"/>
+	<hidden field="Angle"/>
+	<hidden field="leftDrive"/>
+</xml>

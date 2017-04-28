@@ -1,3 +1,5 @@
+rm -fr /tmp/*-camera/*
+mkdir -p /tmp/shooter-camera /tmp/driver-camera
 cd ~/Robotics/MentorRepository/Software/workspace/SimHughBot;
 roxterm --title="Gazebo Simulation" --tab-name=gazebo -e gazebo-2017-Robot-field-center;
 sleep 1;

@@ -24,7 +24,7 @@
 #include "Commands/DeliverGear.h"
 
 
-//#define TUNE_AUTO
+#define TUNE_AUTO
 #define DRIVE_TIME 3.0
 #define TURN_TIME 1.0
 #define TURNANGLE 60
@@ -33,24 +33,22 @@
 
 #define DRIVEDISTANCE 5.5*12  // distance to baseline in inches (from robot center)
 
+static double rightDrive=0.47;
+static double rightTurn=0.4;
+static double leftDrive=0.47;
+static double leftTurn=0.4;
 
 class Robot: public frc::IterativeRobot {
-	double rightDrive=0.47;
-	double rightTurn=0.4;
-	double leftDrive=0.46;
-	double leftTurn=0.35;
 public:
 	void RobotInit() override {
 		CommandBase::RobotInit();
 		frc::SmartDashboard::PutString("AutoMode", "Center");
 		frc::SmartDashboard::PutBoolean("Targeting", false);
 
-#ifdef TUNE_AUTO
 		frc::SmartDashboard::PutNumber("leftDrive", leftDrive);
 		frc::SmartDashboard::PutNumber("leftTurn",leftTurn);
 		frc::SmartDashboard::PutNumber("rightDrive", rightDrive);
 		frc::SmartDashboard::PutNumber("rightTurn",rightTurn);
-#endif
 	}
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
@@ -68,34 +66,25 @@ public:
 
 	void AutonomousInit() override {
 		std::string autoSelected = frc::SmartDashboard::GetString("AutoMode", "Center");
-#ifdef TUNE_AUTO
-		leftDrive = frc::SmartDashboard::GetNumber("leftDrive", 0.5);
-		leftTurn = frc::SmartDashboard::GetNumber("leftTurn",0.32);
-		rightDrive = frc::SmartDashboard::GetNumber("rightDrive", 0.47);
-		rightTurn = frc::SmartDashboard::GetNumber("rightTurn",0.32);
-#endif
+
+		rightDrive = frc::SmartDashboard::GetNumber("rightDrive", rightDrive);
+		rightTurn = frc::SmartDashboard::GetNumber("rightTurn",rightTurn);
+		leftDrive = frc::SmartDashboard::GetNumber("leftDrive",leftDrive);
+		leftTurn = frc::SmartDashboard::GetNumber("leftTurn",leftTurn);
 		CommandGroup *autonomous=new Autonomous();
 		if (autoSelected == "Right") {
 			// practice-bot: leftDrive=0.45 turnVoltage=0.32
-#ifdef TUNE_AUTO
 			autonomous->AddSequential(new DriveForTime(DRIVE_TIME,rightDrive));
-			autonomous->AddSequential(new TurnForTime(TURN_TIME, rightTurn));
-#else
-			autonomous->AddSequential(new DriveForTime(DRIVE_TIME,0.5));
-			autonomous->AddSequential(new TurnForTime(TURN_TIME, -0.45));
-#endif
+			autonomous->AddSequential(new TurnForTime(TURN_TIME, -rightTurn));
+	        autonomous->AddSequential(new DriveForTime(0.5, 0));  // pause to let image frames catch up
 			autonomous->AddSequential(new DeliverGear());
 			cout<<"Right Auto"<<endl;
 		}
 		else if(autoSelected == "Left"){
 			// practice-bot: leftDrive=0.45 turnVoltage=0.25
-#ifdef TUNE_AUTO
 			autonomous->AddSequential(new DriveForTime(DRIVE_TIME,leftDrive));
-			autonomous->AddSequential(new TurnForTime(TURN_TIME, -leftTurn));
-#else
-			autonomous->AddSequential(new DriveForTime(DRIVE_TIME,0.45));
-			autonomous->AddSequential(new TurnForTime(TURN_TIME, 0.4));
-#endif
+			autonomous->AddSequential(new TurnForTime(TURN_TIME, leftTurn));
+            autonomous->AddSequential(new DriveForTime(0.5, 0));  // pause to let image frames catch up
 			autonomous->AddSequential(new DeliverGear());
 			cout<<"Left Auto"<<endl;
 		}

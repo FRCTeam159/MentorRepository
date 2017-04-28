@@ -93,33 +93,34 @@
       <grip:Input step="1" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output source="0" socket="0" previewed="false"/>
-      <grip:Input step="0" socket="0"/>
-    </grip:Connection>
-    <grip:Connection>
       <grip:Output step="2" socket="0" previewed="true"/>
       <grip:Input step="3" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output source="0" socket="0" previewed="false"/>
+      <grip:Input step="0" socket="0"/>
     </grip:Connection>
     <grip:Connection>
       <grip:Output step="4" socket="0" previewed="true"/>
       <grip:Input step="5" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output step="3" socket="0" previewed="true"/>
-      <grip:Input step="4" socket="0"/>
-    </grip:Connection>
-    <grip:Connection>
       <grip:Output step="1" socket="0" previewed="true"/>
       <grip:Input step="2" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="3" socket="0" previewed="true"/>
+      <grip:Input step="4" socket="0"/>
     </grip:Connection>
   </connections>
   <settings>
     <teamNumber>159</teamNumber>
     <publishAddress>127.0.0.1</publishAddress>
     <deployAddress>localhost</deployAddress>
-    <deployDir>/home/dean/Robotics/GRIP</deployDir>
+    <deployDir>/home/dean/Robotics/deploy</deployDir>
     <deployUser>dean</deployUser>
-    <deployJavaHome>/usr/lib/jvm/java-8-oracle/jre</deployJavaHome>
+    <deployJavaHome>/opt/jdk1.8.0_92/jre</deployJavaHome>
     <deployJvmOptions>-Xmx50m -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError</deployJvmOptions>
+    <serverPort>8080</serverPort>
   </settings>
 </grip:Pipeline>

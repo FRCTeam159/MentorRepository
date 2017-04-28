@@ -1,1 +1,2 @@
-ssh pi@raspberrypi.local ImageProc/ImageProc
+#ssh pi@raspberrypi.local "ImageProc/ImageProc Ubuntu16.local"
+ssh pi@raspberrypi.local "ImageProc/ImageProc Ubuntu14.local"

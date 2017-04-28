@@ -8,7 +8,7 @@
 #define D 0.0
 
 #define SCALE 0.1
-#define MIN_DISTANCE 14
+#define MIN_DISTANCE 13
 
 #define DRIVE_TIMEOUT 0.2
 
@@ -34,7 +34,7 @@ void DriveToTarget::Initialize() {
 	SetTimeout(DRIVE_TIMEOUT*distance+1);
     int ntargets = visionSubsystem->GetNumTargets();
     if (ntargets>0){
-       std::cout << "DriveToTarget Started ..." << std::endl;
+        std::cout << "DriveToTarget Started ..." << std::endl;
       	pid.Reset();
 		pid.SetSetpoint(MIN_DISTANCE);
 		pid.Enable();
@@ -42,7 +42,7 @@ void DriveToTarget::Initialize() {
     }
     else{
         error=true;
-    	std::cout << "DriveToTarget Error(no targets) cancelling ..." << std::endl;
+    	std::cout << "DriveToTarget Error(no targets) canceling ..." << std::endl;
     	End();
     }
 }
@@ -94,7 +94,7 @@ double DriveToTarget::PIDGet() {
 	return visionSubsystem->GetTargetDistance();
 }
 
-//#define DEBUG_COMMAND
+#define DEBUG_COMMAND
 
 double DriveToTarget::GetDistance() {
 	double d1=visionSubsystem->GetTargetDistance();
@@ -110,13 +110,18 @@ void DriveToTarget::PIDWrite(double err) {
 	double d=GetDistance();
 	int n=visionSubsystem->GetNumTargets();
 
+	if(err!=err){
+	    cout<<"DriveToTarget::PIDWrite err=NAN"<<endl;
+	    return;
+	}
+
 	double df=(d-MIN_DISTANCE)/(distance-MIN_DISTANCE); // fraction of starting distance remaining
 	//double afact=(1-df)+0.1; // bias angle correction towards end of travel
-	double a=-0.01*df*visionSubsystem->GetTargetAngle();
+	double a=-0.02*df*visionSubsystem->GetTargetAngle();
 	// double a=-0.1*df*pow(afact,2.0)*visionSubsystem->GetTargetAngle();
 	if(n==0)
 		a=0;
-    double e=-0.5*err;
+    double e=-err;
 	double m1=e+a;
 	double m2=e-a;
 	double mx=m1>m2?m1:m2;

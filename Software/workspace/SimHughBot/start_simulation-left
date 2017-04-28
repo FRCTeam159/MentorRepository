@@ -1,3 +1,5 @@
+rm -fr /tmp/*-camera/*
+mkdir -p /tmp/shooter-camera /tmp/driver-camera
 roxterm --title="Gazebo Simulation" --tab-name=gazebo -e gazebo-2017-Robot-field-left;
 sleep 2;
 roxterm --tab --tab-name=sim_ds -e sim_ds;

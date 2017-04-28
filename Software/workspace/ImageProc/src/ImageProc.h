@@ -14,7 +14,7 @@ using namespace frc;
 
 class ImageProc{
 public:
-	llvm::StringRef ip;
+	std::string ip;
 private:
 	cs::UsbCamera camera1;
 	cs::UsbCamera camera2;
@@ -34,7 +34,7 @@ private:
 public:
 	ImageProc();
 	void Process();
-	void Init(char *ip);
+	void Init(std::string addrs);
 };
 
 #endif  // Vision_H

@@ -11,19 +11,19 @@
 
 #define ASPECT_RATIO (4.0/3.0)
 
-#define HOFFSET 5.0 // camera offset from robot center
-
 #define SIMULATION
 
 ImageProc::ImageProc(){
 	//Init();
 }
 
-void ImageProc::Init(char *ip) {
+void ImageProc::Init(std::string addrs) {
 	NetworkTable::SetClientMode();
-	//NetworkTable::SetIPAddress("192.168.1.111");
-	if(ip !=NULL)
-		NetworkTable::SetIPAddress(ip);
+	if(addrs.empty()){
+	    addrs="Ubuntu16.local";
+	}
+	ip=addrs;
+    NetworkTable::SetIPAddress(llvm::StringRef(addrs));
 	table=NetworkTable::GetTable("datatable");
 
 #ifndef SIMULATION
@@ -44,7 +44,7 @@ void ImageProc::Process() {
 #ifdef SIMULATION
 	cv::VideoCapture vcap;
 
-	const std::string videoStreamAddress = "http://Ubuntu16.local:5002/?action=stream?dummy=param.mjpg";
+	const std::string videoStreamAddress = "http://"+ip+":5002/?action=stream?dummy=param.mjpg";
     //open the video stream and make sure it's opened
     if(!vcap.open(videoStreamAddress))
         std::cout << "Error opening video stream "<<videoStreamAddress << std::endl;
@@ -77,7 +77,6 @@ void ImageProc::Process() {
 
 		gp.process(mat);
 
-		//bool showColorThreshold=SmartDashboard::GetBoolean("showColorThreshold", false);
 		bool showColorThreshold=table->GetBoolean("showColorThreshold", false);
 
 		if(showColorThreshold){
@@ -94,7 +93,8 @@ void ImageProc::Process() {
 		if (showGoodRects){
 			rectsPointer=GoodRects(rects);
 		}
-		table->PutNumber("NumRects", rectsPointer.size());
+		int n=rectsPointer.size();
+		table->PutNumber("NumRects", n);
 		for (unsigned int i = 0; i < rectsPointer.size(); i++) {
 			cv::Rect r= rectsPointer[i];
 			cv::Point p= r.tl();
@@ -116,7 +116,21 @@ void ImageProc::Process() {
 		table->PutNumber("TopLeftY", tl.y);
 		table->PutNumber("BotRightX", br.x);
 		table->PutNumber("BotRightY", br.y);
-		usleep(10000);
+#define DEBUG
+#ifdef DEBUG
+		static int last_n=0;
+		if(n!=last_n){
+            time_t currentTime;
+            struct tm *localTime;
+
+            time( &currentTime );                   // Get the current time
+            localTime = localtime( &currentTime );  // Convert the current time to the local time
+            std::cout<<"pi time (s) :"<< localTime->tm_sec<< " num targets:"<<n<<std::endl;
+            last_n=n;
+		}
+#endif
+
+		//usleep(10000);
 	}
 }
 
@@ -164,13 +178,12 @@ std::vector<cv::Rect> ImageProc::GoodRects(std::vector<cv::Rect> rects) {
 
 int main(int argc, char *argv[]) {
   static ImageProc image_proc;
-  char *ip="Ubuntu16.local";
+  std::string addrs("Ubuntu16.local");
   if(argc>1){
-	  ip=argv[1];
+      addrs=std::string(argv[1]);
   }
-  std::cout << "Starting ImageProcess ip="<<ip<<std::endl;
-
-  image_proc.Init(ip);
+  std::cout << "Starting ImageProcess ip="<<addrs<<std::endl;
+  image_proc.Init(addrs);
 
   image_proc.Process();
   std::cout << "Exiting ImageProcess"<<std::endl;

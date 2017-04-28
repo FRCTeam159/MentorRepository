@@ -20,7 +20,6 @@
 
 #define HOFFSET 8.0 // camera offset from robot center
 
-
 using namespace frc;
 
 
@@ -35,7 +34,6 @@ void Vision::InitDefaultCommand() {
 
 void Vision::Init() {
 	table=NetworkTable::GetTable("datatable");
-//#define APP_TEST
 #ifdef APP_TEST
 	frc::SmartDashboard::PutBoolean("showColorThreshold", false);
 	frc::SmartDashboard::PutNumber("Rectangles", 0);
@@ -62,7 +60,7 @@ void Vision::Init() {
 }
 
 void Vision::Process() {
-	GetTargetInfo ();
+	GetTargetInfo();
 	PublishTargetInfo();
 }
 
@@ -240,10 +238,8 @@ double Vision::GetTargetAngle() {
 	if(targetInfo.numrects==1){
 		if(targetInfo.HorizontalOffset<0)
 			xoffset-=2*targetInfo.Width;
-			//xoffset-=0.3*targetInfo.Height;
 		else
 			xoffset+=2*targetInfo.Width;
-			//xoffset+=0.3*targetInfo.Height;
 	}
     double cam_adjust=cameraInfo.fovFactor*cameraInfo.HorizontalOffset/targetInfo.Distance;
     double p=targetInfo.Center.x+xoffset+cam_adjust-0.5*cameraInfo.screenWidth;
@@ -265,6 +261,20 @@ void Vision::GetTargetInfo() {
 	top.y=table->GetNumber("TopLeftY", 10);
 	bot.x=table->GetNumber("BotRightX",20);
 	bot.y=table->GetNumber("BotRightY",20);
+#define DEBUG
+#ifdef DEBUG
+    static int last_n=0;
+    if(n!=last_n){
+        time_t currentTime;
+        struct tm *localTime;
+
+        time( &currentTime );                   // Get the current time
+        localTime = localtime( &currentTime );  // Convert the current time to the local time
+        std::cout<<"time (s) :"<< localTime->tm_sec<< " num targets:"<<n<<std::endl;
+        last_n=n;
+    }
+#endif
+
 	CalcTargetInfo(n,top,bot);
 #ifdef APP_TEST
 	bool showColorThreshold=SmartDashboard::GetBoolean("showColorThreshold", false);
@@ -273,6 +283,7 @@ void Vision::GetTargetInfo() {
 	table->PutBoolean("showColorThreshold",showColorThreshold);
 	frc::SmartDashboard::PutNumber("Rectangles", n);
 #endif
+
 }
 
 void Vision::PublishTargetInfo() {
