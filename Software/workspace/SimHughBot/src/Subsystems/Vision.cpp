@@ -103,6 +103,8 @@ void Vision::VisionThread(){
 	frc::SmartDashboard::PutBoolean("showGoodRects", true);
 
 	GripPipeline gp;
+    auto start = std::chrono::high_resolution_clock::now();
+
 
 	while(true){
 #ifdef SIMULATION
@@ -141,7 +143,8 @@ void Vision::VisionThread(){
 		}
 
 		frc::SmartDashboard::PutNumber("Rectangles",rectsPointer.size());
-		table2->PutNumber("NumRects", rectsPointer.size());
+		int n=rectsPointer.size();
+		table2->PutNumber("NumRects", n);
 		for (unsigned int i = 0; i < rectsPointer.size(); i++) {
 			cv::Rect r= rectsPointer[i];
 			cv::Point p= r.tl();
@@ -163,6 +166,18 @@ void Vision::VisionThread(){
 		table2->PutNumber("TopLeftY", tl.y);
 		table2->PutNumber("BotRightX", br.x);
 		table2->PutNumber("BotRightY", br.y);
+//#define DEBUG
+#ifdef DEBUG
+        auto end = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        time_t currentTime;
+        struct tm *localTime;
+        time( &currentTime );                   // Get the current time
+        localTime = localtime( &currentTime );  // Convert the current time to the local time
+        std::cout<<"calc time :"<<localTime->tm_min<<":"<<localTime->tm_sec<<" dt:"<<elapsed.count()<< " ms num targets:"<<n<<std::endl;
+        start=end;
+#endif
+
 	}
 }
 
@@ -261,18 +276,13 @@ void Vision::GetTargetInfo() {
 	top.y=table->GetNumber("TopLeftY", 10);
 	bot.x=table->GetNumber("BotRightX",20);
 	bot.y=table->GetNumber("BotRightY",20);
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
-    static int last_n=0;
-    if(n!=last_n){
-        time_t currentTime;
-        struct tm *localTime;
-
-        time( &currentTime );                   // Get the current time
-        localTime = localtime( &currentTime );  // Convert the current time to the local time
-        std::cout<<"time (s) :"<< localTime->tm_sec<< " num targets:"<<n<<std::endl;
-        last_n=n;
-    }
+    time_t currentTime;
+    struct tm *localTime;
+    time( &currentTime );                   // Get the current time
+    localTime = localtime( &currentTime );  // Convert the current time to the local time
+    std::cout<<"time :"<<localTime->tm_min<<":"<<localTime->tm_sec<<" num targets:"<<n<<std::endl;
 #endif
 
 	CalcTargetInfo(n,top,bot);

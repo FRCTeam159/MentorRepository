@@ -1,6 +1,9 @@
+
+#include <unistd.h>
+
 #include "ImageProc.h"
 #include "GripPipeline.h"
-#include <unistd.h>
+
 
 #define RPD(x) (x)*2*M_PI/360
 #define IMAGE_WIDTH 320
@@ -14,7 +17,6 @@
 #define SIMULATION
 
 ImageProc::ImageProc(){
-	//Init();
 }
 
 void ImageProc::Init(std::string addrs) {
@@ -39,10 +41,12 @@ void ImageProc::Init(std::string addrs) {
 }
 
 #define SHOW_COLOR_THRESHOLD
+//#define VCAP_BUFFER_HACK // on pi-3 set via Makefile compiler -D arg
 
 void ImageProc::Process() {
 #ifdef SIMULATION
 	cv::VideoCapture vcap;
+    //vcap.set(CV_CAP_PROP_BUFFERSIZE, 1); // set frame buffer depth to 1 (doesn't work on pi-3)
 
 	const std::string videoStreamAddress = "http://"+ip+":5002/?action=stream?dummy=param.mjpg";
     //open the video stream and make sure it's opened
@@ -60,17 +64,28 @@ void ImageProc::Process() {
 	cv::Mat mat;
 	cv::Point tl=cv::Point(10, 10);
 	cv::Point br=cv::Point(20, 20);
+    auto start = std::chrono::high_resolution_clock::now();
 
 	while(true){
+
 #ifdef SIMULATION
-		if(!vcap.read(mat)) {
+#ifdef VCAP_BUFFER_HACK
+	    // need to flush 5-deep frame buffer and then wait for a new image otherwise can see a 1-2 second pipeline delay
+	    // in processing loop (pi-3)
+	    for(int i=0;i<6;i++) // discard any images that were pre-loaded or arrive during previous processing
+	        vcap.read(mat);
+#endif
+		if(!vcap.read(mat)) { // now wait for a fresh image to arrive
 #else
 		if (cvSink.GrabFrame(mat) == 0) {
 #endif
-			//outputStream.NotifyError(cvSink.GetError());
 			continue;
 		}
-
+//#define NOPROC // skip all processing
+#ifdef NOPROC
+		outputStream.PutFrame(mat);
+        continue;
+#endif
 		gp.setHSVThresholdHue(hsvThresholdHue);
 		gp.setHSVThresholdValue(hsvThresholdValue);
 		gp.setHSVThresholdSaturation(hsvThresholdSaturation);
@@ -118,19 +133,15 @@ void ImageProc::Process() {
 		table->PutNumber("BotRightY", br.y);
 #define DEBUG
 #ifdef DEBUG
-		static int last_n=0;
-		if(n!=last_n){
-            time_t currentTime;
-            struct tm *localTime;
-
-            time( &currentTime );                   // Get the current time
-            localTime = localtime( &currentTime );  // Convert the current time to the local time
-            std::cout<<"pi time (s) :"<< localTime->tm_sec<< " num targets:"<<n<<std::endl;
-            last_n=n;
-		}
+		auto end = std::chrono::high_resolution_clock::now();
+		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+        time_t currentTime;
+        struct tm *localTime;
+        time( &currentTime );                   // Get the current time
+        localTime = localtime( &currentTime );  // Convert the current time to the local time
+        std::cout<<"calc time :"<<localTime->tm_min<<":"<<localTime->tm_sec<<" dt:"<<elapsed.count()<< " ms num targets:"<<n<<std::endl;
+        start=end;
 #endif
-
-		//usleep(10000);
 	}
 }
 
@@ -177,6 +188,7 @@ std::vector<cv::Rect> ImageProc::GoodRects(std::vector<cv::Rect> rects) {
 }
 
 int main(int argc, char *argv[]) {
+  //setDevice(0);
   static ImageProc image_proc;
   std::string addrs("Ubuntu16.local");
   if(argc>1){

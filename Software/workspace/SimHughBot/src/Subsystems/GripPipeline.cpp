@@ -14,7 +14,6 @@ GripPipeline::GripPipeline() {
  *
  */
 //#define BLUR
-//#define RGB_THRESHOLD
 #define FILTERCONTOURS
 
 void GripPipeline::process(cv::Mat source0) {
@@ -28,17 +27,9 @@ void GripPipeline::process(cv::Mat source0) {
 #else
 	cv::Mat colorThresholdInput = source0;
 #endif
-#ifdef RGB_THRESHOLD
-	//Step RGB_Threshold0:
-	//input
-	double rgbThresholdRed[] = {16.052158273381295, 89.64163822525597};
-	double rgbThresholdGreen[] = {103.19244604316546, 255.0};
-	double rgbThresholdBlue[] = {107.77877697841726, 255.0};
-	rgbThreshold(colorThresholdInput, rgbThresholdRed, rgbThresholdGreen, rgbThresholdBlue, this->colorThresholdOutput);
-#else
+
 	hsvThreshold(colorThresholdInput, hsvThresholdHue, hsvThresholdSaturation,
 			hsvThresholdValue, this->colorThresholdOutput);
-#endif
 	//Step Find_Contours0:rgbThresholdGreen
 	//input
 	cv::Mat findContoursInput;
@@ -176,21 +167,7 @@ void GripPipeline::blur(cv::Mat &input, BlurType &type, double doubleRadius,
 		break;
 	}
 }
-/**
- * Segment an image based on color ranges.
- *
- * @param input The image on which to perform the RGB threshold.
- * @param red The min and max red.
- * @param green The min and max green.
- * @param blue The min and max blue.
- * @param output The image in which to store the output.
- */
-void GripPipeline::rgbThreshold(cv::Mat &input, double red[], double green[],
-		double blue[], cv::Mat &output) {
-	cv::cvtColor(input, output, cv::COLOR_BGR2RGB);
-	cv::inRange(output, cv::Scalar(red[0], green[0], blue[0]),
-			cv::Scalar(red[1], green[1], blue[1]), output);
-}
+
 /**
  * Segment an image based on hue, saturation, and value ranges.
  *
@@ -200,11 +177,17 @@ void GripPipeline::rgbThreshold(cv::Mat &input, double red[], double green[],
  * @param val The min and max value.
  * @param output The image in which to store the output.
  */
-void GripPipeline::hsvThreshold(cv::Mat &input, llvm::ArrayRef<double> hue,
+void GripPipeline::hsvThreshold(cv::Mat &inputCpu, llvm::ArrayRef<double> hue,
 		llvm::ArrayRef<double> sat, llvm::ArrayRef<double> val, cv::Mat &out) {
-	cv::cvtColor(input, out, cv::COLOR_BGR2HSV);
+#ifdef USE_GPU
+    GpuMat input(inputCpu);
+    GpuMat output;
+    cuda::cvtColor(input, output, cv::COLOR_BGR2HSV);
+#else
+	cv::cvtColor(inputCpu, out, cv::COLOR_BGR2HSV);
 	cv::inRange(out, cv::Scalar(hue[0], sat[0], val[0]),
 			cv::Scalar(hue[1], sat[1], val[1]), out);
+#endif
 }
 /**
  * Finds contours in an image.

@@ -6,6 +6,9 @@
  */
 
 GripPipeline::GripPipeline() {
+    int gpus=cv::cuda::getCudaEnabledDeviceCount();
+    cout<<"gpus="<<gpus<<endl;
+    setDevice(0);
 }
 /**
  * Runs an iteration of the Pipeline and updates outputs.
@@ -14,48 +17,42 @@ GripPipeline::GripPipeline() {
  *
  */
 //#define BLUR
-//#define RGB_THRESHOLD
 #define FILTERCONTOURS
 
 void GripPipeline::process(cv::Mat source0) {
-	//Step Blur0:
-	//input
+    cv::Mat matInput;
+    cv::Mat matOutput;
+
+    source0.copyTo(matInput);
+
 #ifdef BLUR
-	BlurType blurType = BlurType::MEDIAN;
-	double blurRadius = 4.5;  // default Double
-	blur(source0, blurType, blurRadius, this->blurOutput);
-	cv::Mat colorThresholdInput = blurOutput;
-#else
-	cv::Mat colorThresholdInput = source0;
+    BlurType blurType = BlurType::MEDIAN;
+    double blurRadius = 4.5;  // default Double
+    blur(matInput, blurType, blurRadius, matOutput);
+    matOutput.copyTo(matInput);
 #endif
-#ifdef RGB_THRESHOLD
-	//Step RGB_Threshold0:
-	//input
-	double rgbThresholdRed[] = {16.052158273381295, 89.64163822525597};
-	double rgbThresholdGreen[] = {103.19244604316546, 255.0};
-	double rgbThresholdBlue[] = {107.77877697841726, 255.0};
-	rgbThreshold(colorThresholdInput, rgbThresholdRed, rgbThresholdGreen, rgbThresholdBlue, this->colorThresholdOutput);
+#ifdef USE_GPU
+    GpuMat gpuInput(matInput);
+    GpuMat gpuOutput;
+    cv::cuda::cvtColor(gpuInput, gpuOutput, cv::COLOR_BGR2HSV);
+    gpuOutput.download(matOutput);
+    gpuOutput.release();
+    gpuInput.release();
 #else
-	hsvThreshold(colorThresholdInput, hsvThresholdHue, hsvThresholdSaturation,
-			hsvThresholdValue, this->colorThresholdOutput);
+    cv::cvtColor(matInput, matOutput, cv::COLOR_BGR2HSV);
 #endif
-	//Step Find_Contours0:rgbThresholdGreen
-	//input
-	cv::Mat findContoursInput;
-	colorThresholdOutput.copyTo(findContoursInput);
-	bool findContoursExternalOnly = false;  // default Boolean
-	findContours(findContoursInput, findContoursExternalOnly,
-			this->findContoursOutput);
-	//Step Convex_Hulls0:
-	//input
-	std::vector<std::vector<cv::Point> > convexHullsContours =
-			findContoursOutput;
-	convexHulls(convexHullsContours, this->convexHullsOutput);
-	//Step Filter_Contours0:
-	//input
-#ifdef FILTERCONTOURS
-	std::vector<std::vector<cv::Point> > filterContoursContours =
-			convexHullsOutput;
+    matOutput.copyTo(colorThresholdOutput);
+    cv::inRange(colorThresholdOutput,
+            cv::Scalar(hsvThresholdHue[0], hsvThresholdSaturation[0], hsvThresholdValue[0]),
+            cv::Scalar(hsvThresholdHue[1], hsvThresholdSaturation[1], hsvThresholdValue[1]),
+            matOutput);
+    findContours(matOutput, true, vecInput);
+    convexHulls(vecInput, vecOutput);
+
+	//Filter_Contours:
+    vecInput=vecOutput;
+    //vecOutput=vecInput;
+
 	double filterContoursMinArea = 5.0;  // default Double
 	double filterContoursMinPerimeter = 0;  // default Double
 	double filterContoursMinWidth = 5.0;  // default Double
@@ -67,84 +64,24 @@ void GripPipeline::process(cv::Mat source0) {
 	double filterContoursMinVertices = 3;  // default Double
 	double filterContoursMinRatio = 0;  // default Double
 	double filterContoursMaxRatio = 1.2;  // default Double
-	filterContours(filterContoursContours, filterContoursMinArea,
+	filterContours(vecInput, filterContoursMinArea,
 			filterContoursMinPerimeter, filterContoursMinWidth,
 			filterContoursMaxWidth, filterContoursMinHeight,
 			filterContoursMaxHeight, filterContoursSolidity,
 			filterContoursMaxVertices, filterContoursMinVertices,
 			filterContoursMinRatio, filterContoursMaxRatio,
-			this->filterContoursOutput);
-	returnVector = this->filterContoursOutput;
-#else
-	returnVector=this->convexHullsOutput;
-#endif
-	findRectangles(returnVector, this->returnRectangles);
-
+			vecOutput);
+	vecInput=vecOutput;
+	findRectangles(vecInput, returnRectangles);
 }
 
-/**
- * This method is a generated setter for source0.
- * @param source the Mat to set
- */
-void GripPipeline::setsource0(cv::Mat &source0) {
-	source0.copyTo(this->source0);
-}
-/**
- * This method is a generated getter for the output of a Resize_Image.
- * @return Mat output from Resize_Image.
- */
-cv::Mat* GripPipeline::getresizeImageOutput() {
-	return &(this->resizeImageOutput);
-}
-/**
- * This method is a generated getter for the output of a Blur.
- * @return Mat output from Blur.
- */
-cv::Mat* GripPipeline::getblurOutput() {
-	return &(this->blurOutput);
-}
 /**
  * This method is a generated getter for the output of a color_Threshold.
  * @return Mat output from color_Threshold.
  */
 cv::Mat* GripPipeline::getColorThresholdOutput() {
-	return &(this->colorThresholdOutput);
+	return   &colorThresholdOutput;
 }
-/**
- * This method is a generated getter for the output of a Find_Contours.
- * @return ContoursReport output from Find_Contours.
- */
-std::vector<std::vector<cv::Point> >* GripPipeline::getfindContoursOutput() {
-	return &(this->findContoursOutput);
-}
-/**
- * This method is a generated getter for the output of a Convex_Hulls.
- * @return ContoursReport output from Convex_Hulls.
- */
-std::vector<std::vector<cv::Point> >* GripPipeline::getconvexHullsOutput() {
-	return &(this->convexHullsOutput);
-}
-/**
- * This method is a generated getter for the output of a Filter_Contours.
- * @return ContoursReport output from Filter_Contours.
- */
-std::vector<std::vector<cv::Point> >* GripPipeline::getfilterContoursOutput() {
-	return &(this->filterContoursOutput);
-}
-/**
- * Scales and image to an exact size.
- *
- * @param input The image on which to perform the Resize.
- * @param width The width of the output in pixels.
- * @param height The height of the output in pixels.
- * @param interpolation The type of interpolation.
- * @param output The image in which to store the output.
- */
-void GripPipeline::resizeImage(cv::Mat &input, double width, double height,
-		int interpolation, cv::Mat &output) {
-	cv::resize(input, output, cv::Size(width, height), 0.0, 0.0, interpolation);
-}
-
 /**
  * Softens an image using one of several filters.
  *
@@ -176,36 +113,7 @@ void GripPipeline::blur(cv::Mat &input, BlurType &type, double doubleRadius,
 		break;
 	}
 }
-/**
- * Segment an image based on color ranges.
- *
- * @param input The image on which to perform the RGB threshold.
- * @param red The min and max red.
- * @param green The min and max green.
- * @param blue The min and max blue.
- * @param output The image in which to store the output.
- */
-void GripPipeline::rgbThreshold(cv::Mat &input, double red[], double green[],
-		double blue[], cv::Mat &output) {
-	cv::cvtColor(input, output, cv::COLOR_BGR2RGB);
-	cv::inRange(output, cv::Scalar(red[0], green[0], blue[0]),
-			cv::Scalar(red[1], green[1], blue[1]), output);
-}
-/**
- * Segment an image based on hue, saturation, and value ranges.
- *
- * @param input The image on which to perform the HSL threshold.
- * @param hue The min and max hue.
- * @param sat The min and max saturation.
- * @param val The min and max value.
- * @param output The image in which to store the output.
- */
-void GripPipeline::hsvThreshold(cv::Mat &input, llvm::ArrayRef<double> hue,
-		llvm::ArrayRef<double> sat, llvm::ArrayRef<double> val, cv::Mat &out) {
-	cv::cvtColor(input, out, cv::COLOR_BGR2HSV);
-	cv::inRange(out, cv::Scalar(hue[0], sat[0], val[0]),
-			cv::Scalar(hue[1], sat[1], val[1]), out);
-}
+
 /**
  * Finds contours in an image.
  *
@@ -229,8 +137,8 @@ void GripPipeline::findContours(cv::Mat &input, bool externalOnly,
  * @param outputContours The contours where the output will be stored.
  */
 void GripPipeline::convexHulls(
-		std::vector<std::vector<cv::Point> > &inputContours,
-		std::vector<std::vector<cv::Point> > &outputContours) {
+	std::vector<std::vector<cv::Point> > &inputContours,
+	std::vector<std::vector<cv::Point> > &outputContours) {
 	std::vector<std::vector<cv::Point> > hull(inputContours.size());
 	outputContours.clear();
 	for (size_t i = 0; i < inputContours.size(); i++) {
@@ -285,8 +193,8 @@ void GripPipeline::filterContours(
 	}
 }
 void GripPipeline::findRectangles(
-		std::vector<std::vector<cv::Point> > &inputContours,
-		std::vector<cv::Rect> &output) {
+	std::vector<std::vector<cv::Point> > &inputContours,
+	std::vector<cv::Rect> &output) {
 	output.clear();
 	for (std::vector<cv::Point> contour : inputContours) {
 		cv::Rect bb = boundingRect(contour);
@@ -294,7 +202,4 @@ void GripPipeline::findRectangles(
 	}
 }
 
-std::vector<std::vector<cv::Point> >* GripPipeline::getResultVector() {
-	return &(this->returnVector);
-}
 #endif

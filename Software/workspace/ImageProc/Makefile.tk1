@@ -1,10 +1,9 @@
-# Makefile for Pi build
-# - on Pi: mkdir ~/ImageProc
-# - on Ubuntu: scp -R Makefile src to pi@raspberrypi.local:ImagProc
-# - on Pi: cd ~/ImagProc; make
+# Makefile for Jetson TK1 build (with gpu support)
 RM := rm -rf
 
-LIBS := -lntcore -lopencv_core -lopencv_imgproc -lopencv_video -lopencv_videoio -lCameraServer -lcscore
+FLAGS := -DCOMPILE_GPU=1
+LDIRS := -L/usr/local/lib -L/usr/local/cuda-6.5/targets/armv7-linux-gnueabihf/lib
+LIBS := -lcudart -lopencv_cudaimgproc -lopencv_highgui -lopencv_core -lopencv_calib3d -lopencv_contrib -lntcore -lopencv_imgproc -lopencv_video -lopencv_videoio -lCameraServer -lcscore
 
 CPP_SRCS := src/GripPipeline.cpp src/ImageProc.cpp 
 
@@ -19,7 +18,8 @@ all: ImageProc
 # Tool invocations
 ImageProc: $(OBJS) Makefile
 	@echo 'Building target: $@'
-	g++ -Wl,-rpath, -Xlinker -rpath /usr/local/lib -o "ImageProc" -L/usr/local/lib $(OBJS) $(LIBS) 
+	g++ -Wl,-rpath, -Xlinker -rpath /usr/local/lib $(FLAGS) $(LDIRS) -o "ImageProc"  $(OBJS) $(LIBS) 
+	#nvcc $(FLAGS) -o "ImageProc" -L/usr/local/lib $(OBJS) $(LIBS) 
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -29,10 +29,11 @@ clean:
 	-@echo ' '
 
 # Each subdirectory must supply rules for building sources it contributes
-%.o: src/%.cpp
+%.o: src/%.cpp Makefile
 	@echo 'Building file: $<'
 	@echo 'Invoking: Cross G++ Compiler'
 	g++ -std=c++11 -I"/home/pi/ImageProc/src" -I/usr/local/include -I/usr/local/include/cscore -O3 -Wall -c -fmessage-length=0 -o "$@" "$<"
+	#nvcc -std=c++11 -I"/home/pi/ImageProc/src" -I/usr/local/include -I/usr/local/include/cscore -O3 -c -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

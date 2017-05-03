@@ -4,9 +4,18 @@
 #include <opencv2/objdetect/objdetect.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-//#include <opencv2/contrib/contrib.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/features2d.hpp>
+
+#include "opencv2/core/cuda_types.hpp"
+#include "opencv2/core/cuda.inl.hpp"
+
+#include "opencv2/cudaimgproc.hpp"
+#include "opencv2/cudawarping.hpp"
+
+using namespace cv;
+using namespace std;
+
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,7 +26,9 @@
 #include "llvm/StringRef.h"
 #include "llvm/ArrayRef.h"
 
-//namespace grip {
+//#define USE_GPU
+
+using namespace cuda;
 
 /**
 * A representation of the different types of blurs that can be used.
@@ -46,7 +57,6 @@ class GripPipeline {
 
 		void resizeImage(cv::Mat &, double , double , int , cv::Mat &);
 		void blur(cv::Mat &, BlurType &, double , cv::Mat &);
-		void rgbThreshold(cv::Mat &, double [], double [], double [], cv::Mat &);
 		void hsvThreshold(cv::Mat &input, llvm::ArrayRef<double>, llvm::ArrayRef<double>, llvm::ArrayRef<double>, cv::Mat &out);
 		void findContours(cv::Mat &, bool , std::vector<std::vector<cv::Point> > &);
 		void convexHulls(std::vector<std::vector<cv::Point> > &, std::vector<std::vector<cv::Point> > &);

@@ -88,6 +88,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.529769742" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1007652850" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
 								<option id="gnu.cpp.compiler.option.include.paths.1425510853" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
+									<listOptionValue builtIn="false" value="/usr/local/cuda/include"/>
 									<listOptionValue builtIn="false" value="/usr/local/include"/>
 									<listOptionValue builtIn="false" value="/home/dean/wpilib/simulation/include"/>
 								</option>
@@ -106,6 +107,11 @@
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.857176383" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
 								<option id="gnu.cpp.link.option.libs.997130467" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="ntcore"/>
+									<listOptionValue builtIn="false" value="nppc"/>
+									<listOptionValue builtIn="false" value="opencv_cudaimgproc"/>
+									<listOptionValue builtIn="false" value="opencv_cudafeatures2d"/>
+									<listOptionValue builtIn="false" value="opencv_cudabgsegm"/>
+									<listOptionValue builtIn="false" value="cudart"/>
 									<listOptionValue builtIn="false" value="wpilibcSim"/>
 									<listOptionValue builtIn="false" value="opencv_core"/>
 									<listOptionValue builtIn="false" value="opencv_imgproc"/>
@@ -115,6 +121,7 @@
 									<listOptionValue builtIn="false" value="cscore"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1290588034" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
+									<listOptionValue builtIn="false" value="/usr/local/cuda/lib64"/>
 									<listOptionValue builtIn="false" value="/usr/local/lib"/>
 									<listOptionValue builtIn="false" value="/home/dean/wpilib/simulation/lib"/>
 								</option>

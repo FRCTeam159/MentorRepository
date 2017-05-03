@@ -9,7 +9,7 @@ roxterm --tab --tab-name=driver-camera -e start_driver_camera;
 sleep 2;
 roxterm --tab --tab-name=FRCUserProgram -e apptest/FRCUserProgram;
 sleep 1;
-roxterm --tab --tab-name=VisionProc -e start_image_proc_pi;
+roxterm --tab --tab-name=VisionProc -e start_image_proc_remote;
 sleep 1;
 roxterm --tab --tab-name=sim_ds -e sim_ds;
 sleep 1;

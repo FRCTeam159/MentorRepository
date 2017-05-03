@@ -1,2 +1,3 @@
 #ssh pi@raspberrypi.local "ImageProc/ImageProc Ubuntu16.local"
 ssh pi@raspberrypi.local "ImageProc/ImageProc Ubuntu14.local"
+#ssh dean@Ubuntu16.local "/tmp/ImageProc Ubuntu14.local"

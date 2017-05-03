@@ -35,8 +35,8 @@
 
 static double rightDrive=0.47;
 static double rightTurn=0.4;
-static double leftDrive=0.47;
-static double leftTurn=0.4;
+static double leftDrive=0.6;
+static double leftTurn=0.5;
 
 class Robot: public frc::IterativeRobot {
 public:
