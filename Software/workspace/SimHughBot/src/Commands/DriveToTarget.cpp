@@ -30,7 +30,6 @@ void DriveToTarget::Initialize() {
 
 	distance=visionSubsystem->GetTargetDistance();
 	frc::SmartDashboard::PutBoolean("Targeting", true);
-	driveTrain->EnableDrive();
 	SetTimeout(DRIVE_TIMEOUT*distance+1);
     int ntargets = visionSubsystem->GetNumTargets();
     if (ntargets>0){
@@ -39,6 +38,7 @@ void DriveToTarget::Initialize() {
 		pid.SetSetpoint(MIN_DISTANCE);
 		pid.Enable();
 	    error=false;
+	    driveTrain->EnableDrive();
     }
     else{
         error=true;
@@ -73,11 +73,11 @@ bool DriveToTarget::IsFinished() {
 
 // Called once after isFinished returns true
 void DriveToTarget::End() {
+    std::cout << "DriveToTarget End" << std::endl;
 	pid.Disable();
 	driveTrain->DisableDrive();
 	if(!error)
 		gearSubsystem->Open();
-    std::cout << "DriveToTarget End" << std::endl;
 	frc::SmartDashboard::PutBoolean("Targeting", false);
     error=false;
 }
@@ -94,7 +94,7 @@ double DriveToTarget::PIDGet() {
 	return visionSubsystem->GetTargetDistance();
 }
 
-#define DEBUG_COMMAND
+//#define DEBUG_COMMAND
 
 double DriveToTarget::GetDistance() {
 	double d1=visionSubsystem->GetTargetDistance();

@@ -51,8 +51,6 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 	SetExpiration(0.2);
 
 	Publish(true);
-
-
 }
 void DriveTrain::InitDefaultCommand()
 {
@@ -68,8 +66,6 @@ void DriveTrain::TankDrive(float left, float right) {
 	Publish(false);
 
 	m_safetyHelper->Feed();
-
-
 }
 
 // Put methods for controlling this subsystem
@@ -129,8 +125,6 @@ void DriveTrain::CustomArcade(float xAxis, float yAxis, float zAxis, bool square
 	backRight.Set(FRONTRIGHT);
 
 	Publish(false);
-
-
 	m_safetyHelper->Feed();
 }
 
@@ -206,20 +200,17 @@ void DriveTrain::StopMotor() {
 }
 
 void DriveTrain::Reset() {
+    double d=GetDistance();
+    cout << "DriveTrain::Reset previous travel="<<travel_distance<<" current distance="<<d<<" new travel="<<travel_distance+d<<endl;
+    travel_distance +=d;
 	frontRight.Reset();
 	backLeft.Reset();
-	gyro.Reset();
+	//gyro.Reset();
 }
 void DriveTrain::Enable() {
 	frontRight.Enable();
 	backLeft.Enable();
 	Publish(true);
-}
-void DriveTrain::EndTravel() {
-	frontRight.Reset();
-	backLeft.Reset();
-	frontRight.Disable();
-	backLeft.Disable();
 }
 
 void DriveTrain::Disable() {
@@ -227,7 +218,6 @@ void DriveTrain::Disable() {
 	backLeft.Disable();
 	frontRight.Reset();
 	backLeft.Reset();
-	distance=0;
 	angle=0;
 	Publish(true);
 }
@@ -250,27 +240,21 @@ void DriveTrain::SetControlMode(CANTalon::ControlMode controlMode) {
 
 void DriveTrain::Publish(bool init) {
 	if(init){
-		frc::SmartDashboard::PutNumber("LeftWheels",0);
-		frc::SmartDashboard::PutNumber("RightWheels", 0);
 		frc::SmartDashboard::PutNumber("Travel", 0);
 		frc::SmartDashboard::PutBoolean("HighGear", false);
-		frc::SmartDashboard::PutNumber("Angle", 0);
 		frc::SmartDashboard::PutNumber("Heading", 0);
 
 	}else{
-		frc::SmartDashboard::PutNumber("LeftWheels", backLeft.GetOutputVoltage());
-		frc::SmartDashboard::PutNumber("RightWheels", frontRight.GetOutputVoltage());
-		frc::SmartDashboard::PutNumber("Travel", GetDistance());
-		frc::SmartDashboard::PutBoolean("HighGear", !inlowgear);
-		frc::SmartDashboard::PutNumber("Angle", GetAngle());
 		frc::SmartDashboard::PutNumber("Heading", GetHeading());
+		frc::SmartDashboard::PutNumber("Travel", GetTravelDistance());
+		frc::SmartDashboard::PutBoolean("HighGear", !inlowgear);
 	}
 }
 
 double DriveTrain::GetDistance() {
 	double d1=-frontRight.GetPosition();
 	double d2=backLeft.GetPosition();
-	double x=0.5*(d1+d2)+distance;
+	double x=0.5*(d1+d2);
 	return round(x * 100) / 100.0;
 }
 double DriveTrain::GetRightDistance() {
@@ -280,14 +264,6 @@ double DriveTrain::GetLeftDistance() {
 	return backLeft.GetPosition();
 }
 
-double DriveTrain::GetAngle() {
-	return angle;
-}
-
-void DriveTrain::SetAngle(double a) {
-	angle=a;
-}
-
-void DriveTrain::SetDistance(double d) {
-	distance=d;
+double DriveTrain::GetTravelDistance() {
+    return travel_distance+GetDistance();
 }

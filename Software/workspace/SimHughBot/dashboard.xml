@@ -72,15 +72,25 @@
 </dashboard>
 <live-window>
 </live-window>
+	<hidden field="rightTurn"/>
+	<hidden field="rightDrive"/>
 	<hidden field="SaturationMax"/>
 	<hidden field="climberCurrentThreshold"/>
-	<hidden field="HueMin"/>
+	<hidden field="leftTurn"/>
 	<hidden field="climberVoltage"/>
 	<hidden field="UltraSonicDistance"/>
 	<hidden field="ValueMin"/>
+	<hidden field="TargetHeight"/>
 	<hidden field="HighGear"/>
 	<hidden field="HueMax"/>
-	<hidden field="Angle"/>
+	<hidden field="leftDrive"/>
 	<hidden field="SaturationMin"/>
 	<hidden field="ValueMax"/>
+	<hidden field="TargetCenter.x"/>
+	<hidden field="TargetCenter.y"/>
+	<hidden field="TargetWidth"/>
+	<hidden field="HueMin"/>
+	<hidden field="climberCurrent"/>
+	<hidden field="HorizontalOffset"/>
+	<hidden field="Angle"/>
 </xml>

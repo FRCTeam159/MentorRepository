@@ -42,7 +42,7 @@ void DriveWithJoystick::Execute()
 	yAxis = quadDeadband(MINTHRESHOLD, MINOUTPUT, yAxis);
 	xAxis = quadDeadband(MINTHRESHOLD, MINOUTPUT, xAxis);
 	zAxis = quadDeadband(MINTHRESHOLD, MINOUTPUT, zAxis);
-	driveTrain.get()->CustomArcade(xAxis, yAxis, zAxis,true);
+	driveTrain->CustomArcade(xAxis, yAxis, zAxis,true);
 	//visionSubsystem->Process();
 
 }

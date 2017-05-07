@@ -72,7 +72,7 @@ void ImageProc::Process() {
 #ifdef VCAP_BUFFER_HACK
 	    // need to flush 5-deep frame buffer and then wait for a new image otherwise can see a 1-2 second pipeline delay
 	    // in processing loop (pi-3)
-	    for(int i=0;i<6;i++) // discard any images that were pre-loaded or arrive during previous processing
+	    for(int i=0;i<6;i++) // discard any images that were pre-loaded or arrived during previous processing
 	        vcap.read(mat);
 #endif
 		if(!vcap.read(mat)) { // now wait for a fresh image to arrive
@@ -131,7 +131,7 @@ void ImageProc::Process() {
 		table->PutNumber("TopLeftY", tl.y);
 		table->PutNumber("BotRightX", br.x);
 		table->PutNumber("BotRightY", br.y);
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
 		auto end = std::chrono::high_resolution_clock::now();
 		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);

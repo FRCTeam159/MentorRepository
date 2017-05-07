@@ -21,11 +21,11 @@ private:
 	DoubleSolenoid *gearPneumatic;
 	CANTalon::ControlMode mode;
 	double angle=0;
-	double distance=0;
 	bool inlowgear=false;
 	void InitDrive();
 	float coerce(float min, float max, float x);
 	void Publish(bool);
+	double travel_distance=0;
 public:
 	DriveTrain();
 	void TankDrive(float xAxis, float yAxis);
@@ -53,11 +53,9 @@ public:
 	double GetDistance();
 	double GetLeftDistance();
 	double GetRightDistance();
-	double GetAngle();
-	void SetAngle(double a);
-	void SetDistance(double d);
-	void EndTravel();
 	double GetHeading();
+	void InitTravel() { travel_distance=0;}
+	double GetTravelDistance();
 
 	void Reset();
 };

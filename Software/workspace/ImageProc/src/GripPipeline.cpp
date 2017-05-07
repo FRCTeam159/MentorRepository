@@ -6,9 +6,11 @@
  */
 
 GripPipeline::GripPipeline() {
+#ifdef USE_GPU
     int gpus=cv::cuda::getCudaEnabledDeviceCount();
     cout<<"gpus="<<gpus<<endl;
     setDevice(0);
+#endif
 }
 /**
  * Runs an iteration of the Pipeline and updates outputs.

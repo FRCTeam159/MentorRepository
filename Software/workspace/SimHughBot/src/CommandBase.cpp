@@ -34,11 +34,13 @@ void CommandBase::RobotInit(){
 }
 
 void CommandBase::AutonomousInit() {
+    driveTrain->InitTravel();
 	driveTrain->Enable();
 	ultrasonicSubsystem->Enable();
 }
 
 void CommandBase::TeleopInit() {
+    driveTrain->InitTravel();
 	driveTrain->Enable();
 	ultrasonicSubsystem->Enable();
 	fuelSubsystem->Enable();
