@@ -1,9 +1,14 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Travel" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="17" y="373"/>
+		<width>342</width>
+		<height>178</height>
+	</widget>
 	<widget field="Targeting" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
 		<location x="581" y="347"/>
 		<width>154</width>
-		<height>30</height>
+		<height>22</height>
 	</widget>
 	<widget field="HOffset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="454" y="344"/>
@@ -16,30 +21,14 @@
 		<property name="Camera Choice" value=""/>
 	</static-widget>
 	<widget field="AutoMode" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="583" y="311"/>
+		<location x="517" y="306"/>
 		<width>141</width>
 		<property name="Background" value="250.133.17.255"/>
 	</widget>
 	<widget field="Heading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="530" y="390"/>
-		<width>239</width>
-		<height>221</height>
-	</widget>
-	<widget field="Travel" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="468" y="313"/>
-		<width>104</width>
-	</widget>
-	<widget field="LeftWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="269" y="394"/>
-		<width>261</width>
-		<height>214</height>
-		<property name="Buffer Size (samples)" value="1000"/>
-	</widget>
-	<widget field="RightWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="16" y="395"/>
-		<width>246</width>
-		<height>203</height>
-		<property name="Buffer Size (samples)" value="1000"/>
+		<location x="377" y="375"/>
+		<width>327</width>
+		<height>182</height>
 	</widget>
 	<widget field="GearPlateOpen" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
 		<location x="310" y="347"/>
@@ -73,24 +62,13 @@
 <live-window>
 </live-window>
 	<hidden field="rightTurn"/>
+	<hidden field="RightWheels"/>
 	<hidden field="rightDrive"/>
-	<hidden field="SaturationMax"/>
 	<hidden field="climberCurrentThreshold"/>
 	<hidden field="leftTurn"/>
 	<hidden field="climberVoltage"/>
+	<hidden field="LeftWheels"/>
 	<hidden field="UltraSonicDistance"/>
-	<hidden field="ValueMin"/>
-	<hidden field="TargetHeight"/>
 	<hidden field="HighGear"/>
-	<hidden field="HueMax"/>
 	<hidden field="leftDrive"/>
-	<hidden field="SaturationMin"/>
-	<hidden field="ValueMax"/>
-	<hidden field="TargetCenter.x"/>
-	<hidden field="TargetCenter.y"/>
-	<hidden field="TargetWidth"/>
-	<hidden field="HueMin"/>
-	<hidden field="climberCurrent"/>
-	<hidden field="HorizontalOffset"/>
-	<hidden field="Angle"/>
 </xml>
