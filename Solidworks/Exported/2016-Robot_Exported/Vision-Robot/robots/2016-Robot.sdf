@@ -757,12 +757,13 @@
           </mesh>
         </geometry>
       </visual>
-      <sensor name="ShooterCamera" type="camera">
+      <sensor name="Sim" type="camera">
         <visualize>1</visualize>
         <always_on>1</always_on>
+        <update_rate>1</update_rate>
         <pose>-0.124206581565228 0.303144755538481 -0.122064904182657 1.5707963267949 0 3.14159265358979</pose>
-        <camera name="Shootercamera">
-          <horizontal_fov>1.0472</horizontal_fov>
+        <camera name="Cam">
+          <horizontal_fov>0.87</horizontal_fov>
           <image>
             <width>320</width>
             <height>240</height>
@@ -772,8 +773,9 @@
             <far>100</far>
           </clip>
           <save enabled="true">
-              <path>/tmp/shooter-camera</path>
+              <path>/tmp/target-camera</path>
           </save>
+
         </camera>
       </sensor>
       <sensor name="ShooterUltrasonic" type="sonar">
@@ -1140,24 +1142,7 @@
           </mesh>
         </geometry>
       </visual>
-      <sensor name="LoaderArmsCamera" type="camera">
-        <visualize>0</visualize>
-        <always_on>1</always_on>
-        <update_rate>2</update_rate> 
-        <pose>0.20090678291553 0.0323056690328188 -0.296092049950268 4.71238898038469 0 0</pose>
-        <camera name="LoaderArmscamera">
-          <horizontal_fov>1.5707963267949</horizontal_fov>
-          <image>
-            <width>320</width>
-            <height>240</height>
-          </image>
-          <clip>
-            <near>0.1</near>
-            <far>100</far>
-          </clip>
-        </camera>
-      </sensor>
-    </link>
+     </link>
     <joint name="TopFrame-LoaderArms" type="revolute">
       <parent>TopFrame</parent>
       <child>LoaderArms</child>

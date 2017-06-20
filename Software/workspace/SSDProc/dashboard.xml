@@ -1,0 +1,49 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="Frame" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="285" y="333"/>
+		<width>103</width>
+	</widget>
+	<widget field="FPS" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="158" y="332"/>
+		<width>110</width>
+	</widget>
+	<widget field="Rectangles" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="9" y="331"/>
+		<width>127</width>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="0" y="0"/>
+		<width>530</width>
+		<height>326</height>
+		<property name="Camera Choice" value="Annotated"/>
+	</static-widget>
+</dashboard>
+<live-window>
+</live-window>
+	<hidden field="rightTurn"/>
+	<hidden field="Heading"/>
+	<hidden field="rightDrive"/>
+	<hidden field="Targeting"/>
+	<hidden field="HorizontalAngle"/>
+	<hidden field="climberCurrentThreshold"/>
+	<hidden field="leftTurn"/>
+	<hidden field="climberVoltage"/>
+	<hidden field="showGoodRects"/>
+	<hidden field="AutoMode"/>
+	<hidden field="UltraSonicDistance"/>
+	<hidden field="TargetHeight"/>
+	<hidden field="HighGear"/>
+	<hidden field="leftDrive"/>
+	<hidden field="Distance"/>
+	<hidden field="GearPlateOpen"/>
+	<hidden field="showColorThreshold"/>
+	<hidden field="TargetCenter.x"/>
+	<hidden field="TargetCenter.y"/>
+	<hidden field="TargetWidth"/>
+	<hidden field="HOffset"/>
+	<hidden field="climberCurrent"/>
+	<hidden field="HorizontalOffset"/>
+	<hidden field="Cycle"/>
+	<hidden field="Travel"/>
+</xml>

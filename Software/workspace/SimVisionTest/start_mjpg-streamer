@@ -8,8 +8,8 @@ export LD_LIBRARY_PATH="$(pwd)"
 # mkdir -p /tmp/input
 # while true; do xwd -root | convert - -scale 640 /tmp/input/bla.jpg; sleep 0.5; done &
 ## Then the files can be read from the folder "/tmp/input" and served via HTTP
- rm -fr /tmp/shooter-camera/*
  mkdir -p /tmp/shooter-camera
+ rm -f /tmp/shooter-camera/*
  mjpg_streamer -i "input_file.so -f /tmp/shooter-camera -r -d 0.1" -o "output_http.so -w www -p 5002"
 
 

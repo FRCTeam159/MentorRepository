@@ -1,0 +1,13 @@
+rm -fr /tmp/shooter-camera
+mkdir  /tmp/shooter-camera
+
+cd ~/Robotics/MentorRepository/Software/workspace/SimVisionTest;
+roxterm --title="Gazebo Simulation" --tab-name=gazebo -e gazebo-vision-test;
+sleep 5;
+roxterm --tab --tab-name=sim_ds -e sim_ds;
+
+roxterm --tab --tab-name=mjpg-streamer -e mjpg-streamer-vision-test
+
+sleep 5
+roxterm --tab --tab-name=FRCUserProgram -e linux_simulate/FRCUserProgram
+

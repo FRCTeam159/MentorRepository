@@ -22,6 +22,12 @@
 
 using namespace frc;
 
+static clock_t start = clock();
+static int frame_count=0;
+static int last_frame=0;
+
+static double delt=0;
+double sumdt=0;
 
 Vision::Vision() : Subsystem("VisionSubsystem") {
 	SetCameraInfo(IMAGE_WIDTH,IMAGE_HEIGHT,HFOV,HOFFSET);
@@ -57,11 +63,15 @@ void Vision::Init() {
 	camera1.SetFPS(10);
 #endif
 	//ssh pi@rapberrypi.local -c "/home/pi/vision/start_grip.sh
+	frame_count=0;
+	last_frame=0;
+	delt=0;
+	sumdt=0;
 }
 
 void Vision::Process() {
-	GetTargetInfo();
-	PublishTargetInfo();
+    GetTargetInfo();
+    PublishTargetInfo();
 }
 
 #ifndef APP_TEST
@@ -177,7 +187,6 @@ void Vision::VisionThread(){
         std::cout<<"calc time :"<<localTime->tm_min<<":"<<localTime->tm_sec<<" dt:"<<elapsed.count()<< " ms num targets:"<<n<<std::endl;
         start=end;
 #endif
-
 	}
 }
 
@@ -287,11 +296,46 @@ void Vision::GetTargetInfo() {
 
 	CalcTargetInfo(n,top,bot);
 #ifdef APP_TEST
+
 	bool showColorThreshold=SmartDashboard::GetBoolean("showColorThreshold", false);
 	bool showGoodRects=SmartDashboard::GetBoolean("showGoodRects", true);
 	table->PutBoolean("showGoodRects",showGoodRects);
 	table->PutBoolean("showColorThreshold",showColorThreshold);
-	frc::SmartDashboard::PutNumber("Rectangles", n);
+    frc::SmartDashboard::PutNumber("Rectangles", n);
+
+	int frame=table->GetNumber("Frame", 0);
+    frc::SmartDashboard::PutNumber("Frame",frame);
+    double fps=table->GetNumber("FPS", 0);
+    frc::SmartDashboard::PutNumber("FPS",fps);
+
+/*
+	if(frame != last_frame){
+	    clock_t end = clock();{
+	    if(frame_count>0)
+            delt = (double)(end - start)/CLOCKS_PER_SEC;
+            sumdt+=delt;
+
+            if(frame_count>(last_frame+1)){
+                std::cout<<"missed frame current:"<<frame<<" last:"<<last_frame<<endl;
+            }
+
+            frc::SmartDashboard::PutNumber("Rectangles", n);
+            double fps=table->GetNumber("FPS", 0);
+            frc::SmartDashboard::PutNumber("FPS", (int)(10*fps)/10.0);
+            frc::SmartDashboard::PutNumber("Frame",frame);
+
+            //double cycle_fps=1.0/delt;
+            if((frame_count%10)==0){
+                double cycle_fps=10/sumdt;
+                frc::SmartDashboard::PutNumber("Cycle", (int)(10*cycle_fps)/10.0);
+                sumdt=0;
+            }
+	    }
+        start=end;
+        frame_count++;
+	}
+*/
+    last_frame=frame;
 #endif
 
 }

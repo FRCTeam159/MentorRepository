@@ -1,11 +1,10 @@
 # start gazebo
 
-
 export LD_LIBRARY_PATH=/usr/local/lib/frcsim/lib:/usr/lib:/usr/lib/x86_64-linux-gnu/:${GAZEBO_PLUGIN_PATH}
 export SWMODEL=$SWEXPORTS/2016-Robot_Exported
-export GAZEBO_MODEL_PATH=$SWMODEL:$WPILIB/simulation/models:/usr/share/gazebo/models
+export GAZEBO_MODEL_PATH=$SWMODEL
 
-rm -fr /tmp/shooter-camera
-mkdir  /tmp/shooter-camera
+rm -fr /tmp/sim-camera
+mkdir  /tmp/sim-camera
 gazebo --verbose $SWMODEL/vision-test.world
 

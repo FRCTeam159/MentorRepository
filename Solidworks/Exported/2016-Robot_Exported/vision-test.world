@@ -1,4 +1,4 @@
-<sdf version='1.5'>
+<sdf version='1.6'>
   <world name='default'>
     <light name='sun' type='directional'>
       <cast_shadows>1</cast_shadows>
@@ -17,8 +17,6 @@
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1</real_time_factor>
       <real_time_update_rate>1000</real_time_update_rate>
-      <gravity>0 0 -9.8</gravity>
-      <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
     </physics>
     <scene>
       <ambient>0.4 0.4 0.4 1</ambient>
@@ -32,45 +30,3063 @@
       <elevation>0</elevation>
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
-   <include>
-      <uri>model://Vision-Robot</uri>
-      <pose> 1.14838 0.063065 0.063055 1.56055 -0.004555 2.61546</pose>
-    </include>
-    <include>
-      <name>ball 1</name>
-      <uri>model://ball</uri>
-        <pose frame=''>2.8833 -1.19329 0.126858 0.734804 -1.19792 -0.504444</pose>
-    </include>
-    <include>
-      <name>ball 2</name>
-      <uri>model://ball</uri>
-        <pose frame=''>5.73428 -4.96292 0.126858 -2.33408 -0.381956 -2.24163</pose>
-    </include>
-
-     <include>
-      <name>ball 3</name>
-      <uri>model://ball</uri>
+    <model name='2016-Robot'>
+      <pose frame=''>1.14838 0.063065 0.063055 1.56055 -0.004555 2.61546</pose>
+      <plugin name='clock' filename='libclock.so'>
+        <topic>/gazebo/frc/time</topic>
+      </plugin>
+      <link name='TopFrame'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.535308 0.079389 -0.40987 0 -0 0</pose>
+        <must_be_base_link>1</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>13.8297</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.313059</ixx>
+            <ixy>0.0778786</ixy>
+            <ixz>0.0746279</ixz>
+            <iyy>0.983339</iyy>
+            <iyz>0.00643566</iyz>
+            <izz>0.739761</izz>
+          </inertia>
+        </inertial>
+        <collision name='TopFrame_collision'>
+          <pose frame=''>0.40835 -0.148138 -0.030953 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/TopFrame_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='TopFrame_visual'>
+          <pose frame=''>0.40835 -0.148138 -0.030953 0 -0 0</pose>
+          <material>
+            <ambient>0 0 1 1</ambient>
+            <diffuse>0 0 1 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/TopFrame.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <sensor name='TopFrameUltrasonic' type='sonar'>
+          <always_on>1</always_on>
+          <visualize>1</visualize>
+          <pose frame=''>0.378134 0.093995 -0.083943 2.86033 -0 3.14159</pose>
+          <sonar>
+            <min>0.05</min>
+            <max>7</max>
+            <radius>0.05</radius>
+          </sonar>
+        </sensor>
+        <kinematic>0</kinematic>
+      </link>
+      <link name='LeftFrame'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.61845 0.063143 -0.127837 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>9.85785</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.0471972</ixx>
+            <ixy>0.007664</ixy>
+            <ixz>0.0465517</ixz>
+            <iyy>0.223821</iyy>
+            <iyz>0.000454312</iyz>
+            <izz>0.191819</izz>
+          </inertia>
+        </inertial>
+        <collision name='LeftFrame_collision'>
+          <pose frame=''>0.491493 -0.131892 -0.312986 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/LeftFrame_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='LeftFrame_visual'>
+          <pose frame=''>0.491493 -0.131892 -0.312986 0 -0 0</pose>
+          <material>
+            <ambient>0 1 0 1</ambient>
+            <diffuse>0 1 0 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/LeftFrame.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='TopFrame-LeftFrame' type='revolute'>
+        <parent>TopFrame</parent>
+        <child>LeftFrame</child>
+        <pose frame=''>0.239026 -0.012827 0.108787 0 -0 0</pose>
+        <axis>
+          <xyz>0 0 -1</xyz>
+          <dynamics>
+            <damping>1</damping>
+            <friction>2</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <upper>0.05</upper>
+            <lower>-0.05</lower>
+            <effort>1</effort>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='L1Wheel'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.683804 0.067805 0.042014 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.56309</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.00128474</ixx>
+            <ixy>8.45307e-08</ixy>
+            <ixz>5.92558e-08</ixz>
+            <iyy>0.00128284</iyy>
+            <iyz>4.61663e-07</iyz>
+            <izz>0.00217023</izz>
+          </inertia>
+        </inertial>
+        <collision name='L1Wheel_collision'>
+          <pose frame=''>0.556847 -0.136554 -0.482836 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/L1Wheel_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='L1Wheel_visual'>
+          <pose frame=''>0.556847 -0.136554 -0.482836 0 -0 0</pose>
+          <material>
+            <ambient>0.501961 0.501961 0.501961 1</ambient>
+            <diffuse>0.501961 0.501961 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/L1Wheel.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='LeftFrame-L1Wheel' type='revolute'>
+        <parent>LeftFrame</parent>
+        <child>L1Wheel</child>
+        <pose frame=''>-5e-06 -0.001262 -0.002802 3.14159 -1.57079 3.14159</pose>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <dynamics>
+            <damping>1</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>40</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='L2Wheel'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.481243 0.044541 0.042014 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.56309</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.00128356</ixx>
+            <ixy>9.23396e-07</ixy>
+            <ixz>3.42107e-07</ixz>
+            <iyy>0.00128402</iyy>
+            <iyz>3.1533e-07</iyz>
+            <izz>0.00217023</izz>
+          </inertia>
+        </inertial>
+        <collision name='L2Wheel_collision'>
+          <pose frame=''>0.354286 -0.11329 -0.482836 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/L2Wheel_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='L2Wheel_visual'>
+          <pose frame=''>0.354286 -0.11329 -0.482836 0 -0 0</pose>
+          <material>
+            <ambient>0.501961 0.501961 0.501961 1</ambient>
+            <diffuse>0.501961 0.501961 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/L2Wheel.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='LeftFrame-L2Wheel' type='revolute'>
+        <parent>LeftFrame</parent>
+        <child>L2Wheel</child>
+        <pose frame=''>-0.001032 -0.000726 -0.002802 3.14159 -1.57079 3.14159</pose>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <dynamics>
+            <damping>1</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>40</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='L3Wheel'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.278177 0.037167 0.042014 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.56309</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.00128356</ixx>
+            <ixy>9.23397e-07</ixy>
+            <ixz>3.42107e-07</ixz>
+            <iyy>0.00128402</iyy>
+            <iyz>3.1533e-07</iyz>
+            <izz>0.00217023</izz>
+          </inertia>
+        </inertial>
+        <collision name='L3Wheel_collision'>
+          <pose frame=''>0.15122 -0.105916 -0.482836 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/L3Wheel_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='L3Wheel_visual'>
+          <pose frame=''>0.15122 -0.105916 -0.482836 0 -0 0</pose>
+          <material>
+            <ambient>0.501961 0.501961 0.501961 1</ambient>
+            <diffuse>0.501961 0.501961 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/L3Wheel.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='LeftFrame-L3Wheel' type='revolute'>
+        <parent>LeftFrame</parent>
+        <child>L3Wheel</child>
+        <pose frame=''>-0.001032 -0.000726 -0.002802 3.14159 -1.57079 3.14159</pose>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <dynamics>
+            <damping>1</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>40</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='L4Wheel'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.074671 0.045632 0.042014 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.56309</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.00128327</ixx>
+            <ixy>7.94198e-07</ixy>
+            <ixz>4.26489e-07</ixz>
+            <iyy>0.00128432</iyy>
+            <iyz>1.85964e-07</iyz>
+            <izz>0.00217023</izz>
+          </inertia>
+        </inertial>
+        <collision name='L4Wheel_collision'>
+          <pose frame=''>-0.052287 -0.114381 -0.482836 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/L4Wheel_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='L4Wheel_visual'>
+          <pose frame=''>-0.052287 -0.114381 -0.482836 0 -0 0</pose>
+          <material>
+            <ambient>0.501961 0.501961 0.501961 1</ambient>
+            <diffuse>0.501961 0.501961 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/L4Wheel.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='LeftFrame-L4Wheel' type='revolute'>
+        <parent>LeftFrame</parent>
+        <child>L4Wheel</child>
+        <pose frame=''>0.001081 -0.000652 -0.002802 3.14159 -1.57079 3.14159</pose>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <dynamics>
+            <damping>1</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>40</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='R1Wheel'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.674628 0.055829 -0.584939 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.56309</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.0012832</ixx>
+            <ixy>7.48042e-07</ixy>
+            <ixz>4.00452e-07</ixz>
+            <iyy>0.00128438</iyy>
+            <iyz>2.36873e-07</iyz>
+            <izz>0.00217023</izz>
+          </inertia>
+        </inertial>
+        <collision name='R1Wheel_collision'>
+          <pose frame=''>0.547671 -0.124578 0.144116 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/R1Wheel_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='R1Wheel_visual'>
+          <pose frame=''>0.547671 -0.124578 0.144116 0 -0 0</pose>
+          <material>
+            <ambient>0.501961 0.501961 0.501961 1</ambient>
+            <diffuse>0.501961 0.501961 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/R1Wheel.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='TopFrame-R1Wheel' type='revolute'>
+        <parent>TopFrame</parent>
+        <child>R1Wheel</child>
+        <pose frame=''>-0.001161 0.000494 0.002802 3.14159 -1.57079 3.14159</pose>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <dynamics>
+            <damping>1</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>40</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='R2Wheel'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.471504 0.039915 -0.584939 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.56309</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.00128474</ixx>
+            <ixy>8.06254e-08</ixy>
+            <ixz>1.89056e-08</ixz>
+            <iyy>0.00128284</iyy>
+            <iyz>4.65066e-07</iyz>
+            <izz>0.00217023</izz>
+          </inertia>
+        </inertial>
+        <collision name='R2Wheel_collision'>
+          <pose frame=''>0.344546 -0.108664 0.144116 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/R2Wheel_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='R2Wheel_visual'>
+          <pose frame=''>0.344546 -0.108664 0.144116 0 -0 0</pose>
+          <material>
+            <ambient>0.501961 0.501961 0.501961 1</ambient>
+            <diffuse>0.501961 0.501961 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/R2Wheel.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='TopFrame-R2Wheel' type='revolute'>
+        <parent>TopFrame</parent>
+        <child>R2Wheel</child>
+        <pose frame=''>-0.000115 0.001257 0.002802 3.14159 -1.57079 3.14159</pose>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <dynamics>
+            <damping>1</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>40</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='R3Wheel'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.268299 0.039915 -0.584939 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.56309</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.00128472</ixx>
+            <ixy>1.86161e-07</ixy>
+            <ixz>7.21305e-09</ixz>
+            <iyy>0.00128286</iyy>
+            <iyz>4.65394e-07</iyz>
+            <izz>0.00217023</izz>
+          </inertia>
+        </inertial>
+        <collision name='R3Wheel_collision'>
+          <pose frame=''>0.141342 -0.108663 0.144116 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/R3Wheel_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='R3Wheel_visual'>
+          <pose frame=''>0.141342 -0.108663 0.144116 0 -0 0</pose>
+          <material>
+            <ambient>0.501961 0.501961 0.501961 1</ambient>
+            <diffuse>0.501961 0.501961 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/R3Wheel.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='TopFrame-R3Wheel' type='revolute'>
+        <parent>TopFrame</parent>
+        <child>R3Wheel</child>
+        <pose frame=''>-0.000185 0.001248 0.002802 3.14159 -1.57079 3.14159</pose>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <dynamics>
+            <damping>1</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>40</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='R4Wheel'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.065099 0.05579 -0.584939 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.56309</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.00128472</ixx>
+            <ixy>1.86161e-07</ixy>
+            <ixz>7.21303e-09</ixz>
+            <iyy>0.00128286</iyy>
+            <iyz>4.65394e-07</iyz>
+            <izz>0.00217023</izz>
+          </inertia>
+        </inertial>
+        <collision name='R4Wheel_collision'>
+          <pose frame=''>-0.061858 -0.124538 0.144116 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/R4Wheel_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='R4Wheel_visual'>
+          <pose frame=''>-0.061858 -0.124538 0.144116 0 -0 0</pose>
+          <material>
+            <ambient>0.501961 0.501961 0.501961 1</ambient>
+            <diffuse>0.501961 0.501961 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/R4Wheel.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='TopFrame-R4Wheel' type='revolute'>
+        <parent>TopFrame</parent>
+        <child>R4Wheel</child>
+        <pose frame=''>-0.000185 0.001248 0.002802 3.14159 -1.57079 3.14159</pose>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <dynamics>
+            <damping>1</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>40</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='Shooter'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.34031 0.103955 -0.307805 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>6.6474</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.171657</ixx>
+            <ixy>0.00116502</ixy>
+            <ixz>0.0375602</ixz>
+            <iyy>0.206254</iyy>
+            <iyz>0.00368475</iyz>
+            <izz>0.0699035</izz>
+          </inertia>
+        </inertial>
+        <collision name='Shooter_collision'>
+          <pose frame=''>0.213353 -0.172704 -0.133017 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/Shooter_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='Shooter_visual'>
+          <pose frame=''>0.213353 -0.172704 -0.133017 0 -0 0</pose>
+          <material>
+            <ambient>0 0.501961 0.501961 1</ambient>
+            <diffuse>0 0.501961 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/Shooter.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <sensor name='Sim' type='camera'>
+          <visualize>1</visualize>
+          <always_on>1</always_on>
+          <update_rate>50</update_rate>
+          <pose frame=''>-0.124207 0.303145 -0.122065 1.5708 -0 3.14159</pose>
+          <camera name='Cam'>
+            <horizontal_fov>0.87</horizontal_fov>
+            <image>
+              <width>320</width>
+              <height>240</height>
+            </image>
+            <clip>
+              <near>0.1</near>
+              <far>100</far>
+            </clip>
+            <save enabled='1'>
+              <path>/tmp/target-camera</path>
+            </save>
+          </camera>
+        </sensor>
+        <sensor name='ShooterUltrasonic' type='sonar'>
+          <always_on>1</always_on>
+          <visualize>1</visualize>
+          <pose frame=''>-0.124207 0.103145 -0.122065 1.5708 -0 1.5358</pose>
+          <sonar>
+            <min>1</min>
+            <max>10</max>
+            <radius>0.01</radius>
+          </sonar>
+        </sensor>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='TopFrame-Shooter' type='revolute'>
+        <parent>TopFrame</parent>
+        <child>Shooter</child>
+        <pose frame=''>0.127842 0.048255 -0.21884 0 -0 0</pose>
+        <axis>
+          <xyz>0 0 -1</xyz>
+          <dynamics>
+            <damping>1</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <upper>1.3</upper>
+            <lower>-0.05</lower>
+            <effort>30</effort>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='PushWheel'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.212547 0.150899 -0.428966 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.596238</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.000669968</ixx>
+            <ixy>2.05741e-05</ixy>
+            <ixz>4.46929e-07</ixz>
+            <iyy>0.00125126</iyy>
+            <iyz>1.21436e-07</iyz>
+            <izz>0.000668908</izz>
+          </inertia>
+        </inertial>
+        <collision name='PushWheel_collision'>
+          <pose frame=''>0.08559 -0.219648 -0.011857 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/PushWheel_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='PushWheel_visual'>
+          <pose frame=''>0.08559 -0.219648 -0.011857 0 -0 0</pose>
+          <material>
+            <ambient>0.501961 0.501961 0.501961 1</ambient>
+            <diffuse>0.501961 0.501961 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/PushWheel.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='Shooter-PushWheel' type='revolute'>
+        <parent>Shooter</parent>
+        <child>PushWheel</child>
+        <pose frame=''>2.9e-05 -0.000101 2.3e-05 0 0 -1.5708</pose>
+        <axis>
+          <xyz>0.999388 -0.034988 0</xyz>
+          <dynamics>
+            <damping>1</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>50</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='LeftFW'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.415611 0.158012 -0.111454 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>1.80417</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.00209273</ixx>
+            <ixy>6.40454e-05</ixy>
+            <ixz>7.13508e-07</ixz>
+            <iyy>0.0039091</iyy>
+            <iyz>1.76726e-07</iyz>
+            <izz>0.00208954</izz>
+          </inertia>
+        </inertial>
+        <collision name='LeftFW_collision'>
+          <pose frame=''>0.288654 -0.226761 -0.329368 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/LeftFW_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='LeftFW_visual'>
+          <pose frame=''>0.288654 -0.226761 -0.329368 0 -0 0</pose>
+          <material>
+            <ambient>0.501961 0.25098 0.25098 1</ambient>
+            <diffuse>0.501961 0.25098 0.25098 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/LeftFW.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='Shooter-LeftFW' type='revolute'>
+        <parent>Shooter</parent>
+        <child>LeftFW</child>
+        <pose frame=''>1.7e-05 -0.000105 1.1e-05 0 -0 0</pose>
+        <axis>
+          <xyz>0.034988 0.999388 0</xyz>
+          <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>800</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='RightFW'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.415611 0.158012 -0.428954 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>1.80417</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.00209273</ixx>
+            <ixy>6.40454e-05</ixy>
+            <ixz>7.13508e-07</ixz>
+            <iyy>0.0039091</iyy>
+            <iyz>1.76726e-07</iyz>
+            <izz>0.00208954</izz>
+          </inertia>
+        </inertial>
+        <collision name='RightFW_collision'>
+          <pose frame=''>0.288654 -0.226761 -0.011868 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/RightFW_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='RightFW_visual'>
+          <pose frame=''>0.288654 -0.226761 -0.011868 0 -0 0</pose>
+          <material>
+            <ambient>0.501961 0.25098 0.25098 1</ambient>
+            <diffuse>0.501961 0.25098 0.25098 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/RightFW.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='Shooter-RightFW' type='revolute'>
+        <parent>Shooter</parent>
+        <child>RightFW</child>
+        <pose frame=''>1.7e-05 -0.000105 1.1e-05 0 0 -1.5708</pose>
+        <axis>
+          <xyz>0.999388 -0.034988 0</xyz>
+          <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>800</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='Gate'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.281727 0.208591 -0.196709 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.973575</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.015346</ixx>
+            <ixy>0.000252256</ixy>
+            <ixz>0.00153103</ixz>
+            <iyy>0.0152469</iyy>
+            <iyz>0.00179957</iyz>
+            <izz>0.000731699</izz>
+          </inertia>
+        </inertial>
+        <collision name='Gate_collision'>
+          <pose frame=''>0.15477 -0.27734 -0.244113 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/Gate_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='Gate_visual'>
+          <pose frame=''>0.15477 -0.27734 -0.244113 0 -0 0</pose>
+          <material>
+            <ambient>0.501961 0.501961 0.501961 1</ambient>
+            <diffuse>0.501961 0.501961 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/Gate.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='Shooter-Gate' type='revolute'>
+        <parent>Shooter</parent>
+        <child>Gate</child>
+        <pose frame=''>-0.006621 -0.04588 0.080132 0 -0 1.5708</pose>
+        <axis>
+          <xyz>0.999388 -0.034988 0</xyz>
+          <dynamics>
+            <damping>1</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <upper>1.5</upper>
+            <lower>0</lower>
+            <effort>30</effort>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='LoaderArms'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>-0.042984 0.202131 -0.28017 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.746692</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.0555147</ixx>
+            <ixy>0.0068512</ixy>
+            <ixz>0.000672797</ixz>
+            <iyy>0.0943017</iyy>
+            <iyz>0.000133469</iyz>
+            <izz>0.0437458</izz>
+          </inertia>
+        </inertial>
+        <collision name='LoaderArms_collision'>
+          <pose frame=''>-0.083973 -0.27088 -0.160652 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/LoaderArms_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0</mu>
+                <mu2>0</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='LoaderArms_visual'>
+          <pose frame=''>-0.083973 -0.27088 -0.160652 0 -0 0</pose>
+          <material>
+            <ambient>0.501961 0.501961 0.501961 1</ambient>
+            <diffuse>0.501961 0.501961 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/LoaderArms.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='TopFrame-LoaderArms' type='revolute'>
+        <parent>TopFrame</parent>
+        <child>LoaderArms</child>
+        <pose frame=''>-0.421386 0.029319 0.263025 3.14159 -1.57079 3.14159</pose>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <dynamics>
+            <damping>1</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <upper>1.5</upper>
+            <lower>0</lower>
+            <effort>30</effort>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='Roller1'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>0.119822 0.234437 -0.271446 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.526942</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.011581</ixx>
+            <ixy>5.59773e-37</ixy>
+            <ixz>1.06935e-19</ixz>
+            <iyy>0.011581</iyy>
+            <iyz>1.63085e-35</iyz>
+            <izz>0.000242427</izz>
+          </inertia>
+        </inertial>
+        <collision name='Roller1_collision'>
+          <pose frame=''>-0.24678 -0.303186 -0.169376 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/Roller1_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='Roller1_visual'>
+          <pose frame=''>-0.24678 -0.303186 -0.169376 0 -0 0</pose>
+          <material>
+            <ambient>0 0.752941 0.501961 1</ambient>
+            <diffuse>0 0.752941 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/Roller1.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='LoaderArms-Roller1' type='revolute'>
+        <parent>LoaderArms</parent>
+        <child>Roller1</child>
+        <pose frame=''>-0 -0 0.29129 3.14159 1.57079 3.14159</pose>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <dynamics>
+            <damping>0.2</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>30</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='Roller2'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>0.172174 0.182618 -0.274629 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.413223</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.0111058</ixx>
+            <ixy>1.0829e-36</ixy>
+            <ixz>5.75067e-21</ixz>
+            <iyy>0.0111058</iyy>
+            <iyz>2.28507e-35</iyz>
+            <izz>0.000211202</izz>
+          </inertia>
+        </inertial>
+        <collision name='Roller2_collision'>
+          <pose frame=''>-0.299131 -0.251367 -0.166194 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/Roller2_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='Roller2_visual'>
+          <pose frame=''>-0.299131 -0.251367 -0.166194 0 -0 0</pose>
+          <material>
+            <ambient>0 0.752941 0.501961 1</ambient>
+            <diffuse>0 0.752941 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/Roller2.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='LoaderArms-Roller2' type='revolute'>
+        <parent>LoaderArms</parent>
+        <child>Roller2</child>
+        <pose frame=''>0 -0 0.294472 3.14159 1.57079 3.14159</pose>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <dynamics>
+            <damping>0.2</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>30</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='Roller3'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>0.220914 0.134373 -0.274629 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.413223</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.0111058</ixx>
+            <ixy>1.0829e-36</ixy>
+            <ixz>5.75067e-21</ixz>
+            <iyy>0.0111058</iyy>
+            <iyz>2.28507e-35</iyz>
+            <izz>0.000211202</izz>
+          </inertia>
+        </inertial>
+        <collision name='Roller3_collision'>
+          <pose frame=''>-0.347871 -0.203122 -0.166194 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/Roller3_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='Roller3_visual'>
+          <pose frame=''>-0.347871 -0.203122 -0.166194 0 -0 0</pose>
+          <material>
+            <ambient>0 0.752941 0.501961 1</ambient>
+            <diffuse>0 0.752941 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/Roller3.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='LoaderArms-Roller3' type='revolute'>
+        <parent>LoaderArms</parent>
+        <child>Roller3</child>
+        <pose frame=''>0 0 0.294472 3.14159 1.57079 3.14159</pose>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <dynamics>
+            <damping>0.2</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>30</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='Roller4'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>0.269655 0.086129 -0.274629 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.413223</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.0111058</ixx>
+            <ixy>1.0829e-36</ixy>
+            <ixz>5.75067e-21</ixz>
+            <iyy>0.0111058</iyy>
+            <iyz>2.28507e-35</iyz>
+            <izz>0.000211202</izz>
+          </inertia>
+        </inertial>
+        <collision name='Roller4_collision'>
+          <pose frame=''>-0.396612 -0.154878 -0.166194 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/Roller4_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='Roller4_visual'>
+          <pose frame=''>-0.396612 -0.154878 -0.166194 0 -0 0</pose>
+          <material>
+            <ambient>0 0.752941 0.501961 1</ambient>
+            <diffuse>0 0.752941 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/Roller4.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='LoaderArms-Roller4' type='revolute'>
+        <parent>LoaderArms</parent>
+        <child>Roller4</child>
+        <pose frame=''>0 0 0.294472 3.14159 1.57079 3.14159</pose>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <dynamics>
+            <damping>0.2</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>30</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='Roller5'>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <pose frame=''>0.318396 0.037884 -0.274629 0 -0 0</pose>
+        <must_be_base_link>0</must_be_base_link>
+        <velocity_decay>
+          <linear>0</linear>
+          <angular>0</angular>
+        </velocity_decay>
+        <inertial>
+          <mass>0.413223</mass>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>0.0111058</ixx>
+            <ixy>1.0829e-36</ixy>
+            <ixz>5.75067e-21</ixz>
+            <iyy>0.0111058</iyy>
+            <iyz>2.28507e-35</iyz>
+            <izz>0.000211202</izz>
+          </inertia>
+        </inertial>
+        <collision name='Roller5_collision'>
+          <pose frame=''>-0.445353 -0.106633 -0.166194 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/Roller5_col.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='Roller5_visual'>
+          <pose frame=''>-0.445353 -0.106633 -0.166194 0 -0 0</pose>
+          <material>
+            <ambient>0 0.752941 0.501961 1</ambient>
+            <diffuse>0 0.752941 0.501961 1</diffuse>
+          </material>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>model://2016-Robot/meshes/Roller5.STL</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='LoaderArms-Roller5' type='revolute'>
+        <parent>LoaderArms</parent>
+        <child>Roller5</child>
+        <pose frame=''>-0 -0 0.294472 3.14159 1.57079 3.14159</pose>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <dynamics>
+            <damping>0.2</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <limit>
+            <effort>30</effort>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <plugin name='TopFrame_rangefinder' filename='librangefinder.so'>
+        <topic>/gazebo/frc/simulator/analog/2</topic>
+        <sensor>TopFrameUltrasonic</sensor>
+      </plugin>
+      <plugin name='TopFrame_gyro' filename='libgyro.so'>
+        <link>TopFrame</link>
+        <topic>/gazebo/frc/simulator/analog/3</topic>
+        <units>degrees</units>
+        <axis>yaw</axis>
+      </plugin>
+      <plugin name='LeftFrame-L1Wheel_motor' filename='libdc_motor.so'>
+        <joint>LeftFrame-L1Wheel</joint>
+        <topic>/gazebo/frc/simulator/pwm/2</topic>
+        <multiplier>35</multiplier>
+      </plugin>
+      <plugin name='LeftFrame-L1Wheel_encoder' filename='libencoder.so'>
+        <joint>LeftFrame-L1Wheel</joint>
+        <topic>/gazebo/frc/simulator/dio/3/4</topic>
+        <units>degrees</units>
+      </plugin>
+      <plugin name='LeftFrame-L2Wheel_motor' filename='libdc_motor.so'>
+        <joint>LeftFrame-L2Wheel</joint>
+        <topic>/gazebo/frc/simulator/pwm/2</topic>
+        <multiplier>35</multiplier>
+      </plugin>
+      <plugin name='LeftFrame-L3Wheel_motor' filename='libdc_motor.so'>
+        <joint>LeftFrame-L3Wheel</joint>
+        <topic>/gazebo/frc/simulator/pwm/2</topic>
+        <multiplier>35</multiplier>
+      </plugin>
+      <plugin name='LeftFrame-L4Wheel_motor' filename='libdc_motor.so'>
+        <joint>LeftFrame-L4Wheel</joint>
+        <topic>/gazebo/frc/simulator/pwm/2</topic>
+        <multiplier>35</multiplier>
+      </plugin>
+      <plugin name='TopFrame-R1Wheel_motor' filename='libdc_motor.so'>
+        <joint>TopFrame-R1Wheel</joint>
+        <topic>/gazebo/frc/simulator/pwm/4</topic>
+        <multiplier>35</multiplier>
+      </plugin>
+      <plugin name='TopFrame-R1Wheel_encoder' filename='libencoder.so'>
+        <joint>TopFrame-R1Wheel</joint>
+        <topic>/gazebo/frc/simulator/dio/7/8</topic>
+        <units>degrees</units>
+      </plugin>
+      <plugin name='TopFrame-R2Wheel_motor' filename='libdc_motor.so'>
+        <joint>TopFrame-R2Wheel</joint>
+        <topic>/gazebo/frc/simulator/pwm/4</topic>
+        <multiplier>35</multiplier>
+      </plugin>
+      <plugin name='TopFrame-R3Wheel_motor' filename='libdc_motor.so'>
+        <joint>TopFrame-R3Wheel</joint>
+        <topic>/gazebo/frc/simulator/pwm/4</topic>
+        <multiplier>35</multiplier>
+      </plugin>
+      <plugin name='TopFrame-R4Wheel_motor' filename='libdc_motor.so'>
+        <joint>TopFrame-R4Wheel</joint>
+        <topic>/gazebo/frc/simulator/pwm/4</topic>
+        <multiplier>35</multiplier>
+      </plugin>
+      <plugin name='TopFrame-Shooter_motor' filename='libdc_motor.so'>
+        <joint>TopFrame-Shooter</joint>
+        <topic>/gazebo/frc/simulator/pwm/9</topic>
+        <multiplier>50</multiplier>
+      </plugin>
+      <plugin name='Shooter_rangefinder' filename='librangefinder.so'>
+        <topic>/gazebo/frc/simulator/analog/1</topic>
+        <sensor>ShooterUltrasonic</sensor>
+      </plugin>
+      <plugin name='Shooter_gyro' filename='libgyro.so'>
+        <link>Shooter</link>
+        <topic>/gazebo/frc/simulator/analog/1</topic>
+        <units>degrees</units>
+        <axis>pitch</axis>
+      </plugin>
+      <plugin name='TopFrame-Shooter_intlimit' filename='liblimit_switch.so'>
+        <joint>TopFrame-Shooter</joint>
+        <topic>/gazebo/frc/simulator/dio/17</topic>
+        <type>internal</type>
+        <units>radians</units>
+        <min>-0.05</min>
+        <max>0.05</max>
+      </plugin>
+      <plugin name='Shooter-PushWheel_motor' filename='libdc_motor.so'>
+        <joint>Shooter-PushWheel</joint>
+        <topic>/gazebo/frc/simulator/pwm/7</topic>
+        <multiplier>50</multiplier>
+      </plugin>
+      <plugin name='Shooter-LeftFW_motor' filename='libdc_motor.so'>
+        <joint>Shooter-LeftFW</joint>
+        <topic>/gazebo/frc/simulator/pwm/6</topic>
+        <multiplier>500</multiplier>
+      </plugin>
+      <plugin name='Shooter-LeftFW_encoder' filename='libencoder.so'>
+        <joint>Shooter-LeftFW</joint>
+        <topic>/gazebo/frc/simulator/dio/11/12</topic>
+        <units>degrees</units>
+      </plugin>
+      <plugin name='Shooter-RightFW_motor' filename='libdc_motor.so'>
+        <joint>Shooter-RightFW</joint>
+        <topic>/gazebo/frc/simulator/pwm/8</topic>
+        <multiplier>500</multiplier>
+      </plugin>
+      <plugin name='Shooter-RightFW_encoder' filename='libencoder.so'>
+        <joint>Shooter-RightFW</joint>
+        <topic>/gazebo/frc/simulator/dio/15/16</topic>
+        <units>degrees</units>
+      </plugin>
+      <plugin name='Shooter-Gate_motor' filename='libdc_motor.so'>
+        <joint>Shooter-Gate</joint>
+        <topic>/gazebo/frc/simulator/pwm/5</topic>
+        <multiplier>30</multiplier>
+      </plugin>
+      <plugin name='Shooter-Gate_intlimit' filename='liblimit_switch.so'>
+        <joint>Shooter-Gate</joint>
+        <topic>/gazebo/frc/simulator/dio/10</topic>
+        <type>internal</type>
+        <units>radians</units>
+        <min>0.9</min>
+        <max>1.5</max>
+      </plugin>
+      <plugin name='Shooter-Gate_intlimit' filename='liblimit_switch.so'>
+        <joint>Shooter-Gate</joint>
+        <topic>/gazebo/frc/simulator/dio/9</topic>
+        <type>internal</type>
+        <units>radians</units>
+        <min>0</min>
+        <max>0.3</max>
+      </plugin>
+      <plugin name='Shooter-Gate_encoder' filename='libencoder.so'>
+        <joint>Shooter-Gate</joint>
+        <topic>/gazebo/frc/simulator/dio/9/10</topic>
+        <units>degrees</units>
+      </plugin>
+      <plugin name='TopFrame-LoaderArms_motor' filename='libdc_motor.so'>
+        <joint>TopFrame-LoaderArms</joint>
+        <topic>/gazebo/frc/simulator/pwm/11</topic>
+        <multiplier>40</multiplier>
+      </plugin>
+      <plugin name='TopFrame-LoaderArms_intlimit' filename='liblimit_switch.so'>
+        <joint>TopFrame-LoaderArms</joint>
+        <topic>/gazebo/frc/simulator/dio/21</topic>
+        <type>internal</type>
+        <units>radians</units>
+        <min>0</min>
+        <max>0.2</max>
+      </plugin>
+      <plugin name='LoaderArms_gyro' filename='libgyro.so'>
+        <link>LoaderArms</link>
+        <topic>/gazebo/frc/simulator/analog/4</topic>
+        <units>degrees</units>
+        <axis>pitch</axis>
+      </plugin>
+      <plugin name='LoaderArms-Roller1_motor' filename='libdc_motor.so'>
+        <joint>LoaderArms-Roller1</joint>
+        <topic>/gazebo/frc/simulator/pwm/10</topic>
+        <multiplier>20</multiplier>
+      </plugin>
+      <plugin name='LoaderArms-Roller2_motor' filename='libdc_motor.so'>
+        <joint>LoaderArms-Roller2</joint>
+        <topic>/gazebo/frc/simulator/pwm/10</topic>
+        <multiplier>20</multiplier>
+      </plugin>
+      <plugin name='LoaderArms-Roller3_motor' filename='libdc_motor.so'>
+        <joint>LoaderArms-Roller3</joint>
+        <topic>/gazebo/frc/simulator/pwm/10</topic>
+        <multiplier>20</multiplier>
+      </plugin>
+      <plugin name='LoaderArms-Roller4_motor' filename='libdc_motor.so'>
+        <joint>LoaderArms-Roller4</joint>
+        <topic>/gazebo/frc/simulator/pwm/10</topic>
+        <multiplier>20</multiplier>
+      </plugin>
+      <plugin name='LoaderArms-Roller5_motor' filename='libdc_motor.so'>
+        <joint>LoaderArms-Roller5</joint>
+        <topic>/gazebo/frc/simulator/pwm/10</topic>
+        <multiplier>20</multiplier>
+      </plugin>
+    </model>
+    <model name='ball 1'>
+      <link name='link'>
+        <inertial>
+          <mass>0.213</mass>
+          <inertia>
+            <ixx>0.00322667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00322667</iyy>
+            <iyz>0</iyz>
+            <izz>0.00322667</izz>
+          </inertia>
+        </inertial>
+        <visual name='visual'>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+          </material>
+          <geometry>
+            <sphere>
+              <radius>0.127</radius>
+            </sphere>
+          </geometry>
+        </visual>
+        <collision name='collision'>
+          <geometry>
+            <sphere>
+              <radius>0.127</radius>
+            </sphere>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <max_vel>0.1</max_vel>
+                <soft_cfm>0.8</soft_cfm>
+                <soft_erp>0.8</soft_erp>
+                <kd>200</kd>
+                <kp>50000</kp>
+                <min_depth>0.0001</min_depth>
+              </ode>
+            </contact>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>2.8833 -1.19329 0.126858 0.734804 -1.19792 -0.504444</pose>
+    </model>
+    <model name='ball 2'>
+      <link name='link'>
+        <inertial>
+          <mass>0.213</mass>
+          <inertia>
+            <ixx>0.00322667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00322667</iyy>
+            <iyz>0</iyz>
+            <izz>0.00322667</izz>
+          </inertia>
+        </inertial>
+        <visual name='visual'>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+          </material>
+          <geometry>
+            <sphere>
+              <radius>0.127</radius>
+            </sphere>
+          </geometry>
+        </visual>
+        <collision name='collision'>
+          <geometry>
+            <sphere>
+              <radius>0.127</radius>
+            </sphere>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <max_vel>0.1</max_vel>
+                <soft_cfm>0.8</soft_cfm>
+                <soft_erp>0.8</soft_erp>
+                <kd>200</kd>
+                <kp>50000</kp>
+                <min_depth>0.0001</min_depth>
+              </ode>
+            </contact>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>5.73428 -4.96292 0.126858 -2.33408 -0.381956 -2.24163</pose>
+    </model>
+    <model name='ball 3'>
+      <link name='link'>
+        <inertial>
+          <mass>0.213</mass>
+          <inertia>
+            <ixx>0.00322667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00322667</iyy>
+            <iyz>0</iyz>
+            <izz>0.00322667</izz>
+          </inertia>
+        </inertial>
+        <visual name='visual'>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+          </material>
+          <geometry>
+            <sphere>
+              <radius>0.127</radius>
+            </sphere>
+          </geometry>
+        </visual>
+        <collision name='collision'>
+          <geometry>
+            <sphere>
+              <radius>0.127</radius>
+            </sphere>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <max_vel>0.1</max_vel>
+                <soft_cfm>0.8</soft_cfm>
+                <soft_erp>0.8</soft_erp>
+                <kd>200</kd>
+                <kp>50000</kp>
+                <min_depth>0.0001</min_depth>
+              </ode>
+            </contact>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
       <pose frame=''>-6 -1 0.126858 0 -0 0</pose>
-    </include>
-
-   <include>
-      <name>tote 1</name>
-      <uri>model://grey_tote</uri>
+    </model>
+    <model name='tote 1'>
+      <link name='link'>
+        <inertial>
+          <pose frame=''>0 0 0.14155 0 -0 0</pose>
+          <mass>3.53802</mass>
+          <inertia>
+            <ixx>0.0688358</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.139596</iyy>
+            <iyz>0</iyz>
+            <izz>0.155909</izz>
+          </inertia>
+        </inertial>
+        <collision name='lid'>
+          <pose frame=''>0 0 0.28958 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.67768 0.41298 0.01588</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_1'>
+          <pose frame=''>0 0.20063 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.65068 0.0105 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_2'>
+          <pose frame=''>0 -0.20063 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.65068 0.0105 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_3'>
+          <pose frame=''>0.32585 0 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.31202 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_4'>
+          <pose frame=''>-0.32585 0 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.31202 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_1'>
+          <pose frame=''>0 -0.18 0.14155 0.061147 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.58404 0.02602 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_2'>
+          <pose frame=''>0 0.18 0.14155 -0.061147 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.58404 0.02602 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_3'>
+          <pose frame=''>0.305 0 0.14155 0 0.061147 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.33046 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_4'>
+          <pose frame=''>-0.305 0 0.14155 0 -0.061147 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.33046 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='bottom'>
+          <pose frame=''>0 0 0.01 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.58404 0.33046 0.02</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_1'>
+          <pose frame=''>0.30202 -0.175 0.14155 0.061147 0.061147 -0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_2'>
+          <pose frame=''>-0.30202 -0.175 0.14155 0.061147 -0.061147 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_3'>
+          <pose frame=''>-0.30202 0.175 0.14155 -0.061147 -0.061147 -0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_4'>
+          <pose frame=''>0.30202 0.175 0.14155 -0.061147 0.061147 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://grey_tote/meshes/tote.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
       <pose frame=''>1.99953 -2.00151 0.000563 -1.1e-05 -1e-06 0.005357</pose>
-    </include>
-    <include>
-      <name>tote 2</name>
-      <uri>model://grey_tote</uri>
+    </model>
+    <model name='tote 2'>
+      <link name='link'>
+        <inertial>
+          <pose frame=''>0 0 0.14155 0 -0 0</pose>
+          <mass>3.53802</mass>
+          <inertia>
+            <ixx>0.0688358</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.139596</iyy>
+            <iyz>0</iyz>
+            <izz>0.155909</izz>
+          </inertia>
+        </inertial>
+        <collision name='lid'>
+          <pose frame=''>0 0 0.28958 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.67768 0.41298 0.01588</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_1'>
+          <pose frame=''>0 0.20063 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.65068 0.0105 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_2'>
+          <pose frame=''>0 -0.20063 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.65068 0.0105 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_3'>
+          <pose frame=''>0.32585 0 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.31202 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_4'>
+          <pose frame=''>-0.32585 0 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.31202 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_1'>
+          <pose frame=''>0 -0.18 0.14155 0.061147 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.58404 0.02602 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_2'>
+          <pose frame=''>0 0.18 0.14155 -0.061147 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.58404 0.02602 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_3'>
+          <pose frame=''>0.305 0 0.14155 0 0.061147 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.33046 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_4'>
+          <pose frame=''>-0.305 0 0.14155 0 -0.061147 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.33046 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='bottom'>
+          <pose frame=''>0 0 0.01 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.58404 0.33046 0.02</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_1'>
+          <pose frame=''>0.30202 -0.175 0.14155 0.061147 0.061147 -0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_2'>
+          <pose frame=''>-0.30202 -0.175 0.14155 0.061147 -0.061147 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_3'>
+          <pose frame=''>-0.30202 0.175 0.14155 -0.061147 -0.061147 -0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_4'>
+          <pose frame=''>0.30202 0.175 0.14155 -0.061147 0.061147 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://grey_tote/meshes/tote.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
       <pose frame=''>-0.023335 -2.00257 0.013449 -2e-06 -0.041779 -0.031523</pose>
-    </include>
-
-    <include>
-      <name>tote 3</name>
-      <uri>model://grey_tote</uri>
+    </model>
+    <model name='tote 3'>
+      <link name='link'>
+        <inertial>
+          <pose frame=''>0 0 0.14155 0 -0 0</pose>
+          <mass>3.53802</mass>
+          <inertia>
+            <ixx>0.0688358</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.139596</iyy>
+            <iyz>0</iyz>
+            <izz>0.155909</izz>
+          </inertia>
+        </inertial>
+        <collision name='lid'>
+          <pose frame=''>0 0 0.28958 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.67768 0.41298 0.01588</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_1'>
+          <pose frame=''>0 0.20063 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.65068 0.0105 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_2'>
+          <pose frame=''>0 -0.20063 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.65068 0.0105 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_3'>
+          <pose frame=''>0.32585 0 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.31202 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_4'>
+          <pose frame=''>-0.32585 0 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.31202 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_1'>
+          <pose frame=''>0 -0.18 0.14155 0.061147 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.58404 0.02602 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_2'>
+          <pose frame=''>0 0.18 0.14155 -0.061147 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.58404 0.02602 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_3'>
+          <pose frame=''>0.305 0 0.14155 0 0.061147 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.33046 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_4'>
+          <pose frame=''>-0.305 0 0.14155 0 -0.061147 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.33046 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='bottom'>
+          <pose frame=''>0 0 0.01 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.58404 0.33046 0.02</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_1'>
+          <pose frame=''>0.30202 -0.175 0.14155 0.061147 0.061147 -0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_2'>
+          <pose frame=''>-0.30202 -0.175 0.14155 0.061147 -0.061147 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_3'>
+          <pose frame=''>-0.30202 0.175 0.14155 -0.061147 -0.061147 -0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_4'>
+          <pose frame=''>0.30202 0.175 0.14155 -0.061147 0.061147 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://grey_tote/meshes/tote.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
       <pose frame=''>-6 1.00001 0.000562 1.8e-05 1e-06 6e-06</pose>
-    </include>
-
-
+    </model>
     <model name='frc_field_2015_0'>
       <pose frame=''>-2 -2 0 0 -0 0</pose>
       <static>1</static>
@@ -80,6 +3096,7 @@
           <geometry>
             <mesh>
               <uri>model://frc_field_2015/meshes/walls.dae</uri>
+              <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <material>
@@ -130,6 +3147,9 @@
                 <mu>100</mu>
                 <mu2>50</mu2>
               </ode>
+              <torsional>
+                <ode/>
+              </torsional>
             </friction>
             <contact>
               <ode/>
@@ -153,6 +3173,9 @@
             <bounce/>
             <friction>
               <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
             </friction>
           </surface>
         </collision>
@@ -171,6 +3194,9 @@
             <bounce/>
             <friction>
               <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
             </friction>
           </surface>
         </collision>
@@ -189,6 +3215,9 @@
             <bounce/>
             <friction>
               <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
             </friction>
           </surface>
         </collision>
@@ -207,6 +3236,9 @@
             <bounce/>
             <friction>
               <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
             </friction>
           </surface>
         </collision>
@@ -225,6 +3257,9 @@
             <bounce/>
             <friction>
               <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
             </friction>
           </surface>
         </collision>
@@ -243,6 +3278,9 @@
             <bounce/>
             <friction>
               <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
             </friction>
           </surface>
         </collision>
@@ -261,6 +3299,9 @@
             <bounce/>
             <friction>
               <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
             </friction>
           </surface>
         </collision>
@@ -279,6 +3320,9 @@
             <bounce/>
             <friction>
               <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
             </friction>
           </surface>
         </collision>
@@ -305,6 +3349,9 @@
             <bounce/>
             <friction>
               <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
             </friction>
           </surface>
         </collision>
@@ -337,6 +3384,9 @@
             <bounce/>
             <friction>
               <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
             </friction>
           </surface>
         </collision>
@@ -369,6 +3419,9 @@
             <bounce/>
             <friction>
               <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
             </friction>
           </surface>
         </collision>
@@ -377,6 +3430,7 @@
           <geometry>
             <mesh>
               <uri>model://frc_field_2015/meshes/ramps.dae</uri>
+              <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <material>
@@ -391,6 +3445,7 @@
           <geometry>
             <mesh>
               <uri>model://frc_field_2015/meshes/ramps.dae</uri>
+              <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -401,6 +3456,9 @@
             <bounce/>
             <friction>
               <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
             </friction>
           </surface>
         </collision>
@@ -410,13 +3468,1101 @@
       </link>
       <pose frame=''>-2 -2 0 0 -0 0</pose>
     </model>
-
-   <gui fullscreen='0'>
+    <gui fullscreen='0'>
       <camera name='user_camera'>
         <pose frame=''>5.06157 -4.95918 1.94811 0 0.275643 2.35619</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
     </gui>
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <model name='ball'>
+      <link name='link'>
+        <inertial>
+          <mass>0.213</mass>
+          <inertia>
+            <ixx>0.00322667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00322667</iyy>
+            <iyz>0</iyz>
+            <izz>0.00322667</izz>
+          </inertia>
+        </inertial>
+        <visual name='visual'>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+          </material>
+          <geometry>
+            <sphere>
+              <radius>0.127</radius>
+            </sphere>
+          </geometry>
+        </visual>
+        <collision name='collision'>
+          <geometry>
+            <sphere>
+              <radius>0.127</radius>
+            </sphere>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <max_vel>0.1</max_vel>
+                <soft_cfm>0.8</soft_cfm>
+                <soft_erp>0.8</soft_erp>
+                <kd>200</kd>
+                <kp>50000</kp>
+                <min_depth>0.0001</min_depth>
+              </ode>
+            </contact>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>1.37978 -2.42876 0 0 -0 0</pose>
+    </model>
+    <model name='ball_0'>
+      <link name='link'>
+        <inertial>
+          <mass>0.213</mass>
+          <inertia>
+            <ixx>0.00322667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00322667</iyy>
+            <iyz>0</iyz>
+            <izz>0.00322667</izz>
+          </inertia>
+        </inertial>
+        <visual name='visual'>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+          </material>
+          <geometry>
+            <sphere>
+              <radius>0.127</radius>
+            </sphere>
+          </geometry>
+        </visual>
+        <collision name='collision'>
+          <geometry>
+            <sphere>
+              <radius>0.127</radius>
+            </sphere>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <max_vel>0.1</max_vel>
+                <soft_cfm>0.8</soft_cfm>
+                <soft_erp>0.8</soft_erp>
+                <kd>200</kd>
+                <kp>50000</kp>
+                <min_depth>0.0001</min_depth>
+              </ode>
+            </contact>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>-1.11389 -3.15364 0 0 -0 0</pose>
+    </model>
+    <model name='ball_1'>
+      <link name='link'>
+        <inertial>
+          <mass>0.213</mass>
+          <inertia>
+            <ixx>0.00322667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00322667</iyy>
+            <iyz>0</iyz>
+            <izz>0.00322667</izz>
+          </inertia>
+        </inertial>
+        <visual name='visual'>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+          </material>
+          <geometry>
+            <sphere>
+              <radius>0.127</radius>
+            </sphere>
+          </geometry>
+        </visual>
+        <collision name='collision'>
+          <geometry>
+            <sphere>
+              <radius>0.127</radius>
+            </sphere>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>2</mu>
+                <mu2>2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <contact>
+              <ode>
+                <max_vel>0.1</max_vel>
+                <soft_cfm>0.8</soft_cfm>
+                <soft_erp>0.8</soft_erp>
+                <kd>200</kd>
+                <kp>50000</kp>
+                <min_depth>0.0001</min_depth>
+              </ode>
+            </contact>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>-3.80784 -1.06085 0 0 -0 0</pose>
+    </model>
+    <model name='grey_tote'>
+      <link name='link'>
+        <inertial>
+          <pose frame=''>0 0 0.14155 0 -0 0</pose>
+          <mass>3.53802</mass>
+          <inertia>
+            <ixx>0.0688358</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.139596</iyy>
+            <iyz>0</iyz>
+            <izz>0.155909</izz>
+          </inertia>
+        </inertial>
+        <collision name='lid'>
+          <pose frame=''>0 0 0.28958 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.67768 0.41298 0.01588</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_1'>
+          <pose frame=''>0 0.20063 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.65068 0.0105 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_2'>
+          <pose frame=''>0 -0.20063 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.65068 0.0105 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_3'>
+          <pose frame=''>0.32585 0 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.31202 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_4'>
+          <pose frame=''>-0.32585 0 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.31202 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_1'>
+          <pose frame=''>0 -0.18 0.14155 0.061147 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.58404 0.02602 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_2'>
+          <pose frame=''>0 0.18 0.14155 -0.061147 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.58404 0.02602 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_3'>
+          <pose frame=''>0.305 0 0.14155 0 0.061147 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.33046 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_4'>
+          <pose frame=''>-0.305 0 0.14155 0 -0.061147 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.33046 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='bottom'>
+          <pose frame=''>0 0 0.01 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.58404 0.33046 0.02</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_1'>
+          <pose frame=''>0.30202 -0.175 0.14155 0.061147 0.061147 -0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_2'>
+          <pose frame=''>-0.30202 -0.175 0.14155 0.061147 -0.061147 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_3'>
+          <pose frame=''>-0.30202 0.175 0.14155 -0.061147 -0.061147 -0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_4'>
+          <pose frame=''>0.30202 0.175 0.14155 -0.061147 0.061147 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://grey_tote/meshes/tote.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>-1.9407 -0.499731 0 0 -0 0</pose>
+    </model>
+    <model name='grey_tote_0'>
+      <link name='link'>
+        <inertial>
+          <pose frame=''>0 0 0.14155 0 -0 0</pose>
+          <mass>3.53802</mass>
+          <inertia>
+            <ixx>0.0688358</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.139596</iyy>
+            <iyz>0</iyz>
+            <izz>0.155909</izz>
+          </inertia>
+        </inertial>
+        <collision name='lid'>
+          <pose frame=''>0 0 0.28958 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.67768 0.41298 0.01588</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_1'>
+          <pose frame=''>0 0.20063 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.65068 0.0105 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_2'>
+          <pose frame=''>0 -0.20063 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.65068 0.0105 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_3'>
+          <pose frame=''>0.32585 0 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.31202 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='lid_lip_4'>
+          <pose frame=''>-0.32585 0 0.3048 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.31202 0.0127</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_1'>
+          <pose frame=''>0 -0.18 0.14155 0.061147 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.58404 0.02602 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_2'>
+          <pose frame=''>0 0.18 0.14155 -0.061147 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.58404 0.02602 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_3'>
+          <pose frame=''>0.305 0 0.14155 0 0.061147 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.33046 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='side_wall_4'>
+          <pose frame=''>-0.305 0 0.14155 0 -0.061147 0</pose>
+          <geometry>
+            <box>
+              <size>0.02602 0.33046 0.283099</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='bottom'>
+          <pose frame=''>0 0 0.01 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.58404 0.33046 0.02</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_1'>
+          <pose frame=''>0.30202 -0.175 0.14155 0.061147 0.061147 -0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_2'>
+          <pose frame=''>-0.30202 -0.175 0.14155 0.061147 -0.061147 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_3'>
+          <pose frame=''>-0.30202 0.175 0.14155 -0.061147 -0.061147 -0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='corner_4'>
+          <pose frame=''>0.30202 0.175 0.14155 -0.061147 0.061147 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.01268</radius>
+              <length>0.283099</length>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://grey_tote/meshes/tote.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>0.768246 -3.04027 0 0 -0 0</pose>
+    </model>
+    <state world_name='default'>
+      <sim_time>104 574000000</sim_time>
+      <real_time>178 85866552</real_time>
+      <wall_time>1496448996 523021773</wall_time>
+      <iterations>104574</iterations>
+      <model name='2016-Robot'>
+        <pose frame=''>1.28232 0.051843 0.061178 1.56377 -8.8e-05 2.47181</pose>
+        <scale>1 1 1</scale>
+        <link name='Gate'>
+          <pose frame=''>1.3827 -0.280434 0.264808 1.56366 -0.050073 2.47836</pose>
+          <velocity>-0.001055 -0.000209 0.006223 -0.007512 -0.024206 -0.001165</velocity>
+          <acceleration>-1.64017 -2.03226 14.0738 3.04386 -1.31401 2.51399</acceleration>
+          <wrench>-1.59682 -1.97856 13.7019 0 -0 0</wrench>
+        </link>
+        <link name='L1Wheel'>
+          <pose frame=''>1.84463 -0.34033 0.113983 1.56372 -0.042285 2.47211</pose>
+          <velocity>0.00057 -0.000587 0.008077 0.01759 -0.00647 -0.000746</velocity>
+          <acceleration>0.203476 0.156008 16.185 0.747143 -0.617514 -0.507586</acceleration>
+          <wrench>0.114575 0.087846 9.11363 0 -0 0</wrench>
+        </link>
+        <link name='L2Wheel'>
+          <pose frame=''>1.68533 -0.214065 0.101098 1.56352 -0.265349 2.47372</pose>
+          <velocity>0.000311 -0.00061 0.011969 0.006034 0.003098 -0.000419</velocity>
+          <acceleration>-0.454918 0.207958 25.637 2.06273 0.939162 0.21439</acceleration>
+          <wrench>-0.25616 0.117099 14.4359 0 -0 0</wrench>
+        </link>
+        <link name='L3Wheel'>
+          <pose frame=''>1.52571 -0.087679 0.103208 1.56329 0.367309 2.46911</pose>
+          <velocity>0.000865 -0.000224 0.006322 0.002152 -0.004642 -0.000897</velocity>
+          <acceleration>0.371576 0.582694 18.0337 1.06335 -0.963677 2.40189</acceleration>
+          <wrench>0.209231 0.328109 10.1546 0 -0 0</wrench>
+        </link>
+        <link name='L4Wheel'>
+          <pose frame=''>1.36656 0.038175 0.122687 1.56339 0.327023 2.46943</pose>
+          <velocity>0.000922 -0.00019 0.00693 0.003251 -0.004693 -0.000898</velocity>
+          <acceleration>0.462854 0.220627 21.5689 2.46287 -0.337953 2.38208</acceleration>
+          <wrench>0.260629 0.124233 12.1453 0 -0 0</wrench>
+        </link>
+        <link name='LeftFW'>
+          <pose frame=''>1.53834 -0.294393 0.20819 1.56377 -0.050143 2.47184</pose>
+          <velocity>0.000207 -0.000768 0.009117 -0.005178 -0.016405 -0.001078</velocity>
+          <acceleration>-0.685956 -1.25999 15.3344 -0.451411 -0.195906 -0.483157</acceleration>
+          <wrench>-1.23758 -2.27324 27.6658 0 -0 0</wrench>
+        </link>
+        <link name='LeftFrame'>
+          <pose frame=''>1.68785 -0.432814 0.111399 1.56372 -0.050095 2.47216</pose>
+          <velocity>0.000518 -0.000423 0.005409 0.017623 -0.006452 -0.00075</velocity>
+          <acceleration>0.196256 0.31278 11.1079 -3.0195 -0.779603 1.48953</acceleration>
+          <wrench>1.93466 3.08334 109.5 0 -0 0</wrench>
+        </link>
+        <link name='LoaderArms'>
+          <pose frame=''>1.14122 -0.195603 0.26132 1.56377 -7.8e-05 2.47181</pose>
+          <velocity>-0.000103 -0.000587 0.00619 0.00778 -0.00149 -0.000902</velocity>
+          <acceleration>-0.916817 -2.18968 9.22717 1.11759 -1.35061 -1.91464</acceleration>
+          <wrench>-0.68458 -1.63501 6.88986 0 -0 0</wrench>
+        </link>
+        <link name='PushWheel'>
+          <pose frame=''>1.18195 -0.417191 0.209034 1.56376 -0.050141 2.47212</pose>
+          <velocity>8e-05 -0.000372 0.003865 -0.005212 -0.016472 -0.001079</velocity>
+          <acceleration>-0.741784 -1.04032 10.4462 -0.511484 -0.406657 -0.480731</acceleration>
+          <wrench>-0.44228 -0.620275 6.22845 0 -0 0</wrench>
+        </link>
+        <link name='R1Wheel'>
+          <pose frame=''>1.44785 -0.825855 0.112791 1.56377 0.0395 2.47153</pose>
+          <velocity>7.7e-05 -0.000163 0.004285 0.003451 -0.004135 -0.001127</velocity>
+          <acceleration>-0.208543 0.498649 7.47523 -0.831455 -0.231728 1.56424</acceleration>
+          <wrench>-0.117429 0.280784 4.20923 0 -0 0</wrench>
+        </link>
+        <link name='R2Wheel'>
+          <pose frame=''>1.28863 -0.699635 0.096953 1.5638 -0.021491 2.47196</pose>
+          <velocity>0.00019 0.000111 0.00593 -0.001203 0.001872 -0.001441</velocity>
+          <acceleration>-0.064881 1.05215 11.9588 -2.01916 -1.24514 0.538326</acceleration>
+          <wrench>-0.036534 0.592457 6.73389 0 -0 0</wrench>
+        </link>
+        <link name='R3Wheel'>
+          <pose frame=''>1.12939 -0.573526 0.09695 1.5638 0.034927 2.47156</pose>
+          <velocity>0.000269 0.000184 0.004429 -0.002019 0.002732 -0.00152</velocity>
+          <acceleration>-0.148477 0.951231 8.72225 0.514596 -1.29045 -2.43643</acceleration>
+          <wrench>-0.083606 0.535628 4.91141 0 -0 0</wrench>
+        </link>
+        <link name='R4Wheel'>
+          <pose frame=''>0.970026 -0.44747 0.112842 1.56377 0.042295 2.47151</pose>
+          <velocity>0.000507 0.000367 0.003401 0.004151 -0.004951 -0.001062</velocity>
+          <acceleration>0.180072 0.909999 8.8626 0.570115 1.02485 1.78782</acceleration>
+          <wrench>0.101397 0.512411 4.99044 0 -0 0</wrench>
+        </link>
+        <link name='RightFW'>
+          <pose frame=''>1.34124 -0.543293 0.205961 1.56376 -0.050136 2.47269</pose>
+          <velocity>-3.5e-05 -0.00055 0.007186 -0.00505 -0.01674 -0.001063</velocity>
+          <acceleration>-0.841877 -1.07192 9.31843 -0.276875 -1.0909 -0.483111</acceleration>
+          <wrench>-1.51889 -1.93393 16.8121 0 -0 0</wrench>
+        </link>
+        <link name='Roller1'>
+          <pose frame=''>1.01886 -0.087871 0.293696 1.56375 0.077502 2.47126</pose>
+          <velocity>5.3e-05 -0.000742 0.006142 0.006221 -0.002321 -0.001054</velocity>
+          <acceleration>-1.23722 -2.5098 7.25571 -1.80977 -0.741909 -2.291</acceleration>
+          <wrench>-0.651943 -1.32252 3.82334 0 -0 0</wrench>
+        </link>
+        <link name='Roller2'>
+          <pose frame=''>0.97607 -0.057577 0.241861 1.56376 0.060981 2.47138</pose>
+          <velocity>0.000136 -0.000319 0.006452 0.006563 -0.002156 -0.000998</velocity>
+          <acceleration>-0.382376 -1.87027 7.17449 1.46511 -0.386485 -2.39793</acceleration>
+          <wrench>-0.158006 -0.77284 2.96466 0 -0 0</wrench>
+        </link>
+        <link name='Roller3'>
+          <pose frame=''>0.938067 -0.027051 0.193621 1.56377 0.045129 2.47149</pose>
+          <velocity>0.000216 8.4e-05 0.006723 0.00682 -0.001938 -0.000965</velocity>
+          <acceleration>0.412359 -1.25567 7.08709 -0.234918 0.580299 -2.27723</acceleration>
+          <wrench>0.170396 -0.518872 2.92855 0 -0 0</wrench>
+        </link>
+        <link name='Roller4'>
+          <pose frame=''>0.900064 0.003477 0.145382 1.56377 0.027496 2.47162</pose>
+          <velocity>0.000284 0.000506 0.007019 0.007103 -0.001691 -0.000933</velocity>
+          <acceleration>1.18527 -0.609382 7.04208 2.49689 -0.034577 0.999324</acceleration>
+          <wrench>0.489782 -0.25181 2.90995 0 -0 0</wrench>
+        </link>
+        <link name='Roller5'>
+          <pose frame=''>0.86206 0.034004 0.097143 1.56377 0.0095 2.47174</pose>
+          <velocity>0.000343 0.000946 0.007335 0.007396 -0.001439 -0.0009</velocity>
+          <acceleration>1.94138 0.068387 7.03159 -0.734563 -0.117541 -2.00397</acceleration>
+          <wrench>0.802222 0.028259 2.90561 0 -0 0</wrench>
+        </link>
+        <link name='Shooter'>
+          <pose frame=''>1.35559 -0.399672 0.156598 1.56376 -0.05014 2.47216</pose>
+          <velocity>0.000961 -0.000829 0.006602 -0.005218 -0.016421 -0.001078</velocity>
+          <acceleration>-0.352009 -0.173879 11.9797 -1.16944 0.986923 0.823861</acceleration>
+          <wrench>-2.33995 -1.15585 79.6339 0 -0 0</wrench>
+        </link>
+        <link name='TopFrame'>
+          <pose frame=''>1.44719 -0.602239 0.137637 1.56377 -8.8e-05 2.47181</pose>
+          <velocity>0.000217 -0.000258 0.005162 0.005747 -0.004983 -0.000894</velocity>
+          <acceleration>-0.218109 0.095724 11.0672 2.26152 0.184546 -2.84833</acceleration>
+          <wrench>-3.01639 1.32384 153.057 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='ball'>
+        <pose frame=''>1.37978 -2.42876 0.126858 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>1.37978 -2.42876 0.126858 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>-0 0 -0 0 -0 0</acceleration>
+          <wrench>-0 0 -0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='ball 1'>
+        <pose frame=''>2.8833 -1.19329 0.126858 0.734804 -1.19792 -0.504444</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>2.8833 -1.19329 0.126858 0.734804 -1.19792 -0.504444</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 -0 0 -0 0</acceleration>
+          <wrench>0 0 -0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='ball 2'>
+        <pose frame=''>5.73428 -4.96292 0.126858 -2.33408 -0.381956 -2.24163</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>5.73428 -4.96292 0.126858 -2.33408 -0.381956 -2.24163</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 -0 0 -0 0</acceleration>
+          <wrench>0 0 -0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='ball 3'>
+        <pose frame=''>-6 -1 0.126858 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>-6 -1 0.126858 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 -0 0 -0 0</acceleration>
+          <wrench>0 0 -0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='ball_0'>
+        <pose frame=''>-1.11389 -3.15364 0.126858 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>-1.11389 -3.15364 0.126858 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 -0 0 -0 0</acceleration>
+          <wrench>0 0 -0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='ball_1'>
+        <pose frame=''>-3.80784 -1.06085 0.126858 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>-3.80784 -1.06085 0.126858 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 -0 0 -0 0</acceleration>
+          <wrench>0 0 -0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='frc_field_2015_0'>
+        <pose frame=''>-2 -2 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>-2 -2 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='grey_tote'>
+        <pose frame=''>-1.89168 -0.515133 0.168247 0.000493 -0.018446 -0.026708</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>-1.89168 -0.515133 0.168247 0.000493 -0.018446 -0.026708</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 -0 0 0 -0 0</acceleration>
+          <wrench>0 -0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='grey_tote_0'>
+        <pose frame=''>0.760159 -3.04025 0.057694 -4.9e-05 8.9e-05 -0.502703</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>0.760159 -3.04025 0.057694 -4.9e-05 8.9e-05 -0.502703</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>-6.78411 1.76226 8.98992 -2.78631 0.060381 -0.0024</acceleration>
+          <wrench>-24.0023 6.23493 31.8065 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='tote 1'>
+        <pose frame=''>1.99954 -2.00151 0.000558 1e-06 -2.5e-05 0.507384</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>1.99954 -2.00151 0.000558 1e-06 -2.5e-05 0.507384</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>-7.20649 -4.17257 1.76924 -2.83876 -0.341984 0.111961</acceleration>
+          <wrench>-25.4967 -14.7626 6.25961 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='tote 2'>
+        <pose frame=''>-0.036947 -2.00597 0.011666 1.5e-05 -0.036 -0.038239</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>-0.036947 -2.00597 0.011666 1.5e-05 -0.036 -0.038239</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>-8.51564 -4.43556 9.71282 2.25465 0.313096 1.92183</acceleration>
+          <wrench>-30.1285 -15.6931 34.3641 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='tote 3'>
+        <pose frame=''>-6 1.00003 0.000561 -1.1e-05 -9e-06 2.5e-05</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>-6 1.00003 0.000561 -1.1e-05 -9e-06 2.5e-05</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 -9.8 0 0 -4.5e-05</acceleration>
+          <wrench>0 0 -34.6726 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun'>
+        <pose frame=''>0 0 10 0 -0 0</pose>
+      </light>
+    </state>
   </world>
 </sdf>
