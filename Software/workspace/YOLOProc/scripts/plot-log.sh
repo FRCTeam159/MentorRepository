@@ -1,0 +1,3 @@
+#!/bin/bash
+
+python/plot_log.py logs/balltote_tiny_train.txt --all

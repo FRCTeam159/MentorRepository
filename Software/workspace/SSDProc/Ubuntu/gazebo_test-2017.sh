@@ -14,6 +14,6 @@ export OUTPUT=Ubuntu14.local
 
 export APPDIR=$HOME/Robotics/MentorRepository/Software/workspace/SSDProc/Ubuntu
 
-$APPDIR/SSDProc --thresh 0.3 --publish $OUTPUT --output "Annotated" --timeit $VIDEO $NET $MODEL
+$APPDIR/SSDProc --thresh 0.5 --publish $OUTPUT --output "Annotated" --timeit $VIDEO $NET $MODEL
 
 

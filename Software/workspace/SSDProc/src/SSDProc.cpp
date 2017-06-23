@@ -16,7 +16,6 @@
 #include <CameraServer.h>
 #include "cscore_oo.h"
 
-
 #define IMAGE_WIDTH 320
 #define IMAGE_HEIGHT 240
 
@@ -93,11 +92,8 @@ int main(int argc, char *argv[]) {
 
 #ifdef SIMULATION
     camname="simcam";
-   // cs::VideoMode vmode;
-   // cs::CvSource cvcam("simcam",vmode);
     cs::HttpCamera simcam(camname, videoStreamAddress);
     cvSink = CameraServer::GetInstance()->GetVideo(simcam);
-   // cvSink = CameraServer::GetInstance()->GetVideo(cvcam);
 
 #else
     camera1 = CameraServer::GetInstance()->StartAutomaticCapture("Logitech",0);
@@ -122,6 +118,7 @@ int main(int argc, char *argv[]) {
     double ave_ptm=0;
     cv::Scalar color0(0, 255, 255);
     cv::Scalar color1(255, 255, 0);
+    cv::Scalar target_color(0, 0, 255);
 
     //double test_time=0;
     while(true){
@@ -148,10 +145,6 @@ int main(int argc, char *argv[]) {
             ave_ftm/=10;
             if(timeit)
                 LOG(INFO) <<"frame:"<<frame_count <<" proc:"<<ave_ptm<<" FPS: "<<1.0/ave_ptm<<" cycle:"<<ave_ftm<<" FPS:"<<1.0/ave_ftm<<std::endl;
-            if(publish){
-                table->PutNumber("FPS",1.0/ave_ptm);
-                table->PutNumber("Frame", frame_count);
-            }
             ave_ptm=0;
             ave_ftm=0;
         }
@@ -168,40 +161,45 @@ int main(int argc, char *argv[]) {
                good_detections.push_back(d);
            }
         }
+        cv::Point target_point;
+        int target_type=0;
+        float max_score=0;
 
         for (unsigned int i = 0; i < good_detections.size(); ++i) {
             const vector<float>& d = good_detections[i];
             const float score = d[2];
             cv::Point tl((d[3] * img.cols),(d[4] * img.rows));
             cv::Point br((int)(d[5] * img.cols),(int)(d[6] * img.rows));
+            cv::Point ctr((tl.x+br.x)/2,(tl.y+br.y)/2);
             int type= static_cast<int>(d[1]);
+            if(score>max_score){
+                max_score=score;
+                target_type=type;
+                target_point=ctr;
+            }
             if(display){
                 int lw=score>0.8 ? 2:1;
                 cv::Scalar color=(int)d[1]==0?color0:color1;
                 rectangle(mat, tl, br, color, lw);
             }
-            if(publish){
-                table->PutNumber("NumRects", n);
-                table->PutNumber("Id", i);
-                table->PutNumber("Type", type);
-                table->PutNumber("Score", score);
-                table->PutNumber("TopLeftX", tl.x);
-                table->PutNumber("TopLeftY", tl.y);
-                table->PutNumber("BotRightX", br.x);
-                table->PutNumber("BotRightY", br.y);
-            }
             if(print){
-                LOG(INFO)  << std::setfill('0') << std::setw(6) << frame_count << " n:"<<n<<" " \
-                 << type << " " \
-                 << score << " " \
-                 << tl.x << " " \
-                 << tl.y << " " \
-                 << br.x << " " \
-                 << br.y << std::endl;
+                printf("%d: %.0f%% box: cx:%d cy:%d w:%d h:%d\n", type, score*100,ctr.x,ctr.y,br.x-tl.x,br.y-tl.y);
             }
         }
-        if(display)
+        if(display){
+            if(max_score>0){
+                circle(mat, target_point, 15, target_color, 2);
+                drawMarker(mat, target_point, target_color, 2);
+            }
             outputStream.PutFrame(mat);
+        }
+        if(publish){
+            table->PutNumber("FPS",(int)(1.0/proctime));
+            table->PutNumber("TargetType", target_type+1);
+            table->PutNumber("TargetScore", int(max_score*100));
+            table->PutNumber("TargetX", target_point.x);
+            table->PutNumber("TargetY", target_point.y);
+        }
 
         frame_count++;
     }

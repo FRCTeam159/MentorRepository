@@ -305,8 +305,12 @@ void Vision::GetTargetInfo() {
 
 	int frame=table->GetNumber("Frame", 0);
     frc::SmartDashboard::PutNumber("Frame",frame);
-    double fps=table->GetNumber("FPS", 0);
-    frc::SmartDashboard::PutNumber("FPS",fps);
+    frc::SmartDashboard::PutNumber("FPS",table->GetNumber("FPS", 0));
+
+    frc::SmartDashboard::PutNumber("TargetType",table->GetNumber("TargetType", 0));
+    frc::SmartDashboard::PutNumber("TargetScore",table->GetNumber("TargetScore", 0));
+    frc::SmartDashboard::PutNumber("TargetX",table->GetNumber("TargetX", 0));
+    frc::SmartDashboard::PutNumber("TargetY",table->GetNumber("TargetY", 0));
 
 /*
 	if(frame != last_frame){
