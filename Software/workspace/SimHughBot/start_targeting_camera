@@ -10,7 +10,7 @@ export LD_LIBRARY_PATH="$(pwd)"
 ## Then the files can be read from the folder "/tmp/input" and served via HTTP
  rm -fr /tmp/target-camera/*
  mkdir -p /tmp/target-camera
- mjpg_streamer -i "input_file.so -f /tmp/target-camera -r -d 0.033" -o "output_http.so -w www -p 5002"
+ mjpg_streamer -i "input_file.so -f /tmp/target-camera -r -d 0.01" -o "output_http.so -w www -p 5002"
  #mjpg_streamer -i "input_file.so -f /tmp/target-camera -d 0.1" -o "output_http.so -w www -p 5002"
  
 

@@ -309,36 +309,8 @@ void Vision::GetTargetInfo() {
 
     frc::SmartDashboard::PutNumber("TargetType",table->GetNumber("TargetType", 0));
     frc::SmartDashboard::PutNumber("TargetScore",table->GetNumber("TargetScore", 0));
-    frc::SmartDashboard::PutNumber("TargetX",table->GetNumber("TargetX", 0));
-    frc::SmartDashboard::PutNumber("TargetY",table->GetNumber("TargetY", 0));
 
-/*
-	if(frame != last_frame){
-	    clock_t end = clock();{
-	    if(frame_count>0)
-            delt = (double)(end - start)/CLOCKS_PER_SEC;
-            sumdt+=delt;
 
-            if(frame_count>(last_frame+1)){
-                std::cout<<"missed frame current:"<<frame<<" last:"<<last_frame<<endl;
-            }
-
-            frc::SmartDashboard::PutNumber("Rectangles", n);
-            double fps=table->GetNumber("FPS", 0);
-            frc::SmartDashboard::PutNumber("FPS", (int)(10*fps)/10.0);
-            frc::SmartDashboard::PutNumber("Frame",frame);
-
-            //double cycle_fps=1.0/delt;
-            if((frame_count%10)==0){
-                double cycle_fps=10/sumdt;
-                frc::SmartDashboard::PutNumber("Cycle", (int)(10*cycle_fps)/10.0);
-                sumdt=0;
-            }
-	    }
-        start=end;
-        frame_count++;
-	}
-*/
     last_frame=frame;
 #endif
 
@@ -350,7 +322,7 @@ void Vision::PublishTargetInfo() {
 	frc::SmartDashboard::PutNumber("HorizontalAngle", targetInfo.HorizontalAngle);
 	frc::SmartDashboard::PutNumber("TargetHeight", targetInfo.Height);
 	frc::SmartDashboard::PutNumber("TargetWidth", targetInfo.Width);
-	frc::SmartDashboard::PutNumber("TargetCenter.x", targetInfo.Center.x);
-	frc::SmartDashboard::PutNumber("TargetCenter.y", targetInfo.Center.y);
+	frc::SmartDashboard::PutNumber("TargetX", targetInfo.Center.x);
+	frc::SmartDashboard::PutNumber("TargetY", targetInfo.Center.y);
 }
 

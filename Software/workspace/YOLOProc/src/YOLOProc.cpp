@@ -13,6 +13,9 @@
 #include <stdlib.h>
 #include <ctime>
 
+#include <chrono>
+#include <thread>
+
 #include <network.h>
 #include <parser.h>
 #include <option_list.h>
@@ -36,23 +39,22 @@ extern image ipl_to_image(IplImage* src);
 extern void draw_box(image a, int x1, int y1, int x2, int y2, float r, float g, float b);
 void draw_bbox(image a, box bbox, int w, float r, float g, float b);
 
+//#define SIMULATION
 #define IMAGE_WIDTH 320
 #define IMAGE_HEIGHT 240
 
-DEFINE_double(thresh, 0.3,
+DEFINE_double(thresh, 0.4,
         "Only pass detections with confidence scores higher than this [default=0.3]");
 DEFINE_string(publish, "",
         "NetTables publish URL [no NetTables output if not specified]");
-DEFINE_string(output, "Annotated",
+DEFINE_string(output, "",
         "Output video Name [no image output if not specified]");
 DEFINE_bool(timeit, false,
         "display cycle-time and FPS if true [default=false]");
 DEFINE_bool(print, false,
         "display bounding box detection info if true [default=false]");
-DEFINE_bool(nobuffer, false,
-        "disable image buffer if true [default=false]");
-DEFINE_bool(nodisplay, false,
-        "Don't sent annotated images if set");
+DEFINE_int32(flush, 0,
+        "flush image buffer by dummy reads if set");
 DEFINE_bool(usage, false,
         "print usage if set");
 
@@ -144,23 +146,42 @@ int main(int argc, char *argv[]) {
     bool publish=publish_addrs.empty()?false:true;
     std::shared_ptr<NetworkTable> table;
     const std::string& output_name = FLAGS_output;
-    const bool display = !FLAGS_nodisplay;
+    const bool display = output_name.empty()?false:true;
+    int skip_frames= FLAGS_flush;
     cs::CvSource outputStream;
-    int classes;
 
+    int classes;
     char *name_list;
     char **names;
-
+    std::string camname;
+    cs::CvSink cvSink;
+ 
     cv::Scalar color0(0, 255, 255);
     cv::Scalar color1(255, 255, 0);
     cv::Scalar target_color(0, 0, 255);
 
     if(publish){
-         std::cout << "Starting SSDProc nettables="<<publish_addrs<<std::endl;
+         std::cout << "Starting YOLOProc nettables="<<publish_addrs<<std::endl;
          NetworkTable::SetClientMode();
          NetworkTable::SetIPAddress(llvm::StringRef(publish_addrs));
          table=NetworkTable::GetTable("datatable");
     }
+#ifdef SIMULATION
+    camname="simcam";
+    cs::HttpCamera simcam(camname, videoAddress);
+    cvSink = frc::CameraServer::GetInstance()->GetVideo(simcam);
+#else
+    camname="Logitech";
+
+    cs::UsbCamera camera1 = frc::CameraServer::GetInstance()->StartAutomaticCapture(camname,1);
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+    camera1.SetResolution(640, 480);
+
+    //camera1.SetFPS(10);
+    cvSink = frc::CameraServer::GetInstance()->GetVideo(camera1);
+#endif
+
     if(display)
         outputStream = frc::CameraServer::GetInstance()->PutVideo(output_name, IMAGE_WIDTH, IMAGE_HEIGHT);
 
@@ -177,22 +198,16 @@ int main(int argc, char *argv[]) {
     set_batch_network(&net, 1);
     layer l = net.layers[net.n-1];
 
-    printf("video file: %s\n", videoAddress);
+    printf("video stream: %s\n", videoAddress);
 
-#define USE_VCAP
+//    cv::VideoCapture vcap;
+//    vcap.set(CV_CAP_PROP_BUFFERSIZE, 1); // set frame buffer depth to 1 (doesn't work on pi-3)
+//    if(!vcap.open(videoAddress))
+//        error("Couldn't connect to video\n");
+//    else
+//        std::cout << "Video Stream captured "<<videoAddress << std::endl;
 
-#ifdef USE_VCAP
-    cv::VideoCapture vcap;
-    vcap.set(CV_CAP_PROP_BUFFERSIZE, 1); // set frame buffer depth to 1 (doesn't work on pi-3)
-    if(!vcap.open(videoAddress))
-        error("Couldn't connect to video\n");
-    else
-        std::cout << "Video Stream captured "<<videoAddress << std::endl;
-#else
-    CvCapture * cap = cvCaptureFromFile(videoAddress);
-    if(!cap)
-       error("Couldn't connect to video\n");
-#endif
+
     int num=l.w*l.h*l.n;
     std::cout << "net:"<<net.n<<"x"<<net.w<<"x"<<net.h<<" l:"<<l.w<<"x"<<l.h<<"x"<<l.n<<std::endl;
     boxes = (box *)calloc(num, sizeof(box));
@@ -201,38 +216,24 @@ int main(int argc, char *argv[]) {
         probs[j] = (float *)calloc(l.classes, sizeof(float));
     int count = 0;
     double before_frame = get_wall_time();
-    while(1){
+    while(true){
         ++count;
         cv::Mat img;
         cv::Mat mat;
         image im;
-#define VCAP_BUFFER_HACK
 
-#define SKIP_FRAMES 3
-#ifdef USE_VCAP
-#ifdef VCAP_BUFFER_HACK
-        for(int i=0;i<SKIP_FRAMES;i++) // discard any images that were pre-loaded or arrived during previous processing
-            vcap.read(img);
-#endif
-        if(!vcap.read(img))
+        if (cvSink.GrabFrame(img) == 0) {
             continue;
-        im = mat_to_image(img);
-#else
-        IplImage* src;
-#ifdef VCAP_BUFFER_HACK
-        for(int i=0;i<SKIP_FRAMES;i++) // discard any images that were pre-loaded or arrived during previous processing
-            src = cvQueryFrame(cap);
-#endif
-        src = cvQueryFrame(cap);
-        if(!src){
-             std::cout << "Stream closed"<<std::endl;
-             break;
         }
-       im = ipl_to_image(src);
-       rgbgr_image(im);
-       img = cv::cvarrToMat(src);
-#endif
-       img.copyTo(mat);
+
+//       for(int i=0;i<skip_frames;i++) // discard any images that were pre-loaded or arrived during previous processing
+//            vcap.read(img);
+//        if(!vcap.read(img)){
+//            std::cout << "Waiting for image"<<videoAddress << std::endl;
+//            continue;
+//        }
+        im = mat_to_image(img);
+        img.copyTo(mat);
 
         if(!im.data){
             std::cout << "Stream closed"<<std::endl;
@@ -267,7 +268,7 @@ int main(int argc, char *argv[]) {
                 cv::Point ctr((int)(b.x*im.w),(int)(b.y*im.h));
 
                 if(display){
-                    int lw=prob>0.8 ? 2:1;
+                    int lw=prob>0.8 ? 3:2;
                     cv::Scalar color=class1==0?color0:color1;
                     cv::Point tl(left,top);
                     cv::Point br(right,bot);

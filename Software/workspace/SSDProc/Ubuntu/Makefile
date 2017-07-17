@@ -1,9 +1,8 @@
-CAFFE_ROOT=/usr/local/ssd-caffe
 #SHELL = sh -xv
 FLAGS := -DCOMPILE_GPU=1
-CAFFE_ROOT=/usr/local/ssd-caffe
+CAFFE_ROOT=$(HOME)/AI/ssd-caffe
 
-LDIRS := -L$(CAFFE_ROOT)/lib -L/usr/local/lib -L/usr/local/cuda/lib -L$(HOME)/wpilib/simulation/lib -L/usr/local/cuda/targets/x86_64-linux/lib
+LDIRS := -L$(CAFFE_ROOT)/distribute/lib -L/usr/local/lib -L/usr/local/cuda/lib -L$(HOME)/wpilib/simulation/lib -L/usr/local/cuda/targets/x86_64-linux/lib
 
 WPILIBS := -lntcore -lCameraServer -lcscore
 CVLIBS := -lopencv_highgui -lopencv_core -lopencv_calib3d -lopencv_contrib -lntcore -lopencv_imgproc -lopencv_video -lopencv_videoio 
@@ -18,9 +17,9 @@ OBJS := SSDProc.o Detector.o
 
 SRCDIR=../src
 
-INCLUDES=-I$(CAFFE_ROOT)/include -I../include -I/usr/local/include -I$(HOME)/wpilib/simulation/include -I/usr/local/cuda/targets/x86_64-linux/include
+INCLUDES=-I$(CAFFE_ROOT)/distribute/include -I../include  -I$(HOME)/wpilib/simulation/include -I/usr/local/cuda/targets/x86_64-linux/include
 #RPATH=-rpath $(HOME)/wpilib/simulation/lib:../build/lib
-RPATH=-rpath $(CAFFE_ROOT)/lib -Xlinker -rpath $(HOME)/wpilib/simulation/lib
+RPATH=-rpath $(CAFFE_ROOT)/distribute/lib -Xlinker -rpath $(HOME)/wpilib/simulation/lib
 
 # Add inputs and outputs from these tool invocations to the build variables 
 

@@ -1,0 +1,14 @@
+
+cd ~/Robotics/MentorRepository/Software/workspace/SimHughBot;
+roxterm --title="Gazebo Simulation" --tab-name=gazebo -e gazebo-vision-test-2017;
+sleep 5;
+roxterm --tab --tab-name=mjpg-streamer -e start_targeting_camera;
+sleep 1
+roxterm --tab --tab-name=FRCUserProgram -e apptest/FRCUserProgram;
+sleep 1;
+roxterm --tab --tab-name=SSDProc -e ../SSDProc/Ubuntu/gazebo_test-2017.sh;
+sleep 4;
+roxterm --tab --tab-name=sim_ds -e sim_ds;
+sleep 1;
+roxterm --tab --tab-name=SmartDashboard -e start_smartdashboard;
+

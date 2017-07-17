@@ -897,13 +897,13 @@
         <sensor name='Sim' type='camera'>
           <visualize>1</visualize>
           <always_on>1</always_on>
-          <update_rate>50</update_rate>
+          <update_rate>60</update_rate>
           <pose frame=''>-0.124207 0.303145 -0.122065 1.5708 -0 3.14159</pose>
           <camera name='Cam'>
             <horizontal_fov>0.87</horizontal_fov>
             <image>
-              <width>320</width>
-              <height>240</height>
+              <width>640</width>
+              <height>480</height>
             </image>
             <clip>
               <near>0.1</near>

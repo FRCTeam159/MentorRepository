@@ -1,6 +1,8 @@
 
 #include <unistd.h>
-#include <caffe/caffe.hpp>
+//#include <caffe/caffe.hpp>
+
+#undef NDEBUG // uncomment to get DLOG output
 
 #include "Detector.h"
 
@@ -12,14 +14,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctime>
+#include <chrono>
+#include <thread>
 
 #include <CameraServer.h>
 #include "cscore_oo.h"
 
-#define IMAGE_WIDTH 320
-#define IMAGE_HEIGHT 240
+//#define SIMULATION
 
-#define SIMULATION
+#define IMAGE_WIDTH 640
+#define IMAGE_HEIGHT 480
+
 //#define VCAP_BUFFER_HACK
 //#define PRINT
 #define VIDEO_BUFFER_HACK
@@ -27,7 +32,6 @@
 using namespace frc;
 
 using caffe::Timer;
-
 
 DEFINE_double(thresh, 0.3,
     "Only pass detections with confidence scores higher than this [default=0.3]");
@@ -39,10 +43,8 @@ DEFINE_bool(timeit, false,
     "display cycle-time and FPS if true [default=false]");
 DEFINE_bool(print, false,
     "display bounding box detection info if true [default=false]");
-DEFINE_bool(nobuffer, false,
-    "disable image buffer if true [default=false]");
-DEFINE_bool(nodisplay, false,
-    "Don't sent annotated images if set");
+DEFINE_int32(flush, 0,
+     "flush image buffer by dummy reads if set");
 
 int main(int argc, char *argv[]) {
     ::google::InitGoogleLogging(argv[0]);
@@ -51,23 +53,19 @@ int main(int argc, char *argv[]) {
 #ifndef GFLAGS_GFLAGS_H_
   namespace gflags = google;
 #endif
-  gflags::SetUsageMessage("Do detection using SSD-caffe\n"
+    gflags::SetUsageMessage("Do detection using SSD-caffe\n"
         "Usage:\n"
         "    SSDProc [FLAGS] video_stream model_file weights_file \n");
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
+    gflags::ParseCommandLineFlags(&argc, &argv, true);
 
-  if (argc < 4) {
-    gflags::ShowUsageWithFlagsRestrict(argv[0], "SSDProc");
-    return 1;
-  }
+    if (argc < 4) {
+        gflags::ShowUsageWithFlagsRestrict(argv[0], "SSDProc");
+        return 1;
+    }
 
-#ifndef SIMULATION
-    cs::UsbCamera camera1;
-    cs::UsbCamera camera2;
-#endif
-    cs::CvSink cvSink;
-
+    cs::CvSink cvSink;  
     cs::CvSource outputStream;
+    
     std::shared_ptr<NetworkTable> table;
     const string& videoStreamAddress = argv[1];
     const string& model_file = argv[2];
@@ -78,7 +76,8 @@ int main(int argc, char *argv[]) {
     bool publish=publish_addrs.empty()?false:true;
     const bool timeit = FLAGS_timeit;
     const bool print = FLAGS_print;
-    const bool display = !FLAGS_nodisplay;
+    const bool display = output_name.empty()?false:true;
+    //int skip_frames= FLAGS_flush;
 
     string camname;
 
@@ -94,39 +93,59 @@ int main(int argc, char *argv[]) {
     camname="simcam";
     cs::HttpCamera simcam(camname, videoStreamAddress);
     cvSink = CameraServer::GetInstance()->GetVideo(simcam);
-
 #else
-    camera1 = CameraServer::GetInstance()->StartAutomaticCapture("Logitech",0);
-    camera2 = CameraServer::GetInstance()->StartAutomaticCapture("DriverCam",1);
-    // Set the resolution
-    camera1.SetResolution(320, 240);
-    camera2.SetResolution(320, 240);
-    //camera.SetFPS(1);
-    camera1.SetFPS(10);
     camname="Logitech";
-    cvSink = CameraServer::GetInstance()->GetVideo("Logitech");
+    CameraServer *server=CameraServer::GetInstance();
+    cs::UsbCamera camera1 = server->StartAutomaticCapture(camname,1);
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        // Set the resolution
+    camera1.SetResolution(320, 240);
+
+    //camera1.SetFPS(10);
+    cvSink = CameraServer::GetInstance()->GetVideo(camera1);
 #endif
     // Setup a CvSource. This will send images back to the Dashboard
     if(display)
         outputStream = CameraServer::GetInstance()->PutVideo(output_name, IMAGE_WIDTH, IMAGE_HEIGHT);
+        
+        /*
+    std::vector<cs::VideoProperty> props;
+    props=cvSink.GetSource().EnumerateProperties();
+    for (int i=0;i< props.size();i++){
+        cs::VideoProperty prop= props[i];
+        DLOG(INFO) << "cvSink: " << prop.GetName()<< " "<<prop.Get();
+    }
+   
+    //DLOG(INFO) << "cvSink: " << prop.GetName()<< " "<<prop.Get();
+    //DLOG(INFO) << "cvSink: " << cvSink.GetSource().GetDescription();
+       */  
     cv::Mat img;
     cv::Mat mat;
 
     Timer frame_timer;
+    Timer image_timer;
     int frame_count = 0;
     double ave_ftm=0;
     double ave_ptm=0;
+    double ave_rtm=0;
+
     cv::Scalar color0(0, 255, 255);
     cv::Scalar color1(255, 255, 0);
     cv::Scalar target_color(0, 0, 255);
 
-    //double test_time=0;
     while(true){
         frame_timer.Start();
+        image_timer.Start();
+        //DLOG(INFO) << " frame start: 1";
         if (cvSink.GrabFrame(img) == 0) {
-            //std::cout << " waiting for image" << std::endl;
+            DLOG(INFO) << " Waiting for image";
             continue;
         }
+        //DLOG(INFO) << " frame start: 2";
+        double rdtime=image_timer.MicroSeconds()/1000.0;
+        ave_rtm+=rdtime;
+
+
         if(display)
             img.copyTo(mat);
 
@@ -139,15 +158,6 @@ int main(int argc, char *argv[]) {
 
         ave_ptm+=proctime;
         ave_ftm+=cycletime;
-
-        if((frame_count%10)==0){
-            ave_ptm/=10;
-            ave_ftm/=10;
-            if(timeit)
-                LOG(INFO) <<"frame:"<<frame_count <<" proc:"<<ave_ptm<<" FPS: "<<1.0/ave_ptm<<" cycle:"<<ave_ftm<<" FPS:"<<1.0/ave_ftm<<std::endl;
-            ave_ptm=0;
-            ave_ftm=0;
-        }
 
         std::vector<vector<float> > good_detections;
         int n=0;
@@ -162,6 +172,9 @@ int main(int argc, char *argv[]) {
            }
         }
         cv::Point target_point;
+        cv::Point target_tl;
+        cv::Point target_br;
+
         int target_type=0;
         float max_score=0;
 
@@ -175,6 +188,8 @@ int main(int argc, char *argv[]) {
             if(score>max_score){
                 max_score=score;
                 target_type=type;
+                target_tl=tl;
+                target_br=br;
                 target_point=ctr;
             }
             if(display){
@@ -197,10 +212,21 @@ int main(int argc, char *argv[]) {
             table->PutNumber("FPS",(int)(1.0/proctime));
             table->PutNumber("TargetType", target_type+1);
             table->PutNumber("TargetScore", int(max_score*100));
-            table->PutNumber("TargetX", target_point.x);
-            table->PutNumber("TargetY", target_point.y);
+            table->PutNumber("TopLeftX", target_tl.x);
+            table->PutNumber("TopLeftY", target_tl.y);
+            table->PutNumber("BotRightX", target_br.x);
+            table->PutNumber("BotRightY", target_br.y);
         }
-
+        if((frame_count%10)==0){
+            ave_ptm/=10;
+            ave_ftm/=10;
+            ave_rtm/=10;
+            if(timeit)
+                LOG(INFO) <<"frame:"<<frame_count<<" read:"<<ave_rtm <<" proc:"<<1000*ave_ptm<<" FPS: "<<1/ave_ptm<<" cycle:"<<ave_ftm<<" FPS:"<<1.0/ave_ftm<<std::endl;
+            ave_ptm=0;
+            ave_ftm=0;
+            ave_rtm=0;
+        }
         frame_count++;
     }
     CameraServer::GetInstance()->RemoveCamera(camname);

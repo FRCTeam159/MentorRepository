@@ -2,7 +2,6 @@
 
 cd ../
 
-rm -f /tmp/target-camera/*
 WEIGHTS=weights/tiny-yolo-balltote_2000.weights
 
 CFG=cfg/tiny-yolo-2class.cfg
