@@ -1,0 +1,10 @@
+# start gazebo
+
+export LD_LIBRARY_PATH=/usr/local/lib/frcsim/lib:/usr/lib:/usr/lib/x86_64-linux-gnu/:${GAZEBO_PLUGIN_PATH}
+export SWMODEL=$SWEXPORTS/FRC2017_Exported
+export GAZEBO_MODEL_PATH=$SWMODEL
+
+rm -fr /tmp/target-camera
+mkdir  /tmp/target-camera
+gazebo --verbose $SWMODEL/FRC2017-vision-test.world
+
