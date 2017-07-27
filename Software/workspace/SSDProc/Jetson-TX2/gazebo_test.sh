@@ -1,14 +1,21 @@
 
-export PROJECT=$HOME/ssd-caffe/projects/TOTEBALL/models
+#export PROJECT=$HOME/ssd-caffe/projects/TOTEBALL/models
 
 killall SSDProc gazebo_test.sh
 
-NET=$PROJECT/SSD_300x300/deploy.prototxt
+if [ "$#" -ne 1 ] ; then
+   export HOST="Ubuntu16.local"
+else
+   export HOST="$1";
+fi
+echo $HOST
+
+NET=$HOME/data/caffe/models/SSD_300x300_deploy.prototxt
 WEIGHTS=$HOME/data/caffe/weights/VGG_TOTEBALL_SSD_300x300_iter_2000.caffemodel
-STREAM="http://Ubuntu14.local:5002/?action=stream?dummy=param.mjpg"
-OUTPUT=Ubuntu14.local
+
+STREAM="http://"$HOST":5002/?action=stream?dummy=param.mjpg"
 
 APPDIR=$HOME/SSDProc/Jetson-TX2
 
-$APPDIR/SSDProc --thresh 0.3 --publish $OUTPUT --output "Annotated" --timeit $STREAM $NET $WEIGHTS
+$APPDIR/SSDProc --thresh 0.3 --publish $HOST --output "Annotated" --timeit $STREAM $NET $WEIGHTS
 

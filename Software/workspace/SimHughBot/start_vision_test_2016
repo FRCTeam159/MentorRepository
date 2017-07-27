@@ -7,7 +7,7 @@ sleep 1
 roxterm --tab --tab-name=FRCUserProgram -e apptest/FRCUserProgram;
 sleep 1;
 #roxterm --tab --tab-name=SSDProc -e ../SSDProc/Ubuntu/gazebo_test-2016.sh;
-roxterm --tab --tab-name=SSDProc -e start_proc_remote;
+roxterm --tab --tab-name=Remote -e start_proc_remote;
 sleep 4;
 roxterm --tab --tab-name=sim_ds -e sim_ds;
 sleep 1;

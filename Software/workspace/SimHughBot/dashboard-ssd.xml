@@ -1,0 +1,62 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="TargetHeight" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="161" y="378"/>
+		<width>143</width>
+	</widget>
+	<widget field="TargetWidth" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="12" y="379"/>
+		<width>139</width>
+	</widget>
+	<widget field="TargetType" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="13" y="308"/>
+		<width>138</width>
+	</widget>
+	<widget field="TargetScore" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="162" y="311"/>
+		<width>138</width>
+	</widget>
+	<widget field="TargetX" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="187" y="345"/>
+		<width>114</width>
+	</widget>
+	<widget field="TargetY" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="40" y="346"/>
+		<width>110</width>
+	</widget>
+	<widget field="FPS" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="23" y="39"/>
+		<width>85</width>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="24" y="11"/>
+		<width>398</width>
+		<height>298</height>
+		<property name="Camera Choice" value="Annotated"/>
+	</static-widget>
+</dashboard>
+<live-window>
+</live-window>
+	<hidden field="rightTurn"/>
+	<hidden field="Heading"/>
+	<hidden field="showColorThreshold"/>
+	<hidden field="rightDrive"/>
+	<hidden field="Frame"/>
+	<hidden field="Targeting"/>
+	<hidden field="HorizontalAngle"/>
+	<hidden field="climberCurrentThreshold"/>
+	<hidden field="HOffset"/>
+	<hidden field="climberCurrent"/>
+	<hidden field="leftTurn"/>
+	<hidden field="climberVoltage"/>
+	<hidden field="showGoodRects"/>
+	<hidden field="AutoMode"/>
+	<hidden field="HorizontalOffset"/>
+	<hidden field="UltraSonicDistance"/>
+	<hidden field="HighGear"/>
+	<hidden field="Travel"/>
+	<hidden field="leftDrive"/>
+	<hidden field="Rectangles"/>
+	<hidden field="Distance"/>
+	<hidden field="GearPlateOpen"/>
+</xml>

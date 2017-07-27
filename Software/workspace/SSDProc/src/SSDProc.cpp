@@ -20,7 +20,7 @@
 #include <CameraServer.h>
 #include "cscore_oo.h"
 
-//#define SIMULATION
+#define SIMULATION
 
 #define IMAGE_WIDTH 640
 #define IMAGE_HEIGHT 480
@@ -216,6 +216,9 @@ int main(int argc, char *argv[]) {
             table->PutNumber("TopLeftY", target_tl.y);
             table->PutNumber("BotRightX", target_br.x);
             table->PutNumber("BotRightY", target_br.y);
+            int n=good_detections.size()>0?2:0;
+            table->PutNumber("NumRects", n);
+
         }
         if((frame_count%10)==0){
             ave_ptm/=10;

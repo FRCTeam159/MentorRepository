@@ -1,13 +1,15 @@
 rm -f /tmp/target-camera/*
-#ssh pi@raspberrypi.local "ImageProc/ImageProc Ubuntu16.local"
-#ssh pi@raspberrypi.local "ImageProc/ImageProc Ubuntu14.local"
-#ssh dean@Ubuntu16.local "/tmp/ImageProc Ubuntu14.local"
+HOST=`hostname`".local"
+#ssh pi@raspberrypi.local "ImageProc/ImageProc $HOST"
 #ssh ubuntu@tegra-ubuntu.local "SSDProc/Jetson-tk1/gazebo_test.sh"
 #ssh ubuntu@tegra-ubuntu.local "YOLOProc/Jetson-tk1/gazebo_test.sh"
-#roxterm --tab --tab-name=Yolo -e ../YOLOProc/Ubuntu/gazebo_test-2016.sh;
-#roxterm --tab --tab-name=SSDProc -e ../SSDProc/Ubuntu/gazebo_test-2016.sh;
-#ssh nvidia@tegra-ubuntu.local "SSDProc/Jetson-TX2/gazebo_test.sh"
-ssh nvidia@tegra-ubuntu.local "YOLOProc/Jetson-TX2/gazebo_test.sh"
+roxterm --tab --tab-name=Yolo -e ../YOLOProc/Ubuntu/gazebo_test-2017.sh $HOST;
+
+#roxterm --tab --tab-name=SSDProc -e ../SSDProc/Ubuntu/gazebo_test-2017.sh $HOST;
+#ssh nvidia@tegra-ubuntu.local "SSDProc/Jetson-TX2/gazebo_test.sh  $HOST"
+#ssh nvidia@tegra-ubuntu.local "SSDProc/Jetson-TX2/gazebo_test-2017.sh $HOST"
+
+#ssh nvidia@tegra-ubuntu.local "YOLOProc/Jetson-TX2/gazebo_test.sh $HOST"
 
 
 

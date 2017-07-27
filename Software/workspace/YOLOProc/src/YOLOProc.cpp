@@ -39,7 +39,7 @@ extern image ipl_to_image(IplImage* src);
 extern void draw_box(image a, int x1, int y1, int x2, int y2, float r, float g, float b);
 void draw_bbox(image a, box bbox, int w, float r, float g, float b);
 
-//#define SIMULATION
+#define SIMULATION
 #define IMAGE_WIDTH 320
 #define IMAGE_HEIGHT 240
 
@@ -252,6 +252,10 @@ int main(int argc, char *argv[]) {
         cv::Point target_point;
         int target_type=0;
         float max_prob=0;
+        bool targets=false;
+        cv::Point tl;
+        cv::Point br;
+
         for(int i = 0; i < num; ++i){
             int class1 = max_index(probs[i], classes);
             float prob = probs[i][class1];
@@ -265,13 +269,15 @@ int main(int argc, char *argv[]) {
                 if(right > im.w-1) right = im.w-1;
                 if(top < 0) top = 0;
                 if(bot > im.h-1) bot = im.h-1;
+                tl=cv::Point(left,top);
+                br=cv::Point(right,bot);
+
                 cv::Point ctr((int)(b.x*im.w),(int)(b.y*im.h));
+                targets=true;
 
                 if(display){
                     int lw=prob>0.8 ? 3:2;
                     cv::Scalar color=class1==0?color0:color1;
-                    cv::Point tl(left,top);
-                    cv::Point br(right,bot);
                     rectangle(mat, tl, br, color, lw);
                 }
                 if(print){
@@ -303,8 +309,14 @@ int main(int argc, char *argv[]) {
             table->PutNumber("FPS",int(1.0/delp));
             table->PutNumber("TargetType", target_type+1);
             table->PutNumber("TargetScore", int(max_prob*100));
-            table->PutNumber("TargetX", target_point.x);
-            table->PutNumber("TargetY", target_point.y);
+            table->PutNumber("TopLeftX", tl.x);
+            table->PutNumber("TopLeftY", tl.y);
+            table->PutNumber("BotRightX", br.x);
+            table->PutNumber("BotRightY", br.y);
+            int n=targets?2:0;
+            table->PutNumber("NumRects", n);
+           // table->PutNumber("TargetX", target_point.x);
+           // table->PutNumber("TargetY", target_point.y);
         }
         before_frame=after_frame;
         free_image(im_s);
