@@ -3,11 +3,11 @@ HOST=`hostname`".local"
 #ssh pi@raspberrypi.local "ImageProc/ImageProc $HOST"
 #ssh ubuntu@tegra-ubuntu.local "SSDProc/Jetson-tk1/gazebo_test.sh"
 #ssh ubuntu@tegra-ubuntu.local "YOLOProc/Jetson-tk1/gazebo_test.sh"
-roxterm --tab --tab-name=Yolo -e ../YOLOProc/Ubuntu/gazebo_test-2017.sh $HOST;
+#roxterm --tab --tab-name=Yolo -e ../YOLOProc/Ubuntu/gazebo_test-2017.sh $HOST;
 
 #roxterm --tab --tab-name=SSDProc -e ../SSDProc/Ubuntu/gazebo_test-2017.sh $HOST;
 #ssh nvidia@tegra-ubuntu.local "SSDProc/Jetson-TX2/gazebo_test.sh  $HOST"
-#ssh nvidia@tegra-ubuntu.local "SSDProc/Jetson-TX2/gazebo_test-2017.sh $HOST"
+ssh nvidia@tegra-ubuntu.local "SSDProc/Jetson-TX2/gazebo_test-2017.sh $HOST"
 
 #ssh nvidia@tegra-ubuntu.local "YOLOProc/Jetson-TX2/gazebo_test.sh $HOST"
 
