@@ -1,11 +1,11 @@
 #SHELL = sh -xv
 FLAGS := -DCOMPILE_GPU=1
-CAFFE_ROOT=$(HOME)/AI/ssd-caffe
+CAFFE_ROOT=$(HOME)/Robotics/ssd-caffe
 
-LDIRS := -L$(CAFFE_ROOT)/distribute/lib -L/usr/local/lib -L/usr/local/cuda/lib -L$(HOME)/wpilib/simulation/lib -L/usr/local/cuda/targets/x86_64-linux/lib
+LDIRS := -L$(CAFFE_ROOT)/distribute/lib -L/usr/local/lib -L/usr/local/cuda/lib -L/usr/lib/x86_64-linux-gnu/hdf5/serial -L$(HOME)/wpilib/simulation/lib -L/usr/local/cuda/targets/x86_64-linux/lib
 
 WPILIBS := -lntcore -lCameraServer -lcscore
-CVLIBS := -lopencv_highgui -lopencv_core -lopencv_calib3d -lopencv_contrib -lntcore -lopencv_imgproc -lopencv_video -lopencv_videoio 
+CVLIBS := -lopencv_highgui -lopencv_core -lopencv_calib3d -lntcore -lopencv_imgproc -lopencv_video -lopencv_videoio 
 CUDALIBS := -lcudart -lopencv_cudaimgproc
 CAFFELIBS := -lglog -lgflags -lprotobuf -lboost_system -lboost_filesystem -lboost_regex -lm -lhdf5_hl -lhdf5 -lcaffe
 

@@ -1,6 +1,6 @@
 killall SSDProc
 #rm /tmp/target-camera/*
-export SSD_ROOT=$HOME/AI/ssd-caffe
+export SSD_ROOT=$HOME/Robotics/ssd-caffe
 
 if [ "$#" -ne 1 ] ; then
    export HOST="Ubuntu16.local"

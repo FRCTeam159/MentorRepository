@@ -93,6 +93,11 @@ public:
 			autonomous->AddSequential(new DriveForTime(1.5, 0.4));
 			autonomous->AddSequential(new DeliverGear());
 		}
+		else if(autoSelected == "Test") {
+			cout<<"Pathfinder Test"<<endl;
+			autonomous->AddSequential(new DriveForTime(1.5, 0.4));
+			autonomous->AddSequential(new DeliverGear());
+		}
 		else{
 			cout<<"Auto Mode Disabled"<<endl;
 		}
