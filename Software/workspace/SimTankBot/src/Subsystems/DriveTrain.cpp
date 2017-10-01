@@ -16,6 +16,8 @@
 #endif
 #define WHEEL_DIAMETER 3.0
 
+#define ROUND(x) round(x*100/100)
+
 #define TICKS_PER_INCH (DRIVE_ENCODER_TICKS/M_PI/WHEEL_DIAMETER)
 
 DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
@@ -243,25 +245,29 @@ void DriveTrain::Publish(bool init) {
 		frc::SmartDashboard::PutNumber("Travel", 0);
 		frc::SmartDashboard::PutBoolean("HighGear", false);
 		frc::SmartDashboard::PutNumber("Heading", 0);
+		frc::SmartDashboard::PutNumber("LeftDistance",0);
+		frc::SmartDashboard::PutNumber("RightDistance",0);
 
 	}else{
 		frc::SmartDashboard::PutNumber("Heading", GetHeading());
-		frc::SmartDashboard::PutNumber("Travel", GetTravelDistance());
+		frc::SmartDashboard::PutNumber("Travel", ROUND(GetDistance()));
 		frc::SmartDashboard::PutBoolean("HighGear", !inlowgear);
+		frc::SmartDashboard::PutNumber("LeftDistance",ROUND(GetLeftDistance()));
+		frc::SmartDashboard::PutNumber("RightDistance",ROUND(GetRightDistance()));
 	}
 }
 
 double DriveTrain::GetDistance() {
-	double d1=-frontRight.GetPosition();
-	double d2=backLeft.GetPosition();
+	double d1=GetRightDistance();
+	double d2=GetLeftDistance();
 	double x=0.5*(d1+d2);
-	return round(x * 100) / 100.0;
+	return x;
 }
 double DriveTrain::GetRightDistance() {
-	return frontRight.GetPosition();
+	return -frontRight.GetPosition();
 }
 double DriveTrain::GetLeftDistance() {
-	return backLeft.GetPosition();
+	return -backLeft.GetPosition(); // inverted in simulation for some reason (sdf file axis direction problem ?)
 }
 
 double DriveTrain::GetTravelDistance() {
