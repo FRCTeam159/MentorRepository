@@ -19,32 +19,33 @@ import edu.wpi.first.wpilibj.MotorSafety;
 import org.usfirst.frc.team159.robot.Robot;
 import org.usfirst.frc.team159.robot.RobotMap;
 
+import com.ctre.CANTalon;
+
 /**
  *
  */
 public class DriveTrain extends Subsystem implements MotorSafety{
 
-	private SpeedController frontLeft = new Talon(RobotMap.FRONTLEFT);
-	private SpeedController frontRight = new Talon(RobotMap.FRONTRIGHT);
-	private SpeedController backLeft = new Talon(RobotMap.BACKLEFT);
-	private SpeedController backRight = new Talon(RobotMap.BACKRIGHT);
+	private SpeedController frontLeft;
+	private SpeedController frontRight;
+	private SpeedController backLeft;
+	private SpeedController backRight;
 	
-	private Encoder leftEncoder = new Encoder(3, 4);
-	private Encoder rightEncoder = new Encoder(7, 8);
+	private Encoder leftEncoder;
+	private Encoder rightEncoder;
 	
 	private AnalogGyro gyro = new AnalogGyro(3);
 	
 	private DoubleSolenoid gearPneumatic = new DoubleSolenoid(0,1);
 	private MotorSafetyHelper safetyHelper = new MotorSafetyHelper(this);
 
+	static double WHEEL_DIAMETER=3.0; // inches
+	static int SIM_ENDODER_TICKS=360;
+	static int REAL_ENDODER_TICKS=900;
 	
 	boolean inlowgear=false;
-
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
-
+	
 	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
 		 setDefaultCommand(new DriveWithJoystick());
 	}
 	
@@ -57,12 +58,30 @@ public class DriveTrain extends Subsystem implements MotorSafety{
 		// simulate 360 tick encoders. This if statement allows for the
 		// real robot to handle this difference in devices.
 		if (Robot.isReal()) {
-			leftEncoder.setDistancePerPulse(0.042);
-			rightEncoder.setDistancePerPulse(0.042);
+			frontLeft = new CANTalon(RobotMap.FRONTLEFT);
+			frontRight = new CANTalon(RobotMap.FRONTRIGHT);
+			backLeft = new CANTalon(RobotMap.BACKLEFT);
+			backRight = new CANTalon(RobotMap.BACKRIGHT);
+			
+			int ticks_per_foot=(int)(1.0/getFeetPerTick()); // ~1146 ticks per foot of travel
+			
+			((CANTalon)frontRight).configEncoderCodesPerRev(ticks_per_foot);
+			((CANTalon)backLeft).configEncoderCodesPerRev(ticks_per_foot);
+		
+
 		} else {
-			// Circumference in ft = 3in/12(in/ft)*PI
-			leftEncoder.setDistancePerPulse((3.0 / 12.0 * Math.PI) / 360.0);
-			rightEncoder.setDistancePerPulse((3.0 / 12.0 * Math.PI) / 360.0);
+			leftEncoder = new Encoder(3, 4);
+			rightEncoder = new Encoder(7, 8);
+			
+			double feet_per_tick=getFeetPerTick();
+			
+			leftEncoder.setDistancePerPulse(feet_per_tick);
+			rightEncoder.setDistancePerPulse(feet_per_tick);
+
+			frontLeft = new Talon(RobotMap.FRONTLEFT);
+			frontRight = new Talon(RobotMap.FRONTRIGHT);
+			backLeft = new Talon(RobotMap.BACKLEFT);
+			backRight = new Talon(RobotMap.BACKRIGHT);			
 		}
 		setLowGear();
 	    safetyHelper.setExpiration(0.1);
@@ -70,6 +89,14 @@ public class DriveTrain extends Subsystem implements MotorSafety{
 	    Publish(true);
 	    
 	}
+	double getFeetPerTick() {
+		// feet-per-tick = diameter*pi/12/ENCODER_TICKS_PER_REV
+		if (Robot.isReal()) 
+			return Math.PI*WHEEL_DIAMETER/12.0/REAL_ENDODER_TICKS;	// 	
+		else 
+			return Math.PI*WHEEL_DIAMETER/12.0/SIM_ENDODER_TICKS;				
+	}
+	
 	void Publish(boolean init) {
 		if(init){
 			SmartDashboard.putBoolean("HighGear", false);
@@ -81,13 +108,13 @@ public class DriveTrain extends Subsystem implements MotorSafety{
 		}else{
 			SmartDashboard.putBoolean("HighGear", !inlowgear);
 			SmartDashboard.putNumber("Heading", getHeading());
-			SmartDashboard.putNumber("LeftDistance", round(getLeftDistance()));
-			SmartDashboard.putNumber("RightDistance", round(getRightDistance()));
-			SmartDashboard.putNumber("Travel",round(getDistance()));
+			SmartDashboard.putNumber("LeftDistance", distance_in_inches(getLeftDistance()));
+			SmartDashboard.putNumber("RightDistance", distance_in_inches(getRightDistance()));
+			SmartDashboard.putNumber("Travel",distance_in_inches(getDistance()));
 		}
 	}
-	double round(double x) {
-		return Math.round(x*100/100);
+	double distance_in_inches(double x) {
+		return Math.round(12*x*100.0/100);
 	}
 
 	double getRightDistance() {
@@ -183,7 +210,6 @@ public class DriveTrain extends Subsystem implements MotorSafety{
 		frontRight.set(-right);
 		backRight.set(-right);
 	
-		
 		safetyHelper.feed();
 		Publish(false);
 	}
