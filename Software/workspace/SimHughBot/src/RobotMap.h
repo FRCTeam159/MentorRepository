@@ -31,13 +31,13 @@ const int CLIMBERBUTTON=3;
 
 const int GEARSHIFTID=0;
 
-#define XBOX_GAMEPAD 1
-#define EXTREME_3D   2
+#define GAMEPAD 1
+#define JOYSTICK   2
 
 #ifdef SIMULATION
-#define JOYTYPE XBOX_GAMEPAD
+#define CONTROLLER GAMEPAD
 #else
-#define JOYTYPE EXTREME_3D
+#define CONTROLLER JOYSTICK
 #endif
 
 // If you are using multiple modules, make sure to define both the port

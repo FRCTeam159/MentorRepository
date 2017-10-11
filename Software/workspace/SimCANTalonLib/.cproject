@@ -7,8 +7,10 @@
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/CANTalon"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/SimCANTalon"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/SimCANTalonLib"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/CANTalon/Debug"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/SimCANTalon/Debug"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/SimCANTalonLib/Debug"/>
 						<entry flags="RESOLVED" kind="libraryFile" name="CANTalon" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
@@ -77,6 +79,16 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<folderInfo id="cdt.managedbuild.config.gnu.so.debug.749224301.459566962" name="/" resourcePath="wpi">
+						<toolChain id="cdt.managedbuild.toolchain.gnu.so.debug.1571248515" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.so.debug" unusedChildren="">
+							<tool id="cdt.managedbuild.tool.gnu.archiver.base.1116420206" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.1988193037"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.so.debug.1651840709" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.so.debug.920018230"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.compiler.so.debug.539426203" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.so.debug.1652413075"/>
+							<tool id="cdt.managedbuild.tool.gnu.c.linker.so.debug.1873832242" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.so.debug.122842708"/>
+							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.so.debug.882785011" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.so.debug.969837252"/>
+							<tool id="cdt.managedbuild.tool.gnu.assembler.so.debug.120466203" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.so.debug.1445037398"/>
+						</toolChain>
+					</folderInfo>
 					<sourceEntries>
 						<entry excluding="docs" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
@@ -89,8 +101,11 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/CANTalon"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/SimCANTalonLib"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/CANTalon/Release"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/SimCANTalonLib/Release"/>
 						<entry flags="RESOLVED" kind="libraryFile" name="CANTalon" srcPrefixMapping="" srcRootPath=""/>
+						<entry flags="RESOLVED" kind="libraryFile" name="SimCANTalonLib" srcPrefixMapping="" srcRootPath=""/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>

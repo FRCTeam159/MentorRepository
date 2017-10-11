@@ -10,7 +10,7 @@ import org.usfirst.frc.team159.robot.RobotMap;
 /**
  *
  */
-public class DriveWithJoystick extends Command {
+public class DriveWithJoystick extends Command implements RobotMap{
 	public static double MINTHRESHOLD=0.3;
 	public static double MINOUTPUT=0;
 
@@ -23,6 +23,7 @@ public class DriveWithJoystick extends Command {
 	@Override
 	protected void initialize() {
 		System.out.println("DriveWithJoystick::initialize()");
+		Robot.driveTrain.setHighGear();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -40,21 +41,29 @@ public class DriveWithJoystick extends Command {
 		else if(stick.getRawButton(RobotMap.HIGHGEAR_BUTTON)){
 			Robot.driveTrain.setHighGear();
 		}
-	    if(RobotMap.CONTROL_TYPE == RobotMap.GAMEPAD) {
+	    switch(DRIVETYPE) {
+	    case TANK:
 	    	yAxis=-stick.getRawAxis(4); // left stick - drive
-	    	xAxis=-stick.getRawAxis(1); // right stick - rotate
-	    	zAxis=0;
-	    }
-	    else {
+	    	xAxis=-stick.getRawAxis(1); // right stick - drive
+			Robot.driveTrain.tankDrive(xAxis, yAxis);
+	        break;
+        case ARCADE2:
+	    	yAxis=-stick.getRawAxis(1); // left stick - drive
+	    	xAxis=-stick.getRawAxis(3); // right stick - rotate
+			Robot.driveTrain.customArcade(xAxis, yAxis, 0,SQUARE_INPUTS);
+	    	break;
+        case ARCADE3:
 	    	yAxis = stick.getY();
 	    	xAxis = stick.getX();
 	    	zAxis = stick.getZ();
+		    if(APPLY_DEADBAND) {
+				yAxis = quadDeadband(MINTHRESHOLD, MINOUTPUT, yAxis);
+				xAxis = quadDeadband(MINTHRESHOLD, MINOUTPUT, xAxis);
+				zAxis = quadDeadband(MINTHRESHOLD, MINOUTPUT, zAxis);
+		    }
+			Robot.driveTrain.customArcade(xAxis, yAxis, zAxis,SQUARE_INPUTS);
+	    	break;
 	    }
-		yAxis = quadDeadband(MINTHRESHOLD, MINOUTPUT, yAxis);
-		xAxis = quadDeadband(MINTHRESHOLD, MINOUTPUT, xAxis);
-		zAxis = quadDeadband(MINTHRESHOLD, MINOUTPUT, zAxis);
-
-		Robot.driveTrain.customArcade(xAxis, yAxis, zAxis,true);	    	
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -82,8 +91,7 @@ public class DriveWithJoystick extends Command {
 	 * @param input
 	 * @return
 	 */
-	protected double quadDeadband(double minThreshold, double minOutput, double input)
-	{
+	protected double quadDeadband(double minThreshold, double minOutput, double input) {
 		if (input > minThreshold) {
 			return ((((1 - minOutput)
 					/ ((1 - minThreshold)* (1 - minThreshold)))
@@ -101,5 +109,4 @@ public class DriveWithJoystick extends Command {
 			}
 		}
 	}
-
 }

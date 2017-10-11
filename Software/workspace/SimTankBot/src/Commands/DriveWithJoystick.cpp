@@ -12,6 +12,7 @@ DriveWithJoystick::DriveWithJoystick()
 void DriveWithJoystick::Initialize()
 {
 	std::cout << "DriveWithJoystick::Initialize()" << std::endl;
+	driveTrain->SetHighGear();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -28,23 +29,41 @@ void DriveWithJoystick::Execute()
 	else if(stick->GetRawButton(HIGHGEAR_BUTTON)){
 		driveTrain->SetHighGear();
 	}
-#if JOYTYPE == XBOX_GAMEPAD
-	float yAxis=-stick->GetRawAxis(4); // left stick - drive
-	float xAxis=-stick->GetRawAxis(1); // right stick - rotate
+	float xAxis =0;
+	float yAxis =0;
 	float zAxis = 0;
 
-#else
+#if DRIVETYPE == ARCADE2
+	yAxis=-stick->GetRawAxis(1); // left stick - drive
+	xAxis=-stick->GetRawAxis(3); // right stick - rotate
+#elif DRIVETYPE == TANK
+	yAxis=-stick->GetRawAxis(4); // left stick - drive
+	xAxis=-stick->GetRawAxis(1); // right stick - drive
+#else // 3-axis Joystick
 	float yAxis = stick-> GetY();
 	float xAxis = stick-> GetX();
 	float zAxis = stick-> GetZ();
-	// Run axis values through deadband
 #endif
+
+#ifdef APPLY_DEADBAND
+	// Run axis values through deadband
 	yAxis = quadDeadband(MINTHRESHOLD, MINOUTPUT, yAxis);
 	xAxis = quadDeadband(MINTHRESHOLD, MINOUTPUT, xAxis);
 	zAxis = quadDeadband(MINTHRESHOLD, MINOUTPUT, zAxis);
-	driveTrain->CustomArcade(xAxis, yAxis, zAxis,true);
-	//visionSubsystem->Process();
-
+#endif
+#ifdef SIMULATION // simulate high/low gearbox switch
+	if(driveTrain->InLowGear()){
+		xAxis*=0.5;
+		yAxis*=0.5;
+	}
+#endif
+#if DRIVETYPE == ARCADE3
+	driveTrain->CustomArcade(xAxis, yAxis, zAxis,SQUARE_INPUTS);
+#elif DRIVETYPE == ARCADE2
+	driveTrain->CustomArcade(xAxis, yAxis, 0,SQUARE_INPUTS);
+#else // TANK
+	driveTrain->TankDrive(xAxis, yAxis);
+#endif
 }
 
 // Make this return true when this Command no longer needs to run execute()

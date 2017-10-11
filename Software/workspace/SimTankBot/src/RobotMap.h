@@ -24,14 +24,14 @@ const int HIGHGEAR_BUTTON = 3;
 
 const int GEARSHIFTID=0;
 
-#define XBOX_GAMEPAD 1
-#define EXTREME_3D   2
+#define TANK       1  // 2-axis left side, right side
+#define ARCADE2    2  // 2-axis throttle,turn
+#define ARCADE3    3  // 3-axis throttle,turn,twist
+#define DRIVETYPE  ARCADE2
 
-#ifdef SIMULATION
-#define JOYTYPE XBOX_GAMEPAD
-#else
-#define JOYTYPE EXTREME_3D
-#endif
+#define APPLY_DEADBAND
+#define SQUARE_INPUTS  true
+
 
 // If you are using multiple modules, make sure to define both the port
 // number and the module. For example you with a rangefinder:

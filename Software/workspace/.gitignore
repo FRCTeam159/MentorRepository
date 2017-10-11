@@ -3,3 +3,4 @@ linux_simulate/
 Debug/
 bin/
 .settings/
+*.class

@@ -56,6 +56,7 @@ public:
 	double GetHeading();
 	void InitTravel() { travel_distance=0;}
 	double GetTravelDistance();
+	bool InLowGear() { return inlowgear;}
 
 	void Reset();
 };

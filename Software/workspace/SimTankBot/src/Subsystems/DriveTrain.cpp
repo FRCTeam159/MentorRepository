@@ -60,10 +60,10 @@ void DriveTrain::InitDefaultCommand()
 	SetDefaultCommand(new DriveWithJoystick());
 }
 void DriveTrain::TankDrive(float left, float right) {
-	frontLeft.Set(BACKLEFT);
 	backLeft.Set(left);
 	frontRight.Set(-right);
 	backRight.Set(FRONTRIGHT);
+	frontLeft.Set(BACKLEFT);
 
 	Publish(false);
 
@@ -98,7 +98,7 @@ void DriveTrain::CustomArcade(float xAxis, float yAxis, float zAxis, bool square
 	if (xAxis > 0.0) {
 		if (yAxis > 0.0) {
 			left = xAxis - yAxis;
-			right = std::max(xAxis, yAxis);
+		right = std::max(xAxis, yAxis);
 		} else {
 			left = std::max(xAxis, -yAxis);
 			right = xAxis + yAxis;
@@ -112,19 +112,15 @@ void DriveTrain::CustomArcade(float xAxis, float yAxis, float zAxis, bool square
 			right = -std::max(-xAxis, -yAxis);
 		}
 	}
-	if(inlowgear){
-		right*=0.5;
-		left*=0.5;
-	}
 	// Make sure values are between -1 and 1
 #ifndef SPEED
 	left = coerce(-1, 1, left);
 	right = coerce(-1, 1, right);
 #endif
-	frontLeft.Set(BACKLEFT);
 	backLeft.Set(left);
 	frontRight.Set(-right);
 	backRight.Set(FRONTRIGHT);
+	frontLeft.Set(BACKLEFT);
 
 	Publish(false);
 	m_safetyHelper->Feed();
@@ -247,6 +243,8 @@ void DriveTrain::Publish(bool init) {
 		frc::SmartDashboard::PutNumber("Heading", 0);
 		frc::SmartDashboard::PutNumber("LeftDistance",0);
 		frc::SmartDashboard::PutNumber("RightDistance",0);
+		frc::SmartDashboard::PutNumber("LeftWheels",0);
+		frc::SmartDashboard::PutNumber("RightWheels", 0);
 
 	}else{
 		frc::SmartDashboard::PutNumber("Heading", GetHeading());
@@ -254,6 +252,8 @@ void DriveTrain::Publish(bool init) {
 		frc::SmartDashboard::PutBoolean("HighGear", !inlowgear);
 		frc::SmartDashboard::PutNumber("LeftDistance",ROUND(GetLeftDistance()));
 		frc::SmartDashboard::PutNumber("RightDistance",ROUND(GetRightDistance()));
+		frc::SmartDashboard::PutNumber("LeftWheels", backLeft.Get());
+		frc::SmartDashboard::PutNumber("RightWheels", frontRight.Get());
 	}
 }
 
