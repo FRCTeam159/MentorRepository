@@ -6,6 +6,8 @@
 #include <LiveWindow/LiveWindow.h>
 #include <SmartDashboard/SendableChooser.h>
 #include <SmartDashboard/SmartDashboard.h>
+#include "Commands/Autonomous.h"
+
 
 #include "CommandBase.h"
 
@@ -40,15 +42,22 @@ public:
 	 * to the if-else structure below with additional strings & commands.
 	 */
 	void AutonomousInit() override {
-		/* std::string autoSelected = frc::SmartDashboard::GetString("Auto Selector", "Default");
-		if (autoSelected == "My Auto") {
-			autonomousCommand.reset(new MyAutoCommand());
-		}
-		else {
-			autonomousCommand.reset(new ExampleCommand());
-		} */
+//		std::string autoSelected = frc::SmartDashboard::GetString("Auto Selector", "Default");
+//		if (autoSelected == "My Auto") {
+//			autonomousCommand.reset(new MyAutoCommand());
+//		}
+//		else {
+//			autonomousCommand.reset(new ExampleCommand());
+//		}
+//		autonomousCommand.reset(chooser.GetSelected());
+//
+//		if (autonomousCommand.get() != nullptr) {
+//			autonomousCommand->Start();
+//		}
+		CommandGroup *autonomous=new Autonomous();
+		autonomousCommand.reset(autonomous);
 
-		autonomousCommand.reset(chooser.GetSelected());
+		CommandBase::AutonomousInit();
 
 		if (autonomousCommand.get() != nullptr) {
 			autonomousCommand->Start();

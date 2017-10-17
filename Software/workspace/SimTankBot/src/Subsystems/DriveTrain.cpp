@@ -60,7 +60,7 @@ void DriveTrain::InitDefaultCommand()
 	SetDefaultCommand(new DriveWithJoystick());
 }
 void DriveTrain::TankDrive(float left, float right) {
-	backLeft.Set(left);
+	backLeft.Set(-left);
 	frontRight.Set(-right);
 	backRight.Set(FRONTRIGHT);
 	frontLeft.Set(BACKLEFT);

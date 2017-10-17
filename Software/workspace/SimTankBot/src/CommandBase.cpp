@@ -14,3 +14,11 @@ void CommandBase::RobotInit(){
 	driveTrain.reset(new DriveTrain());
 	oi.reset(new OI());
 }
+
+void CommandBase::TeleopInit(){
+	driveTrain->Reset();
+}
+
+void CommandBase::AutonomousInit(){
+	driveTrain->Reset();
+}
