@@ -8,13 +8,14 @@
 #include <SmartDashboard/SmartDashboard.h>
 #include "Commands/Autonomous.h"
 
-
 #include "CommandBase.h"
 
 class Robot: public frc::IterativeRobot {
 public:
 	void RobotInit() override {
 		CommandBase::RobotInit();
+		CommandGroup *autonomous=new Autonomous();
+				autonomousCommand.reset(autonomous);
 	}
 
 	/**
@@ -42,26 +43,10 @@ public:
 	 * to the if-else structure below with additional strings & commands.
 	 */
 	void AutonomousInit() override {
-//		std::string autoSelected = frc::SmartDashboard::GetString("Auto Selector", "Default");
-//		if (autoSelected == "My Auto") {
-//			autonomousCommand.reset(new MyAutoCommand());
-//		}
-//		else {
-//			autonomousCommand.reset(new ExampleCommand());
-//		}
-//		autonomousCommand.reset(chooser.GetSelected());
-//
-//		if (autonomousCommand.get() != nullptr) {
-//			autonomousCommand->Start();
-//		}
-		CommandGroup *autonomous=new Autonomous();
-		autonomousCommand.reset(autonomous);
 
-		CommandBase::AutonomousInit();
 
-		if (autonomousCommand.get() != nullptr) {
-			autonomousCommand->Start();
-		}
+			if (autonomousCommand.get() != nullptr)
+				autonomousCommand->Start();
 	}
 
 	void AutonomousPeriodic() override {
@@ -73,9 +58,7 @@ public:
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (autonomousCommand != nullptr) {
-			autonomousCommand->Cancel();
-		}
+
 	}
 
 	void TeleopPeriodic() override {

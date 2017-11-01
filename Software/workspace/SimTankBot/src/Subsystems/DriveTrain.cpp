@@ -16,7 +16,7 @@
 #endif
 #define WHEEL_DIAMETER 3.0
 
-#define ROUND(x) round(x*100/100)
+#define ROUND(x) 0.01*round(x*10000/100)
 
 #define TICKS_PER_INCH (DRIVE_ENCODER_TICKS/M_PI/WHEEL_DIAMETER)
 
@@ -34,6 +34,7 @@ DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 	frontRight.SetFeedbackDevice(CANTalon::QuadEncoder);
 	backLeft.SetFeedbackDevice(CANTalon::QuadEncoder);
 	gyro.Reset();
+
 
 #ifdef SPEED
 	SetControlMode(CANTalon::kSpeed);
@@ -65,6 +66,67 @@ void DriveTrain::TankDrive(float left, float right) {
 	backRight.Set(FRONTRIGHT);
 	frontLeft.Set(BACKLEFT);
 
+	Publish(false);
+
+	m_safetyHelper->Feed();
+}
+
+/**
+ * Arcade drive implements single stick driving.
+ *
+ * This function lets you directly provide joystick values from any source.
+ *
+ * @param moveValue     The value to use for fowards/backwards
+ * @param rotateValue   The value to use for the rotate right/left
+ * @param squaredInputs If set, increases the sensitivity at low speeds
+ */
+void DriveTrain::ArcadeDrive(float moveValue, float rotateValue,
+		bool squaredInputs) {
+
+	// local variables to hold the computed PWM values for the motors
+	double leftMotorOutput;
+	double rightMotorOutput;
+
+	if (squaredInputs) {
+		// square the inputs (while preserving the sign) to increase fine control
+		// while permitting full power
+		if (moveValue >= 0.0) {
+			moveValue = (moveValue * moveValue);
+		} else {
+			moveValue = -(moveValue * moveValue);
+		}
+		if (rotateValue >= 0.0) {
+			rotateValue = (rotateValue * rotateValue);
+		} else {
+			rotateValue = -(rotateValue * rotateValue);
+		}
+	}
+
+	if (moveValue > 0.0) {
+		if (rotateValue > 0.0) {
+			leftMotorOutput = moveValue - rotateValue;
+			rightMotorOutput = std::max(moveValue, rotateValue);
+		} else {
+			leftMotorOutput = std::max(moveValue, -rotateValue);
+			rightMotorOutput = moveValue + rotateValue;
+		}
+	} else {
+		if (rotateValue > 0.0) {
+			leftMotorOutput = -std::max(-moveValue, rotateValue);
+			rightMotorOutput = moveValue + rotateValue;
+		} else {
+			leftMotorOutput = moveValue - rotateValue;
+			rightMotorOutput = -std::max(-moveValue, -rotateValue);
+		}
+	}
+	// Ramp values up
+	// Make sure values are between -1 and 1
+	leftMotorOutput  = coerce(-1, 1, leftMotorOutput);
+	rightMotorOutput = coerce(-1, 1, rightMotorOutput);
+	backLeft.Set(leftMotorOutput);
+	frontRight.Set(-rightMotorOutput);
+	backRight.Set(FRONTRIGHT);
+	frontLeft.Set(BACKLEFT);
 	Publish(false);
 
 	m_safetyHelper->Feed();
@@ -204,6 +266,8 @@ void DriveTrain::Reset() {
 	frontRight.Reset();
 	backLeft.Reset();
 	//gyro.Reset();
+	//gyro.InitGyro();
+
 }
 void DriveTrain::Enable() {
 	frontRight.Enable();
@@ -263,6 +327,13 @@ double DriveTrain::GetDistance() {
 	double x=0.5*(d1+d2);
 	return x;
 }
+double DriveTrain::GetVelocity() {
+	double d1=frontRight.GetSpeed();
+	double d2=backLeft.GetSpeed();
+	double x=0.5*(d1+d2);
+	return x;
+}
+
 double DriveTrain::GetRightDistance() {
 	return -frontRight.GetPosition();
 }

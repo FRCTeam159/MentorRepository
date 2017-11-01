@@ -2,6 +2,14 @@
 #include "Subsystems/DriveTrain.h"
 #include "RobotMap.h"
 
+//#define DEBUG_COMMAND
+#define I2M(x) x*0.0254
+
+static Timer mytimer;
+
+//#define APPLY_DEADBAND
+#define SQUARE_INPUTS  false
+
 DriveWithJoystick::DriveWithJoystick()
 {
 	// Use Requires() here to declare subsystem dependencies
@@ -13,6 +21,9 @@ void DriveWithJoystick::Initialize()
 {
 	std::cout << "DriveWithJoystick::Initialize()" << std::endl;
 	driveTrain->SetHighGear();
+	mytimer.Start();
+	mytimer.Reset();
+
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -60,10 +71,14 @@ void DriveWithJoystick::Execute()
 #if DRIVETYPE == ARCADE3
 	driveTrain->CustomArcade(xAxis, yAxis, zAxis,SQUARE_INPUTS);
 #elif DRIVETYPE == ARCADE2
-	driveTrain->CustomArcade(xAxis, yAxis, 0,SQUARE_INPUTS);
+	driveTrain->ArcadeDrive(xAxis, yAxis, SQUARE_INPUTS);
 #else // TANK
 	driveTrain->TankDrive(xAxis, yAxis);
 #endif
+#ifdef DEBUG_COMMAND
+    printf("%f %f %f %f %f\n",mytimer.Get(),I2M(driveTrain->GetDistance()),  I2M(driveTrain->GetVelocity()),xAxis,yAxis);
+#endif
+
 }
 
 // Make this return true when this Command no longer needs to run execute()
@@ -76,6 +91,8 @@ bool DriveWithJoystick::IsFinished()
 void DriveWithJoystick::End()
 {
 	std::cout << "DriveWithJoystick Finished" << std::endl;
+	mytimer.Stop();
+
 }
 
 // Called when another command which requires one or more of the same

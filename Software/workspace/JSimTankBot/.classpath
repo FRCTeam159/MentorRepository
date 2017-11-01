@@ -9,5 +9,6 @@
 	<classpathentry exported="true" kind="lib" path="/home/dean/wpilib/simulation/jar/wpilibjSimulation.jar"/>
 	<classpathentry kind="lib" path="/home/dean/wpilib/user/java/lib/CTRLib.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRLib.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/Pathfinder-Java.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -29,6 +29,8 @@ private:
 public:
 	DriveTrain();
 	void TankDrive(float xAxis, float yAxis);
+	void ArcadeDrive(float xAxis, float yAxis, bool squaredInputs);
+
 	void CustomArcade(float xAxis, float yAxis, float zAxis, bool squaredInputs);
 
 	void InitDefaultCommand();
@@ -53,6 +55,7 @@ public:
 	double GetDistance();
 	double GetLeftDistance();
 	double GetRightDistance();
+	double GetVelocity();
 	double GetHeading();
 	void InitTravel() { travel_distance=0;}
 	double GetTravelDistance();

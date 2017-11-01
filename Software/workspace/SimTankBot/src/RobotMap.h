@@ -29,8 +29,6 @@ const int GEARSHIFTID=0;
 #define ARCADE3    3  // 3-axis throttle,turn,twist
 #define DRIVETYPE  ARCADE2
 
-#define APPLY_DEADBAND
-#define SQUARE_INPUTS  true
 
 
 // If you are using multiple modules, make sure to define both the port
