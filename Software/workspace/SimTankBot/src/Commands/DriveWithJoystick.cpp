@@ -76,7 +76,7 @@ void DriveWithJoystick::Execute()
 	driveTrain->TankDrive(xAxis, yAxis);
 #endif
 #ifdef DEBUG_COMMAND
-    printf("%f %f %f %f %f\n",mytimer.Get(),I2M(driveTrain->GetDistance()),  I2M(driveTrain->GetVelocity()),xAxis,yAxis);
+    printf("%f %f %f %f %f %f\n",mytimer.Get(),I2M(driveTrain->GetDistance()),  I2M(driveTrain->GetLeftVelocity()),I2M(driveTrain->GetRightVelocity()),xAxis,yAxis);
 #endif
 
 }

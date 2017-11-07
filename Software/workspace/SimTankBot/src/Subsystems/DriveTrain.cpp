@@ -14,11 +14,12 @@
 #else
 #define DRIVE_ENCODER_TICKS 900
 #endif
-#define WHEEL_DIAMETER 3.0
+#define WHEEL_DIAMETER 4.25 // inches
 
 #define ROUND(x) 0.01*round(x*10000/100)
 
 #define TICKS_PER_INCH (DRIVE_ENCODER_TICKS/M_PI/WHEEL_DIAMETER)
+#define TICKS_PER_METER (TICKS_PER_INCH*39.37)
 
 DriveTrain::DriveTrain() : Subsystem("DriveTrain"),
 		frontLeft(FRONTLEFT),   // slave  1
@@ -129,62 +130,6 @@ void DriveTrain::ArcadeDrive(float moveValue, float rotateValue,
 	frontLeft.Set(BACKLEFT);
 	Publish(false);
 
-	m_safetyHelper->Feed();
-}
-
-// Put methods for controlling this subsystem
-// here. Call these from Commands.
-void DriveTrain::CustomArcade(float xAxis, float yAxis, float zAxis, bool squaredInputs) {
-	//cout << "xAxis:" << xAxis << " yAxis:" << yAxis << endl;
-	double left=0;
-	double right=0;
-
-	if (squaredInputs) {
-		if (xAxis >= 0.0) {
-			xAxis = (xAxis * xAxis);
-		} else {
-			xAxis = -(xAxis * xAxis);
-		}
-		if (yAxis >= 0.0) {
-			yAxis = (yAxis * yAxis);
-		} else {
-			yAxis = -(yAxis * yAxis);
-		}
-	}
-
-	if (zAxis != 0) {
-		xAxis = zAxis;
-		yAxis = -zAxis;
-	}
-
-	if (xAxis > 0.0) {
-		if (yAxis > 0.0) {
-			left = xAxis - yAxis;
-		right = std::max(xAxis, yAxis);
-		} else {
-			left = std::max(xAxis, -yAxis);
-			right = xAxis + yAxis;
-		}
-	} else {
-		if (yAxis > 0.0) {
-			left = -std::max(-xAxis, yAxis);
-			right = xAxis + yAxis;
-		} else {
-			left = xAxis - yAxis;
-			right = -std::max(-xAxis, -yAxis);
-		}
-	}
-	// Make sure values are between -1 and 1
-#ifndef SPEED
-	left = coerce(-1, 1, left);
-	right = coerce(-1, 1, right);
-#endif
-	backLeft.Set(left);
-	frontRight.Set(-right);
-	backRight.Set(FRONTRIGHT);
-	frontLeft.Set(BACKLEFT);
-
-	Publish(false);
 	m_safetyHelper->Feed();
 }
 
@@ -328,8 +273,8 @@ double DriveTrain::GetDistance() {
 	return x;
 }
 double DriveTrain::GetVelocity() {
-	double d1=frontRight.GetSpeed();
-	double d2=backLeft.GetSpeed();
+	double d1=GetLeftVelocity();
+	double d2=GetRightVelocity();
 	double x=0.5*(d1+d2);
 	return x;
 }
@@ -343,4 +288,12 @@ double DriveTrain::GetLeftDistance() {
 
 double DriveTrain::GetTravelDistance() {
     return travel_distance+GetDistance();
+}
+
+double DriveTrain::GetLeftVelocity() {
+	return -backLeft.GetSpeed();
+}
+
+double DriveTrain::GetRightVelocity() {
+	return -frontRight.GetSpeed();
 }

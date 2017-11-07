@@ -31,8 +31,6 @@ public:
 	void TankDrive(float xAxis, float yAxis);
 	void ArcadeDrive(float xAxis, float yAxis, bool squaredInputs);
 
-	void CustomArcade(float xAxis, float yAxis, float zAxis, bool squaredInputs);
-
 	void InitDefaultCommand();
 	void SetLowGear();
 	void SetHighGear();
@@ -55,6 +53,8 @@ public:
 	double GetDistance();
 	double GetLeftDistance();
 	double GetRightDistance();
+	double GetLeftVelocity();
+	double GetRightVelocity();
 	double GetVelocity();
 	double GetHeading();
 	void InitTravel() { travel_distance=0;}

@@ -13,6 +13,9 @@ class DrivePath : public CommandBase {
 	DistanceFollower rightFollower;
 	FollowerConfig config;
 
+	void ModifyTank();
+	double FollowDistance(DistanceFollower *follower, Segment *trajectory, double distance);
+
 public:
 	DrivePath();
 	~DrivePath();

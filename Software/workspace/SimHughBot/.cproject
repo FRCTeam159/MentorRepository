@@ -128,6 +128,7 @@
 									<listOptionValue builtIn="false" value="cscore"/>
 									<listOptionValue builtIn="false" value="CameraServer"/>
 									<listOptionValue builtIn="false" value="pthread"/>
+									<listOptionValue builtIn="false" value="pathfinder"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1677933356" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/usr/local/cuda/lib64"/>
