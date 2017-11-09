@@ -2,10 +2,6 @@
 
 #define I2M(x) x*0.0254
 
-//static Waypoint p1 = { -4, -1, d2r(45) };      // Waypoint @ x=-4, y=-1, exit angle=45 degrees
-//static Waypoint p2 = { -1, 2, 0 };             // Waypoint @ x=-1, y= 2, exit angle= 0 radians
-//static Waypoint p3 = {  2, 4, 0 };             // Waypoint @ x= 2, y= 4, exit angle= 0 radians
-
 #define POINT_LENGTH 4
 static Waypoint points[POINT_LENGTH];
 
@@ -19,19 +15,20 @@ static TrajectoryCandidate candidate;
 //#define PRINT_PATH
 //#define PLOT_PATH
 #define PLOT_TRAJECTORY
-
-//#define USE_GYRO
+#define DEBUG_COMMAND
+#define USE_GYRO  // in gazebo wheels can slip while turning (known bug) so need to use gyro to correct
+#define GFACT 5   // gyro correction factor
 
 #define TIME_STEP 0.02
-#define MAX_VEL 2.1 //2.75
+#define MAX_VEL 2.1 //2.75 as measured, but reduced to avoid exceeding max on outside wheels when turning
 #define MAX_ACC 2.0
 #define MAX_JRK 2.0
-#define KP 1.4
-#define KI 0.0
+#define KP 1.2
+#define KI 0.5
 #define KD 0.0
 #define KV 1.0/MAX_VEL
 #define KA 0.0
-#define WHEELBASE_WIDTH  0.85 //0.64
+#define WHEELBASE_WIDTH  0.66
 
 static Timer mytimer;
 static double runtime;
@@ -46,7 +43,7 @@ DrivePath::DrivePath() : config{KP,KI,KD,KV,KA} {
     std::cout << "new DrivePath()"<< std::endl;
 
 
-	// Prepare the Trajectory for Generation.
+	// Prepare the Trajectory for Generation (example)
 	//
 	// Arguments:
 	// Fit Function:        FIT_HERMITE_CUBIC or FIT_HERMITE_QUINTIC
@@ -99,7 +96,7 @@ DrivePath::DrivePath() : config{KP,KI,KD,KV,KA} {
 	}
 #endif
 
-    // Generate the Left and Right trajectories of the wheelbase using the
+    // Generate the Left and Right trajectories of the wheel-base using the
     // originally generated trajectory
 	ModifyTank();
     std::cout << "Path generated length="<<length<< std::endl;
@@ -131,9 +128,6 @@ void DrivePath::Initialize() {
 }
 
 // Called repeatedly when this Command is scheduled to run
-//double pathfinder_follow_distance(FollowerConfig c, DistanceFollower *follower, Segment *trajectory, int trajectory_length, double distance) {
-#define DEBUG_COMMAND
-#define AFACT 20
 void DrivePath::Execute() {
 	double ld=I2M(driveTrain->GetLeftDistance());
 	double rd=I2M(driveTrain->GetRightDistance());
@@ -141,42 +135,41 @@ void DrivePath::Execute() {
 	double r=FollowDistance(&rightFollower,rightTrajectory,rd);
 	double lt=leftTrajectory[leftFollower.segment-1].position;
 	double rt=rightTrajectory[rightFollower.segment-1].position;
+#ifdef PLOT_VELOCITY
 	double ltv=leftTrajectory[leftFollower.segment-1].velocity;
 	double rtv=rightTrajectory[rightFollower.segment-1].velocity;
 	double lv=I2M(driveTrain->GetLeftVelocity());
 	double rv=I2M(driveTrain->GetRightVelocity());
+#endif
 	double rerr=rt-rd;
 	double lerr=lt-ld;
-
-	if(leftFollower.finished)
-		l=config.kp*lerr;
-
-	if(rightFollower.finished)
-		r=config.kp*rerr;
 	double gh = driveTrain->GetHeading() ;     // Assuming gyro angle is given in degrees
 	double th = r2d(leftFollower.heading);
 	th=th>180?360-th:th;
 	double herr = th - gh;    // Make sure to bound this from -180 to 180, otherwise you will get super large values
 #ifdef USE_GYRO
-	double turn = AFACT * (-1.0/180.0) * herr;
+	double turn = GFACT * (-1.0/180.0) * herr;
 #else
 	double turn=0;
 #endif
 
 #ifdef DEBUG_COMMAND
-    printf("%f %f %f %f %f %f %f %f %f %f %f %f\n", mytimer.Get(), ld, lt, rd, rt, gh,th,lerr,rerr,herr,r,l);
-    //printf("%f %f %f %f %f %f %f %f %f %f %f %f\n", mytimer.Get(), lv, ltv, rv, rtv, gh,th,ltv-lv,rtv-rv,th-gh,l+turn,r-turn);
+#ifdef PLOT_VELOCITY
+    printf("%f %f %f %f %f %f %f %f %f %f %f %f\n", mytimer.Get(), lv, ltv, rv, rtv, gh,th,ltv-lv,rtv-rv,th-gh,l+turn,r-turn);
+#else
+    printf("%f %f %f %f %f %f %f %f %f %f %f %f\n", mytimer.Get(), ld, lt, rd, rt, gh,th,lerr,rerr,herr,l+turn,r-turn);
+#endif
 #endif
 	driveTrain->TankDrive(l+turn,r-turn);
 }
 
 #define MAX_ANGLE_ERROR 1   // degrees
 #define MAX_POSITION_ERROR 0.5 // meters
-// Make this return true when this Command no longer needs to run execute()
+// return true when this Command no longer needs to run execute()
 bool DrivePath::IsFinished() {
 	if(trajectory==NULL)
 		return true;
-	if(mytimer.Get()-runtime>2)
+	if(mytimer.Get()-runtime>0.5)
 		return true;
 
 	if(leftFollower.finished && rightFollower.finished){ // end of calculated path
@@ -196,12 +189,14 @@ bool DrivePath::IsFinished() {
 void DrivePath::End() {
     std::cout << "DrivePath End" << std::endl;
 	mytimer.Stop();
+	driveTrain->StopMotor();
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void DrivePath::Interrupted() {
     std::cout << "DrivePath Interrupted" << std::endl;
+    End();
 }
 
 void DrivePath::cleanup() {
@@ -215,6 +210,8 @@ void DrivePath::cleanup() {
 	leftTrajectory=NULL;
 	rightTrajectory=NULL;
 }
+
+// modified from tank.c/pathfinder_modify_tank
 void DrivePath::ModifyTank() {
     double w = WHEELBASE_WIDTH / 2;
     int i;
@@ -222,9 +219,12 @@ void DrivePath::ModifyTank() {
         Segment seg = trajectory[i];
         Segment left = seg;
         Segment right = seg;
-
         double cos_angle = cos(seg.heading);
         double sin_angle = sin(seg.heading);
+
+        // note: this code can cause outside wheels to spin faster than measured max velocity
+        //       (and to generate correction values outside +- 1  )
+        //       work-around is to reduce max velocity input to trajectory calculation
 
         left.x = seg.x - (w * sin_angle);
         left.y = seg.y + (w * cos_angle);
@@ -240,10 +240,8 @@ void DrivePath::ModifyTank() {
             left.acceleration = (left.velocity - last.velocity) / seg.dt;
             left.jerk = (left.acceleration - last.acceleration) / seg.dt;
         }
-
         right.x = seg.x + (w * sin_angle);
         right.y = seg.y - (w * cos_angle);
-
         if (i > 0) {
             Segment last = rightTrajectory[i - 1];
             double distance = sqrt(
@@ -256,18 +254,18 @@ void DrivePath::ModifyTank() {
             right.acceleration = (right.velocity - last.velocity) / seg.dt;
             right.jerk = (right.acceleration - last.acceleration) / seg.dt;
         }
-
         leftTrajectory[i] = left;
         rightTrajectory[i] = right;
     }
 }
+// modified from distance.c/pathfinder_follow_distance
 double DrivePath::FollowDistance(DistanceFollower *follower, Segment *trajectory, double distance) {
     int segment = follower->segment;
-    if (segment >= length) {
+    if (segment >= length)
         follower->finished = 1;
-    } else {
+    else
 		follower->finished = 0;
-    }
+
 	Segment s = trajectory[segment];
 	double error = s.position - distance;
 	double calculated_value = config.kp * error +

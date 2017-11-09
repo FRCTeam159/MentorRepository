@@ -14,7 +14,7 @@
 #else
 #define DRIVE_ENCODER_TICKS 900
 #endif
-#define WHEEL_DIAMETER 4.25 // inches
+#define WHEEL_DIAMETER 4.125 // inches
 
 #define ROUND(x) 0.01*round(x*10000/100)
 

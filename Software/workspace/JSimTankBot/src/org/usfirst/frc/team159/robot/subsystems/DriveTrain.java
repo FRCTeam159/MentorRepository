@@ -28,7 +28,7 @@ public class DriveTrain extends Subsystem implements MotorSafety{
 	private DoubleSolenoid gearPneumatic = new DoubleSolenoid(0,1);
 	private MotorSafetyHelper safetyHelper = new MotorSafetyHelper(this);
 
-	static double WHEEL_DIAMETER=3.0; // inches
+	static double WHEEL_DIAMETER=4.125; // inches
 	static int ENDODER_TICKS=900;
 
 	boolean inlowgear=false;
@@ -66,6 +66,14 @@ public class DriveTrain extends Subsystem implements MotorSafety{
 		else 
 			return Math.PI*WHEEL_DIAMETER/12.0/360;	// hard-coded in simulation to 360			
 	}
+	static double metersPerFoot(double x) {
+		return x*0.0254*x/12.0;
+	}
+	public void enable() {
+		frontRight.enable();
+		backLeft.enable();
+		Publish(true);
+	}
 	void Publish(boolean init) {
 		if(init){
 			SmartDashboard.putBoolean("HighGear", false);
@@ -81,24 +89,27 @@ public class DriveTrain extends Subsystem implements MotorSafety{
 			SmartDashboard.putNumber("LeftDistance", distance_in_inches(getLeftDistance()));
 			SmartDashboard.putNumber("RightDistance", distance_in_inches(getRightDistance()));
 			SmartDashboard.putNumber("Travel",distance_in_inches(getDistance()));
-			SmartDashboard.putNumber("LeftWheels", backLeft.get());
-			SmartDashboard.putNumber("RightWheels", frontRight.get());
+			SmartDashboard.putNumber("LeftWheels", round(backLeft.get()));
+			SmartDashboard.putNumber("RightWheels", round(frontRight.get()));
 		}
 	}
 	double distance_in_inches(double x) {
 		return Math.round(12*x*100.0/100);
 	}
 	double getRightDistance() {
-		return frontRight.getPosition();
+		return -frontRight.getPosition();
 	}
 	double getLeftDistance() {
-		return backLeft.getPosition();
+		return -backLeft.getPosition();
 	}
-	double getDistance() {
+	public double getDistance() {
 		double d1=getRightDistance();
 		double d2=getLeftDistance();
 		double x=0.5*(d1+d2);
 		return x;
+	}
+	double round(double x) {
+		return 0.001*Math.round(x*1000);
 	}
 	double getHeading() {
 		if (Robot.isReal()) 
@@ -120,8 +131,16 @@ public class DriveTrain extends Subsystem implements MotorSafety{
 			inlowgear=false;
 		}	
 	}
+	double coerce(double min, double max, double x) {
+		if (x < min)
+			x = min;
+		else if (x > max)
+			x = max;
+		return x;
+	}
+
 	public void tankDrive(double left, double right) {
-		backLeft.set(left);
+		backLeft.set(-left);
 		frontRight.set(-right);
 		backRight.set(RobotMap.FRONTRIGHT);
 		frontLeft.set(RobotMap.BACKLEFT);
@@ -130,57 +149,58 @@ public class DriveTrain extends Subsystem implements MotorSafety{
 		safetyHelper.feed();
 	}
 
-	public void customArcade(double xAxis, double yAxis, double zAxis, boolean squaredInputs) {
-		double left=0;
-		double right=0;
+	public void arcadeDrive(double moveValue, double rotateValue,
+			boolean squaredInputs) {
+
+		// local variables to hold the computed PWM values for the motors
+		double leftMotorOutput;
+		double rightMotorOutput;
 
 		if (squaredInputs) {
-			if (xAxis >= 0.0) {
-				xAxis = (xAxis * xAxis);
+			// square the inputs (while preserving the sign) to increase fine control
+			// while permitting full power
+			if (moveValue >= 0.0) {
+				moveValue = (moveValue * moveValue);
 			} else {
-				xAxis = -(xAxis * xAxis);
+				moveValue = -(moveValue * moveValue);
 			}
-			if (yAxis >= 0.0) {
-				yAxis = (yAxis * yAxis);
+			if (rotateValue >= 0.0) {
+				rotateValue = (rotateValue * rotateValue);
 			} else {
-				yAxis = -(yAxis * yAxis);
+				rotateValue = -(rotateValue * rotateValue);
 			}
 		}
 
-		if (zAxis != 0) {
-			xAxis = zAxis;
-			yAxis = -zAxis;
-		}
-
-		if (xAxis > 0.0) {
-			if (yAxis > 0.0) {
-				left = xAxis - yAxis;
-				right = Math.max(xAxis, yAxis);
+		if (moveValue > 0.0) {
+			if (rotateValue > 0.0) {
+				leftMotorOutput = moveValue - rotateValue;
+				rightMotorOutput = Math.max(moveValue, rotateValue);
 			} else {
-				left = Math.max(xAxis, -yAxis);
-				right = xAxis + yAxis;
+				leftMotorOutput = Math.max(moveValue, -rotateValue);
+				rightMotorOutput = moveValue + rotateValue;
 			}
 		} else {
-			if (yAxis > 0.0) {
-				left = -Math.max(-xAxis, yAxis);
-				right = xAxis + yAxis;
+			if (rotateValue > 0.0) {
+				leftMotorOutput = -Math.max(-moveValue, rotateValue);
+				rightMotorOutput = moveValue + rotateValue;
 			} else {
-				left = xAxis - yAxis;
-				right = -Math.max(-xAxis, -yAxis);
+				leftMotorOutput = moveValue - rotateValue;
+				rightMotorOutput = -Math.max(-moveValue, -rotateValue);
 			}
 		}
-		if(inlowgear){
-			right*=0.5;
-			left*=0.5;
-		}
+		// Ramp values up
+		// Make sure values are between -1 and 1
+		leftMotorOutput  = coerce(-1.0, 1.0, leftMotorOutput);
+		rightMotorOutput = coerce(-1.0, 1.0, rightMotorOutput);
 		
-		backLeft.set(left);
-		frontRight.set(-right);
+		backLeft.set(leftMotorOutput);
+		frontRight.set(-rightMotorOutput);
 		backRight.set(RobotMap.FRONTRIGHT);
 		frontLeft.set(RobotMap.BACKLEFT);
-	
-		safetyHelper.feed();
+
 		Publish(false);
+
+		safetyHelper.feed();
 	}
 
 	/**
@@ -188,6 +208,8 @@ public class DriveTrain extends Subsystem implements MotorSafety{
 	 */
 	public void reset() {
 		gyro.reset();
+		frontRight.reset();
+		backLeft.reset();
 	}
 
 	// MotorSafty methods

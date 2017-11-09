@@ -33,7 +33,6 @@ public class DriveWithJoystick extends Command implements RobotMap{
 		Joystick stick = OI.stick;
 		double yAxis=0; // left stick - drive
 		double xAxis=0; // right stick - rotate
-		double zAxis=0;
 
 		if (stick.getRawButton(RobotMap.LOWGEAR_BUTTON)){
 			Robot.driveTrain.setLowGear();
@@ -50,18 +49,7 @@ public class DriveWithJoystick extends Command implements RobotMap{
         case ARCADE2:
 	    	yAxis=-stick.getRawAxis(1); // left stick - drive
 	    	xAxis=-stick.getRawAxis(3); // right stick - rotate
-			Robot.driveTrain.customArcade(xAxis, yAxis, 0,SQUARE_INPUTS);
-	    	break;
-        case ARCADE3:
-	    	yAxis = stick.getY();
-	    	xAxis = stick.getX();
-	    	zAxis = stick.getZ();
-		    if(APPLY_DEADBAND) {
-				yAxis = quadDeadband(MINTHRESHOLD, MINOUTPUT, yAxis);
-				xAxis = quadDeadband(MINTHRESHOLD, MINOUTPUT, xAxis);
-				zAxis = quadDeadband(MINTHRESHOLD, MINOUTPUT, zAxis);
-		    }
-			Robot.driveTrain.customArcade(xAxis, yAxis, zAxis,SQUARE_INPUTS);
+			Robot.driveTrain.arcadeDrive(xAxis, yAxis,SQUARE_INPUTS);
 	    	break;
 	    }
 	}
