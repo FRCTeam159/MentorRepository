@@ -53,6 +53,10 @@ public class DrivePath extends Command {
 
     public DrivePath() {
 		requires(Robot.driveTrain);
+		mytimer=new Timer();
+    	mytimer.start();
+    	mytimer.reset();
+
 		config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST, 
 				TIME_STEP, MAX_VEL, MAX_ACC,MAX_JRK);
 		trajectory = Pathfinder.generate(points, config);
@@ -76,7 +80,8 @@ public class DrivePath extends Command {
 		leftFollower.configurePIDVA(KP, KI, KD, KV, KA);
 		rightFollower=new DistanceFollower(rightTrajectory);
 		rightFollower.configurePIDVA(KP, KI, KD, KV, KA);
-		
+	    System.out.format("trajectory length:%d runtime:%f calctime:%f\n", trajectory.length(),runtime,mytimer.get());
+
 		if(plot_path) {
 			double t=0;
 			for (int i = 0; i < trajectory.length(); i++) {
@@ -95,7 +100,6 @@ public class DrivePath extends Command {
 			    t+=s.dt;
 			}
 		}
-		mytimer=new Timer();
     }
 
     // Called just before this Command runs the first time
@@ -127,9 +131,9 @@ public class DrivePath extends Command {
     	double herr = th - gh;
     	if(use_gyro) 
     		turn = GFACT * (-1.0/180.0) * herr;
-    	if(debug_command) {
+    	if(debug_command) 
     		System.out.format("%f %f %f %f %f %f %f %f\n", mytimer.get(), ld, rd,gh,th,herr,l+turn,r-turn);
-    	}
+    	
     	Robot.driveTrain.tankDrive(l+turn,r-turn);
     }
 
