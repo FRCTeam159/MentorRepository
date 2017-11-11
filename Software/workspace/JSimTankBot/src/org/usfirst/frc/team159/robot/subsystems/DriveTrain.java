@@ -86,20 +86,20 @@ public class DriveTrain extends Subsystem implements MotorSafety{
 		}else{
 			SmartDashboard.putBoolean("HighGear", !inlowgear);
 			SmartDashboard.putNumber("Heading", getHeading());
-			SmartDashboard.putNumber("LeftDistance", distance_in_inches(getLeftDistance()));
-			SmartDashboard.putNumber("RightDistance", distance_in_inches(getRightDistance()));
-			SmartDashboard.putNumber("Travel",distance_in_inches(getDistance()));
+			SmartDashboard.putNumber("LeftDistance", feet_to_inches(getLeftDistance()));
+			SmartDashboard.putNumber("RightDistance", feet_to_inches(getRightDistance()));
+			SmartDashboard.putNumber("Travel",feet_to_inches(getDistance()));
 			SmartDashboard.putNumber("LeftWheels", round(backLeft.get()));
 			SmartDashboard.putNumber("RightWheels", round(frontRight.get()));
 		}
 	}
-	double distance_in_inches(double x) {
+	public static double feet_to_inches(double x) {
 		return Math.round(12*x*100.0/100);
 	}
-	double getRightDistance() {
+	public double getRightDistance() {
 		return -frontRight.getPosition();
 	}
-	double getLeftDistance() {
+	public double getLeftDistance() {
 		return -backLeft.getPosition();
 	}
 	public double getDistance() {
@@ -111,7 +111,7 @@ public class DriveTrain extends Subsystem implements MotorSafety{
 	double round(double x) {
 		return 0.001*Math.round(x*1000);
 	}
-	double getHeading() {
+	public double getHeading() {
 		if (Robot.isReal()) 
 			return gyro.getAngle();
 		else 
