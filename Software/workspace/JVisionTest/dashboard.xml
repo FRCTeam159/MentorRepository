@@ -1,0 +1,36 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="Travel" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="17" y="373"/>
+		<width>342</width>
+		<height>178</height>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="385" y="10"/>
+		<width>318</width>
+		<height>282</height>
+		<property name="Camera Choice" value=""/>
+	</static-widget>
+	<widget field="Heading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
+		<location x="377" y="375"/>
+		<width>327</width>
+		<height>182</height>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.MjpgStreamViewerImpl">
+		<location x="10" y="6"/>
+		<width>368</width>
+		<height>292</height>
+		<property name="MJPG Server URL" value=" http://localhost:5004/?action=stream"/>
+	</static-widget>
+	<widget field="HighGear" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="235" y="246"/>
+		<width>98</width>
+	</widget>
+</dashboard>
+<live-window>
+</live-window>
+	<hidden field="RightWheels"/>
+	<hidden field="LeftDistance"/>
+	<hidden field="LeftWheels"/>
+	<hidden field="RightDistance"/>
+</xml>
