@@ -90,12 +90,11 @@
 							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.tool.gnu.cpp.compiler.base.2105416021" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base">
 								<option id="gnu.cpp.compiler.option.include.paths.1645322059" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="/usr/local/include"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}/src&quot;"/>
-									<listOptionValue builtIn="false" value="${WPILIB}/simulation/include"/>
-									<listOptionValue builtIn="false" value="/usr/include"/>
 									<listOptionValue builtIn="false" value="/usr/include/gazebo"/>
 									<listOptionValue builtIn="false" value="/usr/include/ignition/math2"/>
 									<listOptionValue builtIn="false" value="/usr/include/sdformat"/>
+									<listOptionValue builtIn="false" value="${WPILIB}/simulation/include"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}/src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${WPILIB}/user/cpp/include&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.optimization.level.1648211502" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
@@ -115,6 +114,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.66697269" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
 							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.tool.gnu.cpp.linker.base.2094820582" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
 								<option id="gnu.cpp.link.option.libs.1563598353" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
+									<listOptionValue builtIn="false" value="pathfinder"/>
 									<listOptionValue builtIn="false" value="ntcore"/>
 									<listOptionValue builtIn="false" value="wpilibcSim"/>
 									<listOptionValue builtIn="false" value="gz_msgs"/>
@@ -128,16 +128,15 @@
 									<listOptionValue builtIn="false" value="cscore"/>
 									<listOptionValue builtIn="false" value="CameraServer"/>
 									<listOptionValue builtIn="false" value="pthread"/>
-									<listOptionValue builtIn="false" value="pathfinder"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.1677933356" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
-									<listOptionValue builtIn="false" value="/usr/local/cuda/lib64"/>
 									<listOptionValue builtIn="false" value="/usr/local/lib"/>
-									<listOptionValue builtIn="false" value="/usr/lib/x86_64-linux-gnu"/>
 									<listOptionValue builtIn="false" value="${WPILIB}/simulation/lib"/>
+									<listOptionValue builtIn="false" value="/usr/local/cuda/lib64"/>
 									<listOptionValue builtIn="false" value="&quot;${WPILIB}/user/cpp/lib&quot;"/>
 								</option>
-								<option id="gnu.cpp.link.option.other.1549699992" name="Other options (-Xlinker [option])" superClass="gnu.cpp.link.option.other" valueType="stringList">
+								<option id="gnu.cpp.link.option.other.1549699992" name="Other options (-Xlinker [option])" superClass="gnu.cpp.link.option.other" useByScannerDiscovery="false" valueType="stringList">
+									<listOptionValue builtIn="false" value="-rpath /usr/local/lib"/>
 									<listOptionValue builtIn="false" value="-rpath ${WPILIB}/simulation/lib"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.152327207" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
@@ -296,7 +295,14 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.772550711" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.873197007" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
 								<option id="gnu.cpp.link.option.libs.1791848788" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
-									<listOptionValue builtIn="false" value="wpi"/>
+									<listOptionValue builtIn="false" value="ntcore"/>
+									<listOptionValue builtIn="false" value="wpilibcSim"/>
+									<listOptionValue builtIn="false" value="gz_msgs"/>
+									<listOptionValue builtIn="false" value="gazebo_client"/>
+									<listOptionValue builtIn="false" value="boost_system"/>
+									<listOptionValue builtIn="false" value="CANTalon"/>
+									<listOptionValue builtIn="false" value="opencv_core"/>
+									<listOptionValue builtIn="false" value="pathfinder"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.999413939" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/usr/local/lib"/>

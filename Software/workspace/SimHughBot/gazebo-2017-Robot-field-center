@@ -1,6 +1,6 @@
 # start gazebo
 
-export LD_LIBRARY_PATH=/usr/local/lib/frcsim/lib:/usr/local/lib:/usr/lib:/usr/lib/x86_64-linux-gnu/:${GAZEBO_PLUGIN_PATH}
+#export LD_LIBRARY_PATH=/usr/local/lib/frcsim/lib:/usr/local/lib:/usr/lib:/usr/lib/x86_64-linux-gnu/:${GAZEBO_PLUGIN_PATH}
 export SWMODEL=$SWEXPORTS/FRC2017_Exported
 export GAZEBO_MODEL_PATH=$SWMODEL:$WPILIB/simulation/models:/usr/share/gazebo/models
 

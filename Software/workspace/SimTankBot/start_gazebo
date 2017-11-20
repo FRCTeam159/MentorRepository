@@ -1,4 +1,4 @@
-export LD_LIBRARY_PATH=/usr/local/lib/frcsim/lib:/usr/local/lib:/usr/lib:/usr/lib/x86_64-linux-gnu/:${GAZEBO_PLUGIN_PATH}
+#export LD_LIBRARY_PATH=/usr/local/lib/frcsim/lib:/usr/local/lib:/usr/lib:/usr/lib/x86_64-linux-gnu/:${GAZEBO_PLUGIN_PATH}
 
 
 export SWEXPORTS=$HOME/Robotics/Solidworks/Exported

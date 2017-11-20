@@ -22,6 +22,7 @@
 #include "Commands/TurnToAngle.h"
 #include "Commands/TurnForTime.h"
 #include "Commands/DeliverGear.h"
+#include "Commands/DrivePath.h"
 
 
 #define TUNE_AUTO
@@ -42,7 +43,7 @@ class Robot: public frc::IterativeRobot {
 public:
 	void RobotInit() override {
 		CommandBase::RobotInit();
-		frc::SmartDashboard::PutString("AutoMode", "Center");
+		frc::SmartDashboard::PutString("AutoMode", "PFCenter");
 		frc::SmartDashboard::PutBoolean("Targeting", false);
 
 		frc::SmartDashboard::PutNumber("leftDrive", leftDrive);
@@ -65,7 +66,7 @@ public:
 
 
 	void AutonomousInit() override {
-		std::string autoSelected = frc::SmartDashboard::GetString("AutoMode", "Center");
+		std::string autoSelected = frc::SmartDashboard::GetString("AutoMode", "PFRight");
 
 		rightDrive = frc::SmartDashboard::GetNumber("rightDrive", rightDrive);
 		rightTurn = frc::SmartDashboard::GetNumber("rightTurn",rightTurn);
@@ -93,10 +94,20 @@ public:
 			autonomous->AddSequential(new DriveForTime(1.5, 0.4));
 			autonomous->AddSequential(new DeliverGear());
 		}
-		else if(autoSelected == "Test") {
-			cout<<"Pathfinder Test"<<endl;
-			autonomous->AddSequential(new DriveForTime(1.5, 0.4));
-			autonomous->AddSequential(new DeliverGear());
+		else if(autoSelected == "PFLeft") {
+			cout<<"Pathfinder Test left"<<endl;
+			autonomous->AddSequential(new DrivePath(DrivePath::LEFT));
+			//autonomous->AddSequential(new DeliverGear());
+		}
+		else if(autoSelected == "PFRight") {
+			cout<<"Pathfinder Test right"<<endl;
+			autonomous->AddSequential(new DrivePath(DrivePath::RIGHT));
+			//autonomous->AddSequential(new DeliverGear());
+		}
+		else if(autoSelected == "PFCenter") {
+			cout<<"Pathfinder Test center"<<endl;
+			autonomous->AddSequential(new DrivePath(DrivePath::CENTER));
+			//autonomous->AddSequential(new DeliverGear());
 		}
 		else{
 			cout<<"Auto Mode Disabled"<<endl;

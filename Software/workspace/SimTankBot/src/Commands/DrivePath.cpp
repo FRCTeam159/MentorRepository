@@ -2,13 +2,18 @@
 
 #define I2M(x) x*0.0254
 
-#define POINT_LENGTH 4
+#define POINT_LENGTH 3
 static Waypoint points[POINT_LENGTH];
 
+//static Waypoint p0 = { 0, 0, 0 };
+//static Waypoint p1 = { 2, 0, 0 };
+//static Waypoint p2 = { 4, 4, d2r(45)};
+//static Waypoint p3 = { 8, 8, 0 };
+
 static Waypoint p0 = { 0, 0, 0 };
-static Waypoint p1 = { 2, 0, 0 };
-static Waypoint p2 = { 4, 4, d2r(45)};
-static Waypoint p3 = { 8, 8, 0 };
+static Waypoint p1 = { 1, 0, 0 };
+static Waypoint p2 = { 2, -0.5, d2r(-45)};
+//static Waypoint p3 = { 8, 8, 0 };
 
 static TrajectoryCandidate candidate;
 
@@ -16,7 +21,7 @@ static TrajectoryCandidate candidate;
 //#define PLOT_PATH
 #define PLOT_TRAJECTORY
 #define DEBUG_COMMAND
-#define USE_GYRO  // in gazebo wheels can slip while turning (known bug) so need to use gyro to correct
+//#define USE_GYRO  // in gazebo wheels can slip while turning (known bug) so need to use gyro to correct
 #define GFACT 5   // gyro correction factor
 
 #define TIME_STEP 0.02
@@ -38,7 +43,7 @@ DrivePath::DrivePath() : config{KP,KI,KD,KV,KA} {
 	points[0] = p0;
 	points[1] = p1;
 	points[2] = p2;
-	points[3] = p3;
+	//points[3] = p3;
 
     std::cout << "new DrivePath()"<< std::endl;
 
