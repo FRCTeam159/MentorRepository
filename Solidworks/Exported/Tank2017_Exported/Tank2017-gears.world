@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sdf version="1.6">
+  <world name="default">
+    <physics type="ode">
+      <max_contacts>2</max_contacts>
+<!-- -->
+        <ode>
+        <solver>
+          <friction_model>"cone_model"</friction_model>
+          
+<!-- <iters>10</iters> -->
+        </solver>
+        </ode>
+
+    </physics>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://Tank2017</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+    <include>
+      <name>gear1</name>
+      <uri>model://Gear</uri>
+      <pose>1.83 0.339 0.049 0 0 2.94</pose>
+    </include>
+    <include>
+      <name>gear2</name>
+      <uri>model://Gear</uri>
+      <pose>1.38 0 0.049 0 0 2.94</pose>
+    </include>
+
+  </world>
+</sdf>

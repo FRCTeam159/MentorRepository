@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sdf version="1.6">
+  <world name="default">
+    <physics type="ode">
+      <max_contacts>2</max_contacts>
+
+        <ode>
+        <solver>
+          <friction_model>"cone_model"</friction_model>
+          
+<!-- <iters>10</iters> -->
+        </solver>
+        </ode>
+
+    </physics>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://Tank2017</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+  </world>
+</sdf>

@@ -1,0 +1,755 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sdf version="1.5">
+  <model name="Tank2017">
+    <pose>0 0 0.03 0 0 0</pose>
+    <plugin name="clock" filename="libgz_clock.so">
+      <topic>/gazebo/frc/time</topic>
+    </plugin>
+    <link name="Chassis">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.425449999999999 0.3683 0.0376566951243428 1.5707963267949 0 -1.5707963267949</pose>
+      <must_be_base_link>1</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>2.40817781994212</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.241291454428431</ixx>
+          <ixy>7.55045169182483E-18</ixy>
+          <ixz>4.33680868994202E-18</ixz>
+          <iyy>0.396867274360816</iyy>
+          <iyz>2.74353971615668E-18</iyz>
+          <izz>0.158653242485737</izz>
+        </inertia>
+      </inertial>
+      <collision name="Chassis_collision">
+        <pose>-0.012550161129536 -0.451315668830974 -0.564278846984316 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/Chassis_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode />
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name="Chassis_visual">
+        <pose>-0.012550161129536 -0.451315668830974 -0.564278846984316 0 0 0</pose>
+        <material>
+          <ambient>0 0.250980392156863 1 1</ambient>
+          <diffuse>0 0.250980392156863 1 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/Chassis.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <sensor name="ChassisCamera" type="camera">
+        <visualize>1</visualize>
+        <always_on>1</always_on>
+        <pose>0 0.1 -0.406399999999999 -1.57 1.57 0.0</pose>
+        <update_rate>10.0</update_rate>
+        <camera name="Chassiscamera">
+          <horizontal_fov>1.0471975511966</horizontal_fov>
+          <image>
+            <width>320</width>
+            <height>240</height>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100</far>
+          </clip>
+          <save enabled="true">
+              <path>/tmp/driver-camera</path>
+          </save>
+        </camera>
+      </sensor>
+    </link>
+    <link name="L1Wheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.1016 0.0412750000000001 0.0381 1.5707963267949 0 -1.5707963267949</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.494101547094075</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.000759579992246719</ixx>
+          <ixy>1.64529823070963E-36</ixy>
+          <ixz>1.37155809984153E-20</ixz>
+          <iyy>0.00051427301114409</iyy>
+          <iyz>1.78378623796855E-38</iyz>
+          <izz>0.00051427301114409</izz>
+        </inertia>
+      </inertial>
+      <collision name="L1Wheel_collision">
+        <pose>-0.339575161129536 -0.451758973706632 -0.888128846984316 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/L1Wheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+          </friction>
+		  <contact>
+			<ode>
+			  <max_vel>100</max_vel>
+			  <soft_cfm>0.8</soft_cfm>
+			  <soft_erp>0.8</soft_erp>
+			  <kd>100</kd>
+			  <kp>10000</kp>
+			  <min_depth>0.002</min_depth>
+			</ode>
+		  </contact>
+        </surface>
+      </collision>
+      <visual name="L1Wheel_visual">
+        <pose>-0.339575161129536 -0.451758973706632 -0.888128846984316 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/L1Wheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-L1Wheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>L1Wheel</child>
+      <pose>3.33066907387547E-16 0 -2.22044604925031E-16 0 0 0</pose>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <dynamics>
+          <damping>1</damping>
+          <friction>1</friction>
+        </dynamics>
+        <limit>
+          <effort>100</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="L2Wheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.3175 0.0412750000000001 0.0317499999999999 1.5707963267949 0 -1.5707963267949</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.494101547094075</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.000759579992246719</ixx>
+          <ixy>1.64529823070963E-36</ixy>
+          <ixz>1.37155809984153E-20</ixz>
+          <iyy>0.00051427301114409</iyy>
+          <iyz>1.78378623796855E-38</iyz>
+          <izz>0.00051427301114409</izz>
+        </inertia>
+      </inertial>
+      <collision name="L2Wheel_collision">
+        <pose>-0.339575161129536 -0.445408973706631 -0.672228846984316 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/L2Wheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+          </friction>
+		  <contact>
+			<ode>
+			  <max_vel>100</max_vel>
+			  <soft_cfm>0.8</soft_cfm>
+			  <soft_erp>0.8</soft_erp>
+			  <kd>100</kd>
+			  <kp>10000</kp>
+			  <min_depth>0.002</min_depth>
+			</ode>
+		  </contact>
+        </surface>
+      </collision>
+      <visual name="L2Wheel_visual">
+        <pose>-0.339575161129536 -0.445408973706631 -0.672228846984316 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/L2Wheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-L2Wheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>L2Wheel</child>
+      <pose>3.33066907387547E-16 5.55111512312578E-17 0 0 0 0</pose>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <dynamics>
+          <damping>1</damping>
+          <friction>1</friction>
+        </dynamics>
+        <limit>
+          <effort>100</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="L3Wheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.5334 0.0412750000000002 0.0317499999999998 1.5707963267949 0 -1.5707963267949</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.494101547094075</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.000759579992246719</ixx>
+          <ixy>1.64529823070963E-36</ixy>
+          <ixz>1.37155809984153E-20</ixz>
+          <iyy>0.00051427301114409</iyy>
+          <iyz>1.78378623796855E-38</iyz>
+          <izz>0.00051427301114409</izz>
+        </inertia>
+      </inertial>
+      <collision name="L3Wheel_collision">
+        <pose>-0.339575161129536 -0.445408973706631 -0.456328846984316 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/L3Wheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+           </friction>
+		  <contact>
+			<ode>
+			  <max_vel>100</max_vel>
+			  <soft_cfm>0.8</soft_cfm>
+			  <soft_erp>0.8</soft_erp>
+			  <kd>100</kd>
+			  <kp>10000</kp>
+			  <min_depth>0.002</min_depth>
+			</ode>
+		  </contact>
+        </surface>
+      </collision>
+      <visual name="L3Wheel_visual">
+        <pose>-0.339575161129536 -0.445408973706631 -0.456328846984316 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/L3Wheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-L3Wheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>L3Wheel</child>
+      <pose>3.33066907387547E-16 5.55111512312578E-17 -1.11022302462516E-16 0 0 0</pose>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <dynamics>
+          <damping>1</damping>
+          <friction>1</friction>
+        </dynamics>
+        <limit>
+          <effort>100</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="L4Wheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.7493 0.0412750000000002 0.0380999999999998 1.5707963267949 0 -1.5707963267949</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.494101547094075</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.000759579992246719</ixx>
+          <ixy>3.87913135771356E-35</ixy>
+          <ixz>1.37155809984153E-20</ixz>
+          <iyy>0.00051427301114409</iyy>
+          <iyz>5.47393247872099E-35</iyz>
+          <izz>0.00051427301114409</izz>
+        </inertia>
+      </inertial>
+      <collision name="L4Wheel_collision">
+        <pose>-0.339575161129536 -0.451758973706631 -0.240428846984316 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/L4Wheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+          </friction>
+		  <contact>
+			<ode>
+			  <max_vel>100</max_vel>
+			  <soft_cfm>0.8</soft_cfm>
+			  <soft_erp>0.8</soft_erp>
+			  <kd>100</kd>
+			  <kp>10000</kp>
+			  <min_depth>0.002</min_depth>
+			</ode>
+		  </contact>
+        </surface>
+      </collision>
+      <visual name="L4Wheel_visual">
+        <pose>-0.339575161129536 -0.451758973706631 -0.240428846984316 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/L4Wheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-L4Wheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>L4Wheel</child>
+      <pose>3.33066907387547E-16 0 2.77555756156289E-17 0 0 0</pose>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <dynamics>
+          <damping>1</damping>
+          <friction>1</friction>
+        </dynamics>
+        <limit>
+          <effort>100</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="R1Wheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.1016 0.695325 0.0381 1.5707963267949 0 -1.5707963267949</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.494101547094075</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.000759579992246719</ixx>
+          <ixy>1.64529823070963E-36</ixy>
+          <ixz>1.37155809984153E-20</ixz>
+          <iyy>0.00051427301114409</iyy>
+          <iyz>1.78378623796855E-38</iyz>
+          <izz>0.00051427301114409</izz>
+        </inertia>
+      </inertial>
+      <collision name="R1Wheel_collision">
+        <pose>0.314474838870464 -0.451758973706632 -0.888128846984315 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/R1Wheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+          </friction>
+		  <contact>
+			<ode>
+			  <max_vel>100</max_vel>
+			  <soft_cfm>0.8</soft_cfm>
+			  <soft_erp>0.8</soft_erp>
+			  <kd>100</kd>
+			  <kp>10000</kp>
+			  <min_depth>0.002</min_depth>
+			</ode>
+		  </contact>
+        </surface>
+      </collision>
+      <visual name="R1Wheel_visual">
+        <pose>0.314474838870464 -0.451758973706632 -0.888128846984315 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/R1Wheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-R1Wheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>R1Wheel</child>
+      <pose>2.77555756156289E-16 0 0 0 0 0</pose>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <dynamics>
+          <damping>1</damping>
+          <friction>1</friction>
+        </dynamics>
+        <limit>
+          <effort>100</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="R2Wheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.3175 0.695325 0.0317499999999999 1.5707963267949 0 -1.5707963267949</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.494101547094075</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.000759579992246719</ixx>
+          <ixy>1.64529823070963E-36</ixy>
+          <ixz>1.37155809984153E-20</ixz>
+          <iyy>0.00051427301114409</iyy>
+          <iyz>1.78378623796825E-38</iyz>
+          <izz>0.00051427301114409</izz>
+        </inertia>
+      </inertial>
+      <collision name="R2Wheel_collision">
+        <pose>0.314474838870464 -0.445408973706632 -0.672228846984316 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/R2Wheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+          </friction>
+		  <contact>
+			<ode>
+			  <max_vel>100</max_vel>
+			  <soft_cfm>0.8</soft_cfm>
+			  <soft_erp>0.8</soft_erp>
+			  <kd>100</kd>
+			  <kp>10000</kp>
+			  <min_depth>0.002</min_depth>
+			</ode>
+		  </contact>
+        </surface>
+      </collision>
+      <visual name="R2Wheel_visual">
+        <pose>0.314474838870464 -0.445408973706632 -0.672228846984316 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/R2Wheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-R2Wheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>R2Wheel</child>
+      <pose>3.33066907387547E-16 0 0 0 0 0</pose>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <dynamics>
+          <damping>1</damping>
+          <friction>1</friction>
+        </dynamics>
+        <limit>
+          <effort>100</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="R3Wheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.5334 0.695325 0.0317499999999998 1.5707963267949 0 -1.5707963267949</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.494101547094075</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.000759579992246719</ixx>
+          <ixy>1.64529823070963E-36</ixy>
+          <ixz>1.37155809984153E-20</ixz>
+          <iyy>0.00051427301114409</iyy>
+          <iyz>1.78378623796825E-38</iyz>
+          <izz>0.00051427301114409</izz>
+        </inertia>
+      </inertial>
+      <collision name="R3Wheel_collision">
+        <pose>0.314474838870464 -0.445408973706631 -0.456328846984316 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/R3Wheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+          </friction>
+		  <contact>
+			<ode>
+			  <max_vel>100</max_vel>
+			  <soft_cfm>0.8</soft_cfm>
+			  <soft_erp>0.8</soft_erp>
+			  <kd>100</kd>
+			  <kp>10000</kp>
+			  <min_depth>0.002</min_depth>
+			</ode>
+		  </contact>
+        </surface>
+      </collision>
+      <visual name="R3Wheel_visual">
+        <pose>0.314474838870464 -0.445408973706631 -0.456328846984316 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/R3Wheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-R3Wheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>R3Wheel</child>
+      <pose>2.77555756156289E-16 5.55111512312578E-17 0 0 0 0</pose>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <dynamics>
+          <damping>1</damping>
+          <friction>1</friction>
+        </dynamics>
+        <limit>
+          <effort>100</effort>
+        </limit>
+      </axis>
+    </joint>
+    <link name="R4Wheel">
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <pose>0.7493 0.695325 0.0380999999999998 1.5707963267949 0 -1.5707963267949</pose>
+      <must_be_base_link>0</must_be_base_link>
+      <velocity_decay>
+        <linear>0</linear>
+        <angular>0</angular>
+      </velocity_decay>
+      <inertial>
+        <mass>0.494101547094075</mass>
+        <pose>0 0 0 0 0 0</pose>
+        <inertia>
+          <ixx>0.000759579992246719</ixx>
+          <ixy>3.87913135771356E-35</ixy>
+          <ixz>1.37155809984153E-20</ixz>
+          <iyy>0.00051427301114409</iyy>
+          <iyz>5.47393247872099E-35</iyz>
+          <izz>0.00051427301114409</izz>
+        </inertia>
+      </inertial>
+      <collision name="R4Wheel_collision">
+        <pose>0.314474838870464 -0.451758973706631 -0.240428846984316 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/R4Wheel_col.STL</uri>
+          </mesh>
+        </geometry>
+        <surface>
+         <friction>
+            <ode>
+              <mu>0.5</mu>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+          </friction>
+		  <contact>
+			<ode>
+			  <max_vel>100</max_vel>
+			  <soft_cfm>0.8</soft_cfm>
+			  <soft_erp>0.8</soft_erp>
+			  <kd>100</kd>
+			  <kp>10000</kp>
+			  <min_depth>0.002</min_depth>
+			</ode>
+		  </contact>
+        </surface>
+      </collision>
+      <visual name="R4Wheel_visual">
+        <pose>0.314474838870464 -0.451758973706631 -0.240428846984316 0 0 0</pose>
+        <material>
+          <ambient>0.501960784313725 0.501960784313725 0.501960784313725 1</ambient>
+          <diffuse>0.501960784313725 0.501960784313725 0.501960784313725 1</diffuse>
+        </material>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://Tank2017/meshes/R4Wheel.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name="Chassis-R4Wheel" type="revolute">
+      <parent>Chassis</parent>
+      <child>R4Wheel</child>
+      <pose>2.22044604925031E-16 0 2.77555756156289E-17 0 0 0</pose>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <dynamics>
+          <damping>1</damping>
+          <friction>1</friction>
+        </dynamics>
+        <limit>
+          <effort>100</effort>
+        </limit>
+      </axis>
+    </joint>
+    <plugin name="Chassis_gyro" filename="libgyro.so">
+      <link>Chassis</link>
+      <topic>/gazebo/frc/simulator/analog/3</topic>
+      <units>degrees</units>
+      <axis>yaw</axis>
+    </plugin>
+    <plugin name="Chassis-L1Wheel_motor" filename="libgz_dc_motor.so">
+      <joint>Chassis-L1Wheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/2</topic>
+      <multiplier>50</multiplier>
+    </plugin>
+    <plugin name="Chassis-L2Wheel_motor" filename="libgz_dc_motor.so">
+      <joint>Chassis-L2Wheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/2</topic>
+      <multiplier>50</multiplier>
+    </plugin>
+    <plugin name="Chassis-L2Wheel_encoder" filename="libgz_encoder.so">
+      <joint>Chassis-L2Wheel</joint>
+      <topic>/gazebo/frc/simulator/dio/3/4</topic>
+      <units>degrees</units>
+    </plugin>
+    <plugin name="Chassis-L3Wheel_motor" filename="libgz_dc_motor.so">
+      <joint>Chassis-L3Wheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/2</topic>
+      <multiplier>50</multiplier>
+    </plugin>
+    <plugin name="Chassis-L4Wheel_motor" filename="libgz_dc_motor.so">
+      <joint>Chassis-L4Wheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/2</topic>
+      <multiplier>50</multiplier>
+    </plugin>
+    <plugin name="Chassis-R1Wheel_motor" filename="libgz_dc_motor.so">
+      <joint>Chassis-R1Wheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/4</topic>
+      <multiplier>50</multiplier>
+    </plugin>
+    <plugin name="Chassis-R2Wheel_motor" filename="libgz_dc_motor.so">
+      <joint>Chassis-R2Wheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/4</topic>
+      <multiplier>50</multiplier>
+    </plugin>
+    <plugin name="Chassis-R2Wheel_encoder" filename="libgz_encoder.so">
+      <joint>Chassis-R2Wheel</joint>
+      <topic>/gazebo/frc/simulator/dio/7/8</topic>
+      <units>degrees</units>
+    </plugin>
+    <plugin name="Chassis-R3Wheel_motor" filename="libgz_dc_motor.so">
+      <joint>Chassis-R3Wheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/4</topic>
+      <multiplier>50</multiplier>
+    </plugin>
+    <plugin name="Chassis-R4Wheel_motor" filename="libgz_dc_motor.so">
+      <joint>Chassis-R4Wheel</joint>
+      <topic>/gazebo/frc/simulator/pwm/4</topic>
+      <multiplier>50</multiplier>
+    </plugin>
+  </model>
+</sdf>
