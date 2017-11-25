@@ -5,4 +5,4 @@ export SWEXPORTS=$HOME/Robotics/Solidworks/Exported
 export SWMODEL=$SWEXPORTS/Tank2017_Exported
 export GAZEBO_MODEL_PATH=$SWMODEL:$WPILIB/simulation/models:/usr/share/gazebo/models
 
-gazebo --verbose $SWMODEL/Tank2017.world
+gazebo --verbose $SWMODEL/Tank2017-gears.world

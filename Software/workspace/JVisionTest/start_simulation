@@ -1,6 +1,6 @@
 rm -fr /tmp/*-camera/*
 mkdir -p /tmp/shooter-camera /tmp/driver-camera
-cd ~/Robotics/MentorRepository/Software/workspace/JSimTankBot;
+cd ~/Robotics/MentorRepository/Software/workspace/JVisionTest;
 
 killall gzserver
 

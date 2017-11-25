@@ -1,5 +1,14 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Targets" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="43" y="331"/>
+	</widget>
+	<widget field="Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="487" y="328"/>
+	</widget>
+	<widget field="Distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="256" y="328"/>
+	</widget>
 	<widget field="Travel" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
 		<location x="17" y="373"/>
 		<width>342</width>
@@ -22,15 +31,7 @@
 		<height>292</height>
 		<property name="MJPG Server URL" value=" http://localhost:5004/?action=stream"/>
 	</static-widget>
-	<widget field="HighGear" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="235" y="246"/>
-		<width>98</width>
-	</widget>
 </dashboard>
 <live-window>
 </live-window>
-	<hidden field="RightWheels"/>
-	<hidden field="LeftDistance"/>
-	<hidden field="LeftWheels"/>
-	<hidden field="RightDistance"/>
 </xml>

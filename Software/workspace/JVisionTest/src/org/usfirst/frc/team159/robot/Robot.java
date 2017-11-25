@@ -8,6 +8,12 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team159.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team159.robot.subsystems.VisionProc;
+
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import java.lang.System;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -19,6 +25,7 @@ import org.usfirst.frc.team159.robot.subsystems.DriveTrain;
 public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static final DriveTrain driveTrain = new DriveTrain();
+	public static final VisionProc visionProc=new VisionProc();
 
 
 	Command autonomousCommand;
@@ -40,7 +47,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
 	}
 
 	@Override

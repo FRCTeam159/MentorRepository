@@ -1,0 +1,18 @@
+Topics
+I. Add support for vision in Java simulation code
+ 1) opencv
+   - add to top of constructor in Robot of VisionProc class:
+     System.loadLibrary(Core.NATIVE_LIBRARY_NAME );
+   - copy or link opencv jar and .so into ~/wpilib/simulation/jar
+     e.g. opencv-320.jar opencv_java320.so
+2) CameraServer
+   - copy CameraServer.java from wpilibj athena/src/athena/java .. to corresponding location in  athena/src/sim/java
+   - modify wpilibj/simulation.gradle
+     add to "dependencies" after line #5
+       simCompile cscoreDep('java', 'arm')
+       simRuntime cscoreDep('java', 'arm')
+   - rebuild simulation jar file
+     > gradlew :wpilibj:build -PmakeSim
+   - copy jar file to ~/wpilib/simulation/jar
+     > cp wpilibj/build/libs/wpilibjSimulation.jar ~/wpilib/simulation/jar
+   
