@@ -43,7 +43,7 @@ class Robot: public frc::IterativeRobot {
 public:
 	void RobotInit() override {
 		CommandBase::RobotInit();
-		frc::SmartDashboard::PutString("AutoMode", "PFCenter");
+		frc::SmartDashboard::PutString("AutoMode", "PFRight");
 		frc::SmartDashboard::PutBoolean("Targeting", false);
 
 		frc::SmartDashboard::PutNumber("leftDrive", leftDrive);

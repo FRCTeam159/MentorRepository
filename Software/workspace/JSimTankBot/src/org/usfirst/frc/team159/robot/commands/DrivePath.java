@@ -38,7 +38,7 @@ public class DrivePath extends Command {
 
 	static public boolean plot_path=false;
 	static public boolean plot_trajectory=false;
-	static public boolean use_gyro=true;
+	static public boolean use_gyro=false;
 	static public boolean debug_command=true;
 
 	double runtime=0;
