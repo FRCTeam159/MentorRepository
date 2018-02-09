@@ -636,11 +636,11 @@
       <axis>
         <xyz>-1 0 0</xyz>
         <dynamics>
-          <damping>10</damping>
+          <damping>5</damping>
           <friction>0.0</friction>
         </dynamics>
         <limit>
-          <upper>1.1</upper>
+          <upper>1.0</upper>
           <lower>0</lower>
           <effort>50</effort>
         </limit>
@@ -727,11 +727,11 @@
       <axis>
         <xyz>1 0 0</xyz>
         <dynamics>
-          <damping>10</damping>
+          <damping>5</damping>
           <friction>0.0</friction>
         </dynamics>
         <limit>
-          <upper>0.95</upper>
+          <upper>1.05</upper>
           <lower>0.0</lower>
           <effort>100</effort>
         </limit>

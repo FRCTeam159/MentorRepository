@@ -29,10 +29,6 @@
       <pose>-7.862 -6.196 0.057808 -0.00181 0.00064 0.05477</pose>
     </include>
 -->
-    <include>
-      <uri>model://2018RobotElevator</uri>
-      <pose>-7.292 -5.9954 0.1 -0.002285 -0.02671 -0.000243</pose>
-    </include>
 
     <include>
       <uri>model://2018Field</uri>
@@ -43,17 +39,18 @@
       <uri>model://Scale</uri>
       <pose>0.723153 -4.6314 0.007615 -1e-05 1e-06 1.57245</pose>
     </include>
+ 
     <include>
       <uri>model://Switch</uri>
-      <pose>-4.28075 -1.00838 0.01 0 -0 1.57424</pose>
-    </include>
-
-   <!--
+      <pose>-4.28075 -1.00838 0.02 0 -0 1.57424</pose>
+      </include>
     <include>
-      <uri>model://2018FieldCAD</uri>
-      <pose>-10.9303 -7.55789 0.011124 3.140 0.00 3.14</pose>
+      <uri>model://2018Robot</uri>
+      <pose>-7.35 -6.0 0.06 0 0 0</pose>
     </include>
-
--->
+    <include>
+      <uri>model://Cube</uri>
+      <pose>-6.84 -5.875 0.2 1.571 0 0</pose>
+    </include>
   </world>
 </sdf>

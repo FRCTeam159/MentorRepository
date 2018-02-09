@@ -60,6 +60,11 @@
         </geometry>
       </visual>
     </link>
+    <joint name="ScaleBase-World" type="fixed">
+      <parent>world</parent>
+      <child>ScaleBase</child>
+   </joint>
+
     <link name="ScaleArm">
       <gravity>1</gravity>
       <self_collide>0</self_collide>
@@ -122,12 +127,12 @@
       <axis>
         <xyz>1 0 3.88581826685001E-16</xyz>
         <dynamics>
-          <damping>0</damping>
-          <friction>0</friction>
+          <damping>1</damping>
+          <friction>1</friction>
         </dynamics>
         <limit>
-          <upper>0</upper>
-          <lower>0</lower>
+          <upper>0.1</upper>
+          <lower>-0.10</lower>
           <effort>1</effort>
         </limit>
       </axis>

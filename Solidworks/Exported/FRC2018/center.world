@@ -7,7 +7,7 @@
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
-    </gui>
+    </gui>     
 
  
 <physics type="ode">
@@ -23,15 +23,12 @@
     <include>
       <uri>model://ground_plane</uri>
     </include>
-<!--
-    <include>
-      <uri>model://Tank2017</uri>
-      <pose>-7.862 -6.196 0.057808 -0.00181 0.00064 0.05477</pose>
-    </include>
+ <!-- 
+      <pose>-6.7918 -3.0 0.18 0 1.507 0</pose>
 -->
     <include>
-      <uri>model://2018RobotElevator</uri>
-      <pose>-7.326 -3.13 0.1 -0.002285 -0.02671 -0.000243</pose>
+      <uri>model://Cube</uri>
+      <pose>-6.835 -2.92 0.17 -1.571 0 3.14</pose>
     </include>
 
     <include>
@@ -43,17 +40,17 @@
       <uri>model://Scale</uri>
       <pose>0.723153 -4.6314 0.007615 -1e-05 1e-06 1.57245</pose>
     </include>
+
+
     <include>
       <uri>model://Switch</uri>
       <pose>-4.28075 -1.00838 0.01 0 -0 1.57424</pose>
     </include>
 
-   <!--
-    <include>
-      <uri>model://2018FieldCAD</uri>
-      <pose>-10.9303 -7.55789 0.011124 3.140 0.00 3.14</pose>
+   <include>
+      <uri>model://2018Robot</uri>
+      <pose>-7.35 -3.07 0.06 0 0 0</pose>
     </include>
 
--->
   </world>
 </sdf>

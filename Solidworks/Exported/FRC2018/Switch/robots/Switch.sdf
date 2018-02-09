@@ -9,21 +9,21 @@
       <gravity>1</gravity>
       <self_collide>0</self_collide>
       <pose>-1.94930231043484 -0.710660931772002 0.235895978961787 1.56083715346702 -0.0111679625054779 -1.58452574383917</pose>
-      <must_be_base_link>1</must_be_base_link>
+      <must_be_base_link>0</must_be_base_link>
       <velocity_decay>
         <linear>0</linear>
         <angular>0</angular>
       </velocity_decay>
       <inertial>
-        <mass>181.8371477628258</mass>
+        <mass>81.8371477628258</mass>
         <pose>0 0 0 0 0 0</pose>
         <inertia>
-          <ixx>100.71725360517504</ixx>
+          <ixx>0.671725360517504</ixx>
           <ixy>0.414975205473895</ixy>
-          <ixz>10</ixz>
-          <iyy>180.2756885389048</iyy>
-          <iyz>10</iyz>
-          <izz>180.1734623592377</izz>
+          <ixz>1.70824830286996</ixz>
+          <iyy>18.2756885389048</iyy>
+          <iyz>0.0226876778943001</iyz>
+          <izz>18.1734623592377</izz>
         </inertia>
       </inertial>
       <collision name="SwitchBase_collision">
@@ -41,6 +41,7 @@
           <friction>
             <ode>
               <mu>1</mu>
+              <mu2>1</mu2>
             </ode>
           </friction>
         </surface>
@@ -59,6 +60,12 @@
         </geometry>
       </visual>
     </link>
+  
+    <joint name="SwitchBase-World" type="fixed">
+      <parent>world</parent>
+      <child>SwitchBase</child>
+   </joint>
+<!-- -->
     <link name="SwitchArm">
       <gravity>1</gravity>
       <self_collide>0</self_collide>
@@ -120,15 +127,16 @@
       <axis>
         <xyz>0.999843397866503 -0.0110293969633813 -0.0138395139145314</xyz>
         <dynamics>
-          <damping>0</damping>
-          <friction>0</friction>
+          <damping>1</damping>
+          <friction>1</friction>
         </dynamics>
         <limit>
-          <upper>0.01</upper>
-          <lower>0</lower>
-          <effort>10</effort>
+          <upper>0.05</upper>
+          <lower>-0.05</lower>
+          <effort>1</effort>
         </limit>
       </axis>
     </joint>
+
   </model>
 </sdf>

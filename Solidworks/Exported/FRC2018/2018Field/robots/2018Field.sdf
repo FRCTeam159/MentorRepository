@@ -59,6 +59,11 @@
           </mesh>
         </geometry>
       </visual>
-    </link>
+    </link>  
+    <joint name="Field-World" type="fixed">
+      <parent>world</parent>
+      <child>Field</child>
+   </joint>
+
   </model>
 </sdf>
