@@ -23,9 +23,7 @@
     <include>
       <uri>model://ground_plane</uri>
     </include>
- <!-- 
-      <pose>-6.7918 -3.0 0.18 0 1.507 0</pose>
--->
+
     <include>
       <uri>model://Cube</uri>
       <pose>-6.835 -2.92 0.17 -1.571 0 3.14</pose>
