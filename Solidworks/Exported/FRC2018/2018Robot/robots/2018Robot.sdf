@@ -127,7 +127,7 @@
         <xyz>1 0 0</xyz>
         <dynamics>
           <damping>1</damping>
-          <friction>0</friction>
+          <friction>1</friction>
         </dynamics>
         <limit>
           <effort>50</effort>
@@ -200,7 +200,7 @@
         <xyz>1 0 0</xyz>
         <dynamics>
           <damping>1</damping>
-          <friction>0</friction>
+          <friction>1</friction>
         </dynamics>
         <limit>
           <effort>50</effort>
@@ -273,7 +273,7 @@
         <xyz>1 0 0</xyz>
         <dynamics>
           <damping>1</damping>
-          <friction>0</friction>
+          <friction>1</friction>
         </dynamics>
         <limit>
           <effort>50</effort>
@@ -346,7 +346,7 @@
         <xyz>1 0 0</xyz>
         <dynamics>
           <damping>1</damping>
-          <friction>0</friction>
+          <friction>1</friction>
         </dynamics>
         <limit>
           <effort>50</effort>
@@ -419,7 +419,7 @@
         <xyz>1 0 0</xyz>
         <dynamics>
           <damping>1</damping>
-          <friction>0</friction>
+          <friction>1</friction>
         </dynamics>
         <limit>
           <effort>50</effort>
@@ -492,7 +492,7 @@
         <xyz>1 0 0</xyz>
         <dynamics>
           <damping>1</damping>
-          <friction>0.5</friction>
+          <friction>1</friction>
         </dynamics>
         <limit>
           <effort>50</effort>
@@ -645,6 +645,7 @@
           </save>
         </camera>
       </sensor>
+<!--
       <sensor name="CarriageRangefinder" type="sonar">
         <always_on>1</always_on>
         <visualize>1</visualize>
@@ -655,7 +656,7 @@
           <radius>0.02</radius>
         </sonar>
       </sensor>
-
+-->
     </link>
     <joint name="Elevator-Carriage" type="prismatic">
       <parent>Elevator</parent>
@@ -1190,11 +1191,12 @@
         </limit>
       </axis>
     </joint>
+<!--
     <plugin name="TopFrame_rangefinder" filename="librangefinder.so">
       <topic>/gazebo/frc/simulator/analog/2</topic>
       <sensor>CarriageRangefinder</sensor>
     </plugin>
-
+-->
     <plugin name="Body_gyro" filename="libgyro.so">
       <link>Body</link>
       <topic>/gazebo/frc/simulator/analog/3</topic>

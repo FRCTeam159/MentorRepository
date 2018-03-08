@@ -109,25 +109,17 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.1531162370" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
 							<tool command="g++" id="cdt.managedbuild.tool.gnu.cpp.linker.base.842198771" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
 								<option id="gnu.cpp.link.option.libs.507606310" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
-									<listOptionValue builtIn="false" value="ntcore"/>
-									<listOptionValue builtIn="false" value="wpilibcSim"/>
-									<listOptionValue builtIn="false" value="gz_msgs"/>
-									<listOptionValue builtIn="false" value="gazebo_client"/>
-									<listOptionValue builtIn="false" value="boost_system"/>
-									<listOptionValue builtIn="false" value="CANTalon"/>
-									<listOptionValue builtIn="false" value="opencv_core"/>
-									<listOptionValue builtIn="false" value="opencv_imgproc"/>
-									<listOptionValue builtIn="false" value="opencv_video"/>
-									<listOptionValue builtIn="false" value="opencv_videoio"/>
-									<listOptionValue builtIn="false" value="cscore"/>
-									<listOptionValue builtIn="false" value="CameraServer"/>
-									<listOptionValue builtIn="false" value="pthread"/>
+									<listOptionValue builtIn="false" value="pathfinder"/>
+									<listOptionValue builtIn="false" value="pathfinder"/>
+									<listOptionValue builtIn="false" value="wpi"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.588769736" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/usr/local/lib"/>
 									<listOptionValue builtIn="false" value="/usr/lib/x86_64-linux-gnu"/>
 									<listOptionValue builtIn="false" value="${WPILIB}/simulation/lib"/>
 									<listOptionValue builtIn="false" value="&quot;${WPILIB}/user/cpp/lib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${WPILIB}/cpp/current/reflib/linux/athena/shared&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${WPILIB}/common/current/lib/linux/athena/shared&quot;"/>
 								</option>
 								<option id="gnu.cpp.link.option.other.1613850514" name="Other options (-Xlinker [option])" superClass="gnu.cpp.link.option.other" useByScannerDiscovery="false" valueType="stringList">
 									<listOptionValue builtIn="false" value="-rpath ${WPILIB}/simulation/lib"/>

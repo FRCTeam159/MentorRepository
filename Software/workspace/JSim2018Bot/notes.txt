@@ -1,0 +1,44 @@
+I.  problems with simulated PIDController class
+ 1) After much frustration with watching robots bury themselves in Gazebo discovered that the actual
+    problem could be traced to pidWrite returning NaN values more or less randomly for the
+    wpi PIDController class.  
+    - Looks like the timer that is used in getDeltaSetpoint() sometimes
+      returns 0 which causes a divide by zero error.
+ 2) The wpi Timer class is completely broken (returning random values) 
+    even for Timers in external classes
+    - evidence suggests that the timers are getting reset to zero on a periodic basis
+ 3) overriding calculateFeedForward fixes timer problems in both PIDController 
+    and external classes 
+    - overriding just getDeltaSetpoint (which has the 1/0 potential) not sufficient
+    public class MyPIDController extends edu.wpi.first.wpilibj.PIDController {
+        public MyPIDController(double Kp, double Ki, double Kd,  PIDSource source, PIDOutput output) {
+            super(Kp, Ki, Kd, 0.0, source, output,0.01);
+        }
+        protected double calculateFeedForward() { 
+//          if (m_pidInput.getPIDSourceType().equals(PIDSourceType.kRate)) {
+//              return m_F * getSetpoint();
+//          } else {
+//              double temp = m_F * getDeltaSetpoint(); <--
+//              m_prevSetpoint = m_setpoint;
+//              m_setpointTimer.reset(); //  <--- Timer Problem is here ??
+//              return temp;
+//          }
+            return 0;
+        }
+//      public synchronized double getDeltaSetpoint() {
+//       return (m_setpoint - m_prevSetpoint) / m_setpointTimer.get();
+//          return 0; // <-- cures NaN issue but doesn't fix Timer problem
+//      }
+
+    }
+ 4) modified calculateFeedForward to always return 0 as indicated above and rebuilt
+    wpilibjSimulation.jar in allwpilib git directory (my test branch). Installed jar file
+    in /usr/local/wpi/2017/sim/jar
+    - gradlew assembleDist -PmakeSim
+    - cp wpilibj/build/libs/wpilibjSimulation.jar /usr/local/wpi/2017/sim/jar
+    
+ 5) removed myPIDController internal classes in DrivePath and Calibrate and modified members pid objects to use
+    (modified) library PIDController class
+    - need to use constructor with short cycle time (e.g. new PIDController(P,I,D,0.0,this,this,0.01)) to
+      avoid jitter (default is 50 ms)
+    

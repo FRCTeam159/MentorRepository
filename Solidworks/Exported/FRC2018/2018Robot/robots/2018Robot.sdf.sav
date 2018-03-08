@@ -754,7 +754,7 @@
     <link name="LeftArm">
       <gravity>1</gravity>
       <self_collide>0</self_collide>
-      <pose>0.444244044788425 0.193535097652683 0.170457192189038 1.5707963267949 0 1.5707963267949</pose>
+      <pose>0.444244044788425 0.193535097652683 0.170457192189038 1.5707963267949 0 1.8707963267949</pose>
       <must_be_base_link>0</must_be_base_link>
       <velocity_decay>
         <linear>0</linear>
@@ -809,7 +809,7 @@
     <joint name="Carriage-LeftArm" type="revolute">
       <parent>Carriage</parent>
       <child>LeftArm</child>
-      <pose>0.0162489078418779 -3.33066907387547E-16 -0.119703964201474 0 6.93889390390727E-18 1.5707963267949</pose>
+      <pose>0.0162489078418779 -3.33066907387547E-16 -0.119703964201474 0 6.93889390390727E-18 1.8707963267949</pose>
       <axis>
         <xyz>1 2.15105711021124E-16 0</xyz>
         <dynamics>
@@ -817,8 +817,8 @@
           <friction>0</friction>
         </dynamics>
         <limit>
-          <upper>0.3</upper>
-          <lower>-0.1</lower>
+          <upper>0.25</upper>
+          <lower>-0.15</lower>
           <effort>100</effort>
         </limit>
       </axis>
@@ -889,7 +889,7 @@
           <friction>0</friction>
         </dynamics>
         <limit>
-          <upper>0.25</upper>
+          <upper>0.3</upper>
           <lower>-0.1</lower>
           <effort>100</effort>
         </limit>
@@ -928,14 +928,13 @@
         <surface>
           <contact>
             <ode>
-              <kp>100000</kp>
-              <kd>20</kd>
+              <kp>200000</kp>
+              <kd>10</kd>
             </ode>
           </contact>
           <friction>
             <ode>
-              <mu>1</mu>
-              <mu2>1</mu2>
+              <mu>2</mu>
             </ode>
           </friction>
         </surface>
@@ -973,7 +972,7 @@
     <link name="L2Wheel">
       <gravity>1</gravity>
       <self_collide>0</self_collide>
-      <pose>0.552488932377014 0.175352742347935 0.134389049247626 1.5707963267949 0 1.5707963267949</pose>
+      <pose>0.552488932377014 0.21 0.134389049247626 1.5707963267949 0 1.8107963267949</pose>
       <must_be_base_link>0</must_be_base_link>
       <velocity_decay>
         <linear>0</linear>
@@ -1002,14 +1001,13 @@
         <surface>
           <contact>
             <ode>
-              <kp>100000</kp>
-              <kd>20</kd>
+              <kp>200000</kp>
+              <kd>10</kd>
             </ode>
           </contact>
           <friction>
             <ode>
-              <mu>1</mu>
-              <mu2>1</mu2>
+              <mu>2</mu>
             </ode>
           </friction>
         </surface>
@@ -1078,14 +1076,13 @@
         <surface>
           <contact>
             <ode>
-              <kp>100000</kp>
-              <kd>20</kd>
+              <kp>200000</kp>
+              <kd>10</kd>
             </ode>
           </contact>
           <friction>
             <ode>
-              <mu>1</mu>
-              <mu2>1</mu2>
+              <mu>2</mu>
             </ode>
           </friction>
         </surface>
@@ -1153,14 +1150,13 @@
         <surface>
           <contact>
             <ode>
-              <kp>100000</kp>
-              <kd>20</kd>
+              <kp>200000</kp>
+              <kd>10</kd>
             </ode>
           </contact>
           <friction>
             <ode>
-              <mu>1</mu>
-              <mu2>1</mu2>
+              <mu>2</mu>
             </ode>
           </friction>
         </surface>
@@ -1268,15 +1264,15 @@
        <joint>Carriage-LeftArm</joint>
       <topic>/gazebo/frc/simulator/pneumatic/1/1</topic>
        <direction>forward</direction>
-       <forward-force>5</forward-force>
-       <reverse-force>5</reverse-force>
+       <forward-force>10</forward-force>
+       <reverse-force>10</reverse-force>
     </plugin>
     <plugin name="Carriage-RightArm_Piston" filename="libpneumatic_piston.so">
        <joint>Carriage-RightArm</joint>
        <topic>/gazebo/frc/simulator/pneumatic/1/1</topic>
        <direction>reverse</direction>
-       <forward-force>5</forward-force>
-       <reverse-force>5</reverse-force>
+       <forward-force>10</forward-force>
+       <reverse-force>10</reverse-force>
     </plugin>
 
     <plugin name="LeftArm-L1Wheel_motor" filename="libdc_motor.so">

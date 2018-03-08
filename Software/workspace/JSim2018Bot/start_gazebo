@@ -1,0 +1,14 @@
+
+export SWEXPORTS=$HOME/Robotics/MentorRepository/Solidworks/Exported
+export SWMODEL=$SWEXPORTS/FRC2018
+export GAZEBO_MODEL_PATH=$SWMODEL:$WPILIB/simulation/models:/usr/share/gazebo/models
+
+export WORLD=center.world
+
+case "$1" in
+ 0) gazebo --verbose $SWMODEL/center.world;;
+ 1) gazebo --verbose $SWMODEL/left.world;;
+ 2) gazebo --verbose $SWMODEL/right.world;;
+esac
+
+
