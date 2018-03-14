@@ -1,5 +1,6 @@
 package org.usfirst.frc.team159.robot.commands;
 
+import org.usfirst.frc.team159.robot.Constants;
 import org.usfirst.frc.team159.robot.OI;
 import org.usfirst.frc.team159.robot.Robot;
 import org.usfirst.frc.team159.robot.RobotMap;
@@ -10,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class CubeCommands extends Command implements RobotMap {
+public class CubeCommands extends Command implements Constants, RobotMap {
   boolean armsButtonReleased;
   boolean cubePresent;
   boolean armsOpen = false;
@@ -38,9 +39,9 @@ public class CubeCommands extends Command implements RobotMap {
     Joystick stick = OI.stick;
     cubePresent = Robot.cubeHandler.cubeDetected();
     toggleArms();
-    if (stick.getRawButton(RobotMap.CUBE_PUSH_BUTTON))
+    if (stick.getRawButton(CUBE_PUSH_BUTTON))
       Robot.cubeHandler.push();
-    else if (stick.getRawButton(RobotMap.CUBE_GRAB_BUTTON))
+    else if (stick.getRawButton(CUBE_GRAB_BUTTON))
       Robot.cubeHandler.grab();
     else
       Robot.cubeHandler.hold();
@@ -49,7 +50,7 @@ public class CubeCommands extends Command implements RobotMap {
 
   void toggleArms() {
     Joystick stick = OI.stick;
-    boolean armsButtonPressed = stick.getRawButton(RobotMap.ARM_TOGGLE_BUTTON);
+    boolean armsButtonPressed = stick.getRawButton(ARM_TOGGLE_BUTTON);
     armsOpen = Robot.cubeHandler.armsOpen();
     if (!armsButtonPressed)
       armsButtonReleased = true;

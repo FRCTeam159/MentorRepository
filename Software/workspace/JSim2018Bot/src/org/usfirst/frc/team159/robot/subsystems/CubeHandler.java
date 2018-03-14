@@ -2,6 +2,7 @@ package org.usfirst.frc.team159.robot.subsystems;
 
 import java.util.LinkedList;
 
+import org.usfirst.frc.team159.robot.Constants;
 import org.usfirst.frc.team159.robot.RobotMap;
 import org.usfirst.frc.team159.robot.commands.CubeCommands;
 
@@ -15,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class CubeHandler extends Subsystem implements RobotMap {
+public class CubeHandler extends Subsystem implements Constants{
 
   // Put methods for controlling this subsystem
   // here. Call these from Commands.

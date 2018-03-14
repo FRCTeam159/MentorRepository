@@ -1,5 +1,6 @@
 package org.usfirst.frc.team159.robot.commands;
 
+import org.usfirst.frc.team159.robot.Constants;
 import org.usfirst.frc.team159.robot.Robot;
 import org.usfirst.frc.team159.robot.RobotMap;
 
@@ -8,7 +9,7 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 /**
  *
  */
-public class SetGrabberState extends TimedCommand implements RobotMap {
+public class SetGrabberState extends TimedCommand implements Constants {
     int state=HOLD;
 
     public SetGrabberState(int state, double timeout) {
