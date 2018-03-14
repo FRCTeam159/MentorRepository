@@ -15,7 +15,7 @@ public class DriveWithJoystick extends Command implements RobotMap{
 	public static double MINTHRESHOLD=0.3;
 	public static double MINOUTPUT=0;
 	boolean gearButtonReleased;
-	public static double turnScale=0.5;
+	public static double turnScale=0.8;
 
 
 	public DriveWithJoystick() {
@@ -28,7 +28,7 @@ public class DriveWithJoystick extends Command implements RobotMap{
 	@Override
 	protected void initialize() {
 		System.out.println("DriveWithJoystick::initialize()");
-		Robot.driveTrain.setHighGear();
+		//Robot.driveTrain.setHighGear();
 	}
 
 	// Called repeatedly when this Command is scheduled to run

@@ -46,11 +46,43 @@
       </include>
     <include>
       <uri>model://2018Robot</uri>
-      <pose>-7.35 -6.0 0.06 0 0 0</pose>
+      <pose>-7.35 -5.95 0.06 0 0 0</pose>
     </include>
     <include>
       <uri>model://Cube</uri>
-      <pose>-6.84 -5.875 0.2 1.571 0 0</pose>
+      <pose>-6.84 -5.8275 0.2 1.571 0 0</pose>
     </include>
-  </world>
+
+    <!-- cubes behind the switch -->
+    <include>
+      <uri>model://Cube</uri>
+      <name>cube1</name>
+      <pose>-2.66 -4.7 0.0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://Cube</uri>
+      <name>cube2</name>
+      <pose>-2.66 -4.0 0.0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://Cube</uri>
+      <name>cube3</name>
+      <pose>-2.66 -3.3 0.0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://Cube</uri>
+      <name>cube4</name>
+      <pose>-2.66 -2.6 0.0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://Cube</uri>
+      <name>cube5</name>
+      <pose>-2.66 -1.9 0.0 0 0 0</pose>
+    </include>
+    <include>
+      <uri>model://Cube</uri>
+      <name>cube6</name>
+      <pose>-2.66 -1.2 0.0 0 0 0</pose>
+    </include>
+</world>
 </sdf>

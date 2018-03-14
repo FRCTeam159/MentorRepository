@@ -44,26 +44,6 @@ public class CubeCommands extends Command implements RobotMap {
       Robot.cubeHandler.grab();
     else
       Robot.cubeHandler.hold();
-//    switch (Robot.cubeHandler.getState()) {
-//    case HOLD:
-//      if (stick.getRawButton(RobotMap.CUBE_PUSH_BUTTON))
-//        Robot.cubeHandler.push();
-//      else if (!cubePresent)
-//        Robot.cubeHandler.grab();
-//      break;
-//    case GRAB:
-//      if (cubePresent)
-//        Robot.cubeHandler.hold();
-//      break;
-//    case PUSH:
-//      if (!cubePresent)
-//        Robot.cubeHandler.grab();
-//      break;
-//    case DROP:
-//      if (!cubePresent)
-//        Robot.cubeHandler.grab();
-//      break;
-//    }
     Robot.cubeHandler.spinWheels();
   }
 

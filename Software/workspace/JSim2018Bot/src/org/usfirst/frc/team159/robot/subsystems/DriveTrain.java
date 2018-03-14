@@ -66,7 +66,7 @@ public class DriveTrain extends Subsystem implements MotorSafety{
 	}
 	void Publish(boolean init) {
 		if(init){
-			SmartDashboard.putBoolean("HighGear", false);
+			//SmartDashboard.putBoolean("HighGear", false);
 			SmartDashboard.putNumber("Heading", 0);
 			SmartDashboard.putNumber("LeftDistance", 0);
 			SmartDashboard.putNumber("RightDistance", 0);
@@ -74,7 +74,7 @@ public class DriveTrain extends Subsystem implements MotorSafety{
 			SmartDashboard.putNumber("LeftWheels", 0);
 			SmartDashboard.putNumber("RightWheels", 0);
 		}else{
-			SmartDashboard.putBoolean("HighGear", !inlowgear);
+			//SmartDashboard.putBoolean("HighGear", !inlowgear);
 			SmartDashboard.putNumber("Heading", getHeading());
 			SmartDashboard.putNumber("LeftDistance", feet_to_inches(getLeftDistance()));
 			SmartDashboard.putNumber("RightDistance", feet_to_inches(getRightDistance()));
@@ -193,10 +193,17 @@ public class DriveTrain extends Subsystem implements MotorSafety{
 	 * Reset the robots sensors to the zero states.
 	 */
 	public void reset() {
-		gyro.reset();
-		frontRight.reset();
-		backLeft.reset();
+	  resetEncoders();
+	  resetGyro();
 	}
+  public void resetEncoders() {
+    frontRight.reset();
+    backLeft.reset();
+  }
+  public void resetGyro() {
+    gyro.reset(); 
+  }
+
 	public void enable() {
 		frontRight.enable();
 		backLeft.enable();

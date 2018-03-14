@@ -18,6 +18,7 @@ import org.usfirst.frc.team159.robot.commands.Calibrate;
 import org.usfirst.frc.team159.robot.commands.DrivePath;
 import org.usfirst.frc.team159.robot.commands.SetElevator;
 import org.usfirst.frc.team159.robot.commands.SetGrabberState;
+import org.usfirst.frc.team159.robot.commands.TurnToAngle;
 import org.usfirst.frc.team159.robot.subsystems.CubeHandler;
 import org.usfirst.frc.team159.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team159.robot.subsystems.Elevator;
@@ -42,7 +43,7 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
   SendableChooser<Integer> allbad_option_chooser = new SendableChooser<Integer>();
 
   CommandGroup autonomousCommand;
-	public static double scale=0.7;
+	public static double auto_scale=0.7;
 	public static boolean calibrate = false;
 	public static boolean test = false;
 
@@ -59,12 +60,13 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 	
 	public static Integer position=RIGHT_POSITION;
 	public static Integer fms_pattern=position;
-	public static String fms_string="LLL";
+	public static String fms_string="RRR";
 	public static Integer allbad_option=OTHER_SCALE;
 	public static Integer allgood_option=SAME_SCALE;
 
 	public static int target_object=SCALE;
 	public static int target_side=LEFT;
+  public static boolean allgood=false;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -113,6 +115,7 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 		
 		allgood_option_chooser.addDefault("Prefer Scale", new Integer(SAME_SCALE));
     allgood_option_chooser.addObject("Prefer Switch", new Integer(SAME_SWITCH));
+    allgood_option_chooser.addObject("TwoCubeAuto", new Integer(TWO_CUBE_AUTO));
 
 		SmartDashboard.putBoolean("Calibrate", calibrate);
 		SmartDashboard.putBoolean("UseGyro", usegyro);
@@ -124,13 +127,13 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 		SmartDashboard.putNumber("KP", KP);
 		SmartDashboard.putNumber("KD", KD);
 		SmartDashboard.putNumber("GFACT", GFACT);
-		SmartDashboard.putString("FMS-STR", "LLL");
+		SmartDashboard.putString("FMS-STR", "RRR");
 
 		SmartDashboard.putString("Target", "Calculating");
 		SmartDashboard.putBoolean("Test", true);
 		SmartDashboard.putBoolean("Plot", false);
 		
-		SmartDashboard.putNumber("Auto Scale", scale);
+		SmartDashboard.putNumber("Auto Scale", auto_scale);
 		SmartDashboard.putData("Position", position_chooser);
 		SmartDashboard.putData("All Good Strategy", allgood_option_chooser);
     SmartDashboard.putData("All Bad Strategy", allbad_option_chooser);
@@ -147,7 +150,6 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 	@Override
 	public void disabledInit() {
 	   System.out.println("disabledInit");
-
 	   if (autonomousCommand != null)
 	      autonomousCommand.cancel();
 	}
@@ -175,7 +177,7 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 	  KP=SmartDashboard.getNumber("KP", KP);
 	  KD=SmartDashboard.getNumber("KD", KD);
 
-	  scale=SmartDashboard.getNumber("Auto Scale", scale);
+	  auto_scale=SmartDashboard.getNumber("Auto Scale", auto_scale);
 
 	  calibrate=SmartDashboard.getBoolean("Calibrate", calibrate);
 
@@ -196,9 +198,27 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
       else
         autonomousCommand.addSequential(new SetElevator(SWITCH_DROP_HEIGHT,2.0));
       autonomousCommand.addSequential(new SetGrabberState(HOLD,0.25));
-	    autonomousCommand.addSequential(new DrivePath());
-	    if(target_object != NONE)
-	      autonomousCommand.addSequential(new SetGrabberState(PUSH,1.0));
+	    autonomousCommand.addSequential(new DrivePath(0));
+      if(target_object != NONE) {
+        autonomousCommand.addSequential(new SetGrabberState(PUSH,1.0));
+        if(doTwoCubeAuto()) { // same side: scale then switch
+          autonomousCommand.addSequential(new SetElevator(0,2.0)); // drop elevator and prepare to grab
+          if(position==RIGHT_POSITION) // note: pathfinder can't turn in place or drive in reverse
+            autonomousCommand.addSequential(new TurnToAngle(135.0,3.0));
+          else
+            autonomousCommand.addSequential(new TurnToAngle(-135.0,3.0)); 
+           
+          autonomousCommand.addSequential(new SetGrabberState(GRAB,0.5));
+          autonomousCommand.addSequential(new DrivePath(1)); // second pathfinder pass
+          autonomousCommand.addSequential(new SetElevator(SWITCH_DROP_HEIGHT,2.0)); // raise elevator and push
+          if(position==RIGHT_POSITION) // note: pathfinder can't turn in place or drive in reverse
+            autonomousCommand.addSequential(new TurnToAngle(25.0,3.0));
+          else
+            autonomousCommand.addSequential(new TurnToAngle(-25.0,3.0)); 
+          
+          autonomousCommand.addSequential(new SetGrabberState(PUSH,1.0));
+        }
+      }	    
 	  }
 
 	  // schedule the autonomous command (example)
@@ -217,7 +237,6 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 	@Override
 	public void teleopInit() {
 	   System.out.println("teleopInit");
-
 		reset();		
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
@@ -250,10 +269,15 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
     elevator.enable();
     driveTrain.enable();
 	}
-	void setAutoTarget() {
-	  String gameMessage=Robot.fms_string;
+	public static void showAutoTarget() {
 	  String which_object[]= {"Switch","Scale","Straight"};
 	  String which_side[]= {"Center","Left","Right"};
+    String targetString=which_side[target_side]+"-"+which_object[target_object];
+    SmartDashboard.putString("Target", targetString);	  
+	}
+	void setAutoTarget() {
+    String gameMessage=Robot.fms_string;
+	  allgood=false;
 	  if (position == CENTER_POSITION) {
 	    target_object=SWITCH;
 	    if (gameMessage.charAt(0) == 'R')
@@ -264,7 +288,8 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 	    target_side=RIGHT;
 	    if (!isStraightPathForced()) {
 	      if (gameMessage.charAt(1) == 'R' && gameMessage.charAt(0) == 'R') {
-	        if (isScalePreferredOverSwitch()) {
+	         allgood=true;
+	        if (doTwoCubeAuto()||isScalePreferredOverSwitch()) {
 	          target_object=SCALE;
 	        } else {
 	          target_object=SWITCH;
@@ -294,7 +319,8 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 	    target_side=LEFT;
 	    if (!isStraightPathForced()) {
 	      if (gameMessage.charAt(1) == 'L' && gameMessage.charAt(0) == 'L') { //LL
-	        if (isScalePreferredOverSwitch()) {
+	        allgood=true;
+          if (doTwoCubeAuto()||isScalePreferredOverSwitch()) {
 	          target_object=SCALE;
 	        } else {
 	          target_object=SWITCH;
@@ -321,8 +347,7 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 	      target_object=NONE;
 	    }
 	  }
-	  String targetString=which_side[target_side]+"-"+which_object[target_object];
-	  SmartDashboard.putString("Target", targetString);
+	  showAutoTarget();
 	}
 	private boolean isOtherScaleSelected() {
 	  return allbad_option==OTHER_SCALE;
@@ -335,6 +360,10 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 	private boolean isScalePreferredOverSwitch() {
 	  return allgood_option==SAME_SCALE;
 	}
+
+	 private boolean doTwoCubeAuto() {
+	    return allgood && (allgood_option==TWO_CUBE_AUTO);
+	  }
 
 	private boolean isStraightPathForced() {
 	  return allbad_option==GO_STRAIGHT;
@@ -349,7 +378,7 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 	void setFMS() {
 		boolean test=SmartDashboard.getBoolean("Test", false);
 		if(test) {
-			fms_string=SmartDashboard.getString("FMS-STR", "LLL");
+			fms_string=SmartDashboard.getString("FMS-STR", "RRR");
 		}
 		else {
 			String fms[]= {"LLL","LLR","LRL","LRR","RLL","RLR","RRL","RRR"};

@@ -27,7 +27,7 @@ public class Elevator extends Subsystem {
   public static final double SWITCH_HEIGHT = 24;
   public static final double SCALE_HEIGHT = MAX_HEIGHT;
   public static final double START_HEIGHT = 1;
-  double tolerance=4;
+  double tolerance=6;
 
 
 	public static double travel_ratio=max_inner_travel/max_outer_travel;

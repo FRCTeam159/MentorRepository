@@ -48,7 +48,7 @@ public class Calibrate extends Command {
     Robot.driveTrain.reset();
     mytimer.start();
     mytimer.reset();
-    System.out.println("Calibrate.initialize(" + Robot.scale + ")");
+    System.out.println("Calibrate.initialize(" + Robot.auto_scale + ")");
     vals = new LinkedList<Double>();
     lastTime = 0;
     lastVelocity = 0;
@@ -69,7 +69,7 @@ public class Calibrate extends Command {
     if (curtime < 0.5)
       Robot.driveTrain.set(0, 0);
     else
-      Robot.driveTrain.set(Robot.scale, Robot.scale);
+      Robot.driveTrain.set(Robot.auto_scale, Robot.auto_scale);
 
     double velocity = Robot.driveTrain.getVelocity();
     double position = Robot.driveTrain.getDistance();

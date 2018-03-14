@@ -19,7 +19,7 @@ public class SetGrabberState extends TimedCommand implements RobotMap {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-      System.out.println("SetGrabberState.initialize");
+      System.out.println("SetGrabberState.initialize:"+state);
       Robot.cubeHandler.setState(state);
     }
 
@@ -29,7 +29,7 @@ public class SetGrabberState extends TimedCommand implements RobotMap {
 
     // Called once after timeout
     protected void end() {
-      System.out.println("SetGrabberState.initialize");
+      System.out.println("SetGrabberState.end");
       Robot.cubeHandler.hold();
     }
 

@@ -1,5 +1,8 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="All Good Strategy" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="464" y="15"/>
+	</widget>
 	<widget field="Turn Scale" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="363" y="243"/>
 		<width>120</width>
@@ -9,14 +12,11 @@
 		<width>111</width>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
-		<location x="454" y="85"/>
+		<location x="453" y="100"/>
 		<property name="Text" value="All Bad Strategy"/>
 	</static-widget>
-	<widget field="All Good Strategy" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="467" y="19"/>
-	</widget>
 	<widget field="All Bad Strategy" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="467" y="95"/>
+		<location x="462" y="115"/>
 	</widget>
 	<widget field="ArmsOpen" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
 		<location x="418" y="284"/>
@@ -100,10 +100,6 @@
 	<widget field="Travel" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="132" y="246"/>
 		<width>93</width>
-	</widget>
-	<widget field="HighGear" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="242" y="250"/>
-		<width>98</width>
 	</widget>
 	<widget field="Heading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="8" y="246"/>
