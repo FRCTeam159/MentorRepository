@@ -1,5 +1,8 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Strategy Selector" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="432" y="29"/>
+	</widget>
 	<widget field="All Good Strategy" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
 		<location x="464" y="15"/>
 	</widget>
@@ -11,10 +14,6 @@
 		<location x="608" y="193"/>
 		<width>111</width>
 	</widget>
-	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
-		<location x="453" y="100"/>
-		<property name="Text" value="All Bad Strategy"/>
-	</static-widget>
 	<widget field="All Bad Strategy" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
 		<location x="462" y="115"/>
 	</widget>
@@ -33,7 +32,7 @@
 		<location x="458" y="8"/>
 		<width>121</width>
 		<height>22</height>
-		<property name="Text" value="All Good Strategy"/>
+		<property name="Text" value="Strategy Selector"/>
 	</static-widget>
 	<widget field="Plot" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
 		<location x="661" y="299"/>
@@ -42,12 +41,12 @@
 		<location x="657" y="327"/>
 	</widget>
 	<widget field="Target" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="330" y="202"/>
-		<width>239</width>
+		<location x="324" y="152"/>
+		<width>161</width>
 		<height>28</height>
 	</widget>
 	<widget field="FMS-STR" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="333" y="159"/>
+		<location x="323" y="118"/>
 		<width>109</width>
 	</widget>
 	<widget field="Elevator" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">

@@ -2,26 +2,18 @@
 package org.usfirst.frc.team159.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import jaci.pathfinder.Waypoint;
-
 import java.util.Random;
 
-import org.usfirst.frc.team159.robot.commands.Autonomous;
 import org.usfirst.frc.team159.robot.commands.Calibrate;
-import org.usfirst.frc.team159.robot.commands.DrivePath;
-import org.usfirst.frc.team159.robot.commands.SetElevator;
-import org.usfirst.frc.team159.robot.commands.SetGrabberState;
-import org.usfirst.frc.team159.robot.commands.TurnToAngle;
+import org.usfirst.frc.team159.robot.subsystems.AutoSelector;
 import org.usfirst.frc.team159.robot.subsystems.CubeHandler;
 import org.usfirst.frc.team159.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team159.robot.subsystems.Elevator;;
+import org.usfirst.frc.team159.robot.subsystems.Elevator;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -35,6 +27,7 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
   public static DriveTrain driveTrain;
   public static Elevator elevator;
   public static CubeHandler cubeHandler;
+  public static AutoSelector autoSelector;
 
   public static OI oi;
   SendableChooser<Integer> position_chooser = new SendableChooser<Integer>();
@@ -60,12 +53,6 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
   public static Integer robotPosition = POSITION_RIGHT;
   public static Integer fms_pattern = robotPosition;
   public static String fms_string = "RRR";
-  public static Integer allBadOption = OTHER_SCALE;
-  public static Integer allGoodOption = SAME_SCALE;
-
-  public static int targetObject = OBJECT_SCALE;
-  public static int targetSide = POSITION_LEFT;
-  public static boolean allgood = false;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -78,13 +65,13 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
     driveTrain = new DriveTrain();
     elevator = new Elevator();
     cubeHandler = new CubeHandler();
+    autoSelector = new AutoSelector();
+
     try {
       robotPosition = Integer.parseInt(pos);
     } catch (NumberFormatException e) {
       robotPosition = POSITION_CENTER;
     }
-    // position=p.intValue();
-    // System.out.println("POSITION="+position+" POS="+pos);
 
     switch (robotPosition) {
     case POSITION_CENTER:
@@ -107,14 +94,6 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
       break;
     }
 
-    allBadChooser.addDefault("Opposite Scale", new Integer(OTHER_SCALE));
-    allBadChooser.addObject("Opposite Switch", new Integer(OTHER_SWITCH));
-    allBadChooser.addObject("Go Straight", new Integer(GO_STRAIGHT));
-
-    allGoodChooser.addDefault("Prefer Scale", new Integer(SAME_SCALE));
-    allGoodChooser.addObject("Prefer Switch", new Integer(SAME_SWITCH));
-    allGoodChooser.addObject("TwoCubeAuto", new Integer(TWO_CUBE_AUTO));
-
     SmartDashboard.putBoolean("Calibrate", calibrate);
     SmartDashboard.putBoolean("UseGyro", useGyro);
     SmartDashboard.putBoolean("Error", false);
@@ -133,8 +112,6 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 
     SmartDashboard.putNumber("Auto Scale", auto_scale);
     SmartDashboard.putData("Position", position_chooser);
-    SmartDashboard.putData("All Good Strategy", allGoodChooser);
-    SmartDashboard.putData("All Bad Strategy", allBadChooser);
 
     robotPosition = position_chooser.getSelected();
 
@@ -183,39 +160,13 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 
     SmartDashboard.putBoolean("Error", false);
     getDataFromDashboard();
-    setAutoTarget();
+   //setAutoTarget();
 
-    autonomousCommand = new Autonomous();
-
-    if (calibrate)
-      autonomousCommand.addSequential(new Calibrate());
-    else {
-      autonomousCommand.addSequential(new SetGrabberState(GRAB, 0.5));
-      if (targetObject == OBJECT_SCALE)
-        autonomousCommand.addSequential(new SetElevator(SCALE_DROP_HEIGHT, 4.0));
-      else
-        autonomousCommand.addSequential(new SetElevator(SWITCH_DROP_HEIGHT, 2.0));
-      autonomousCommand.addSequential(new SetGrabberState(HOLD, 0.25));
-      autonomousCommand.addSequential(new DrivePath(0));
-      if (targetObject != OBJECT_NONE) {
-        autonomousCommand.addSequential(new SetGrabberState(PUSH, 1.0)); // fire away (scale or switch)
-        if (doTwoCubeAuto()) { // same side both good : do scale then switch
-          autonomousCommand.addSequential(new SetElevator(0, 2.0)); // drop elevator and prepare to grab
-          if (robotPosition == POSITION_RIGHT) // note: pathfinder can't turn in place or drive in reverse
-            autonomousCommand.addSequential(new TurnToAngle(135.0, 3.0));
-          else
-            autonomousCommand.addSequential(new TurnToAngle(-135.0, 3.0));
-          autonomousCommand.addSequential(new SetGrabberState(GRAB, 0.5));
-          autonomousCommand.addSequential(new DrivePath(1)); // second pathfinder pass (resets encoders and gyro)
-          autonomousCommand.addSequential(new SetElevator(SWITCH_DROP_HEIGHT, 2.0)); // raise elevator and push
-          if (robotPosition == POSITION_RIGHT) // turn more toward center of switch
-            autonomousCommand.addSequential(new TurnToAngle(25.0, 3.0));
-          else
-            autonomousCommand.addSequential(new TurnToAngle(-25.0, 3.0));
-          autonomousCommand.addSequential(new SetGrabberState(PUSH, 1.0)); // fire away (scale)
-        }
-      }
-    }
+    autonomousCommand = new CommandGroup();
+    if (calibrate) 
+       autonomousCommand.addSequential(new Calibrate());
+    else 
+      autonomousCommand = autoSelector.getAutonomous();
 
     // schedule the autonomous command (example)
     if (autonomousCommand != null)
@@ -267,102 +218,8 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
     driveTrain.enable();
   }
 
-  public static void showAutoTarget() {
-    String which_object[] = { "Switch", "Scale", "Straight" };
-    String which_side[] = { "Center", "Left", "Right" };
-    String targetString = which_side[targetSide] + "-" + which_object[targetObject];
-    SmartDashboard.putString("Target", targetString);
-  }
-
-  void setAutoTarget() {
-    String gameMessage = Robot.fms_string;
-    allgood = false;
-    if (robotPosition == POSITION_CENTER) {
-      targetObject = OBJECT_SWITCH;
-      if (gameMessage.charAt(0) == 'R')
-        targetSide = POSITION_RIGHT;
-      else
-        targetSide = POSITION_LEFT;
-    } else if (robotPosition == POSITION_RIGHT) {
-      targetSide = POSITION_RIGHT;
-      if (!isStraightPathForced()) {
-        if (gameMessage.charAt(1) == 'R' && gameMessage.charAt(0) == 'R') {
-          allgood = true;
-          if (doTwoCubeAuto() || isScalePreferredOverSwitch()) {
-            targetObject = OBJECT_SCALE;
-          } else {
-            targetObject = OBJECT_SWITCH;
-          }
-        } else if (gameMessage.charAt(0) == 'R') {
-          targetObject = OBJECT_SWITCH;
-        } else if (gameMessage.charAt(1) == 'R') {
-          targetObject = OBJECT_SCALE;
-        } else if (isOtherScaleSelected()) { // LL
-          targetObject = OBJECT_SCALE;
-          targetSide = POSITION_LEFT;
-        } else if (isOtherSwitchSelected()) { // LL
-          targetObject = OBJECT_SWITCH;
-          targetSide = POSITION_LEFT;
-        } else {
-          targetObject = OBJECT_NONE;
-        }
-      } else {
-        targetObject = OBJECT_NONE;
-      }
-    } else if (robotPosition == POSITION_LEFT) {
-      targetSide = POSITION_LEFT;
-      if (!isStraightPathForced()) {
-        if (gameMessage.charAt(1) == 'L' && gameMessage.charAt(0) == 'L') { // LL
-          allgood = true;
-          if (doTwoCubeAuto() || isScalePreferredOverSwitch()) {
-            targetObject = OBJECT_SCALE;
-          } else {
-            targetObject = OBJECT_SWITCH;
-          }
-        } else if (gameMessage.charAt(0) == 'L') { // LL LR
-          targetObject = OBJECT_SWITCH;
-        } else if (gameMessage.charAt(1) == 'L') { // RL
-          targetObject = OBJECT_SCALE;
-        } else if (isOtherScaleSelected()) { // RR
-          targetObject = OBJECT_SCALE;
-          targetSide = POSITION_RIGHT;
-        } else if (isOtherSwitchSelected()) { // LL
-          targetObject = OBJECT_SWITCH;
-          targetSide = POSITION_RIGHT;
-        } else {
-          targetObject = OBJECT_NONE;
-        }
-      } else {
-        targetObject = OBJECT_NONE;
-      }
-    }
-    showAutoTarget();
-  }
-
-  private boolean isOtherScaleSelected() {
-    return allBadOption == OTHER_SCALE;
-  }
-
-  private boolean isOtherSwitchSelected() {
-    return allBadOption == OTHER_SWITCH;
-  }
-
-  private boolean isScalePreferredOverSwitch() {
-    return allGoodOption == SAME_SCALE;
-  }
-
-  private boolean doTwoCubeAuto() {
-    return allgood && (allGoodOption == TWO_CUBE_AUTO);
-  }
-
-  private boolean isStraightPathForced() {
-    return allBadOption == GO_STRAIGHT;
-  }
-
   void getDataFromDashboard() {
     robotPosition = position_chooser.getSelected();
-    allBadOption = allBadChooser.getSelected();
-    allGoodOption = allGoodChooser.getSelected();
     useGyro = SmartDashboard.getBoolean("UseGyro", useGyro);
   }
 
