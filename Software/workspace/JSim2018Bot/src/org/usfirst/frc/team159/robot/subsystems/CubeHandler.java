@@ -112,6 +112,8 @@ public class CubeHandler extends Subsystem implements Constants{
     case GRAB: grab();break;
     case HOLD: hold();break;
     case DROP: drop();break;
+    case OPEN: openArms();break;
+    case CLOSE: closeArms();break;
     }
     logStatus();
   }

@@ -2,11 +2,15 @@
 package org.usfirst.frc.team159.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.NamedSendable;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.tables.ITable;
+
 import java.util.Random;
 
 import org.usfirst.frc.team159.robot.commands.Calibrate;
@@ -31,20 +35,18 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 
   public static OI oi;
   SendableChooser<Integer> position_chooser = new SendableChooser<Integer>();
-  SendableChooser<Integer> allGoodChooser = new SendableChooser<Integer>();
-  SendableChooser<Integer> allBadChooser = new SendableChooser<Integer>();
-
+ 
   CommandGroup autonomousCommand;
-  public static double auto_scale = 0.7;
+  public static double auto_scale = 0.8;
   public static boolean calibrate = false;
   public static boolean test = false;
 
   public static boolean useGyro = true;
 
-  public static double MAX_VEL = 1.0;
-  public static double MAX_ACC = 2.5; // slower but more accurate 0.4
-  public static double MAX_JRK = 1.0; // slower but more accurate 0.1
-  public static double KP = 2.0;
+  public static double MAX_VEL = 1.7;
+  public static double MAX_ACC = 2.6;
+  public static double MAX_JRK = 1.3;
+  public static double KP = 4.0;
   public static double KD = 0.0;
   public static double GFACT = 10.0;
 
@@ -72,24 +74,22 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
     } catch (NumberFormatException e) {
       robotPosition = POSITION_CENTER;
     }
-
-    switch (robotPosition) {
+    position_chooser.addObject("Right", new Integer(POSITION_RIGHT));
+    position_chooser.addObject("Left", new Integer(POSITION_LEFT));
+    position_chooser.addObject("Center", new Integer(POSITION_CENTER));
+    //ITable table=position_chooser.getTable() // returns null until disabledInit called
+    
+    switch (robotPosition) { 
     case POSITION_CENTER:
-      position_chooser.addObject("Right", new Integer(POSITION_RIGHT));
-      position_chooser.addObject("Left", new Integer(POSITION_LEFT));
       position_chooser.addDefault("Center", new Integer(POSITION_CENTER));
       System.out.println("CENTER");
       break;
     case POSITION_RIGHT:
-      position_chooser.addObject("Center", new Integer(POSITION_CENTER));
-      position_chooser.addObject("Left", new Integer(POSITION_LEFT));
       position_chooser.addDefault("Right", new Integer(POSITION_RIGHT));
       System.out.println("RIGHT");
       break;
     case POSITION_LEFT:
       position_chooser.addDefault("Left", new Integer(POSITION_LEFT));
-      position_chooser.addObject("Center", new Integer(POSITION_CENTER));
-      position_chooser.addObject("Right", new Integer(POSITION_RIGHT));
       System.out.println("LEFT");
       break;
     }
@@ -112,11 +112,10 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 
     SmartDashboard.putNumber("Auto Scale", auto_scale);
     SmartDashboard.putData("Position", position_chooser);
-
-    robotPosition = position_chooser.getSelected();
-
+    
+    //robotPosition = position_chooser.getSelected(); // ITable not valid here ??
+      
   }
-
   /**
    * This function is called once each time the robot enters Disabled mode. You
    * can use it to reset any subsystem information you want to clear when the
@@ -124,6 +123,7 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
    */
   @Override
   public void disabledInit() {
+    getDataFromDashboard();
     System.out.println("disabledInit");
     if (autonomousCommand != null)
       autonomousCommand.cancel();
@@ -138,33 +138,16 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
   @Override
   public void autonomousInit() {
     System.out.println("autonomousInit");
-
+    getDataFromDashboard();
     reset();
     if (autonomousCommand != null)
       autonomousCommand.cancel();
 
     SmartDashboard.putBoolean("Error", false);
-    MAX_VEL = SmartDashboard.getNumber("MAX_VEL", MAX_VEL);
-    MAX_ACC = SmartDashboard.getNumber("MAX_ACC", MAX_ACC);
-    MAX_JRK = SmartDashboard.getNumber("MAX_JRK", MAX_JRK);
-    GFACT = SmartDashboard.getNumber("GFACT", GFACT);
-
-    KP = SmartDashboard.getNumber("KP", KP);
-    KD = SmartDashboard.getNumber("KD", KD);
-
-    auto_scale = SmartDashboard.getNumber("Auto Scale", auto_scale);
-
-    calibrate = SmartDashboard.getBoolean("Calibrate", calibrate);
-
     setFMS();
-
-    SmartDashboard.putBoolean("Error", false);
-    getDataFromDashboard();
-   //setAutoTarget();
-
     autonomousCommand = new CommandGroup();
     if (calibrate) 
-       autonomousCommand.addSequential(new Calibrate());
+      autonomousCommand.addSequential(new Calibrate());
     else 
       autonomousCommand = autoSelector.getAutonomous();
 
@@ -183,6 +166,7 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
 
   @Override
   public void teleopInit() {
+    getDataFromDashboard();
     System.out.println("teleopInit");
     reset();
     // This makes sure that the autonomous stops running when
@@ -221,6 +205,14 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
   void getDataFromDashboard() {
     robotPosition = position_chooser.getSelected();
     useGyro = SmartDashboard.getBoolean("UseGyro", useGyro);
+    MAX_VEL = SmartDashboard.getNumber("MAX_VEL", MAX_VEL);
+    MAX_ACC = SmartDashboard.getNumber("MAX_ACC", MAX_ACC);
+    MAX_JRK = SmartDashboard.getNumber("MAX_JRK", MAX_JRK);
+    GFACT = SmartDashboard.getNumber("GFACT", GFACT);
+    KP = SmartDashboard.getNumber("KP", KP);
+    KD = SmartDashboard.getNumber("KD", KD);
+    auto_scale = SmartDashboard.getNumber("Auto Scale", auto_scale);
+    calibrate = SmartDashboard.getBoolean("Calibrate", calibrate);
   }
 
   void setFMS() {
@@ -234,7 +226,6 @@ public class Robot extends IterativeRobot implements RobotMap, PhysicalConstants
       fms_pattern = (int) (7.99999 * rand); // 0-7
       fms_string = fms[fms_pattern];
       System.out.println("rand=" + rand + " indx=" + fms_pattern);
-
       SmartDashboard.putString("FMS-STR", fms[fms_pattern]);
     }
   }

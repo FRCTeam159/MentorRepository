@@ -28,6 +28,6 @@ sleep 1;
 roxterm --tab --tab-name=java -e start_java $POSITION;
 sleep 1;
 roxterm --tab --tab-name=dashboard -e start_smartdashboard;
-sleep 2;
+sleep 3;
 roxterm --tab --tab-name=sim_ds -e sim_ds;
 

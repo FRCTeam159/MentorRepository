@@ -1206,12 +1206,12 @@
     <plugin name="Body-LFWheel_motor" filename="libdc_motor.so">
       <joint>Body-LFWheel</joint>
       <topic>/gazebo/frc/simulator/pwm/2</topic>
-      <multiplier>20</multiplier>
+      <multiplier>30</multiplier>
     </plugin>
     <plugin name="Body-LCWheel_motor" filename="libdc_motor.so">
       <joint>Body-LCWheel</joint>
       <topic>/gazebo/frc/simulator/pwm/2</topic>
-      <multiplier>20</multiplier>
+      <multiplier>30</multiplier>
     </plugin>
     <plugin name="Body-LCWheel_encoder" filename="libencoder.so">
       <joint>Body-LCWheel</joint>
@@ -1221,17 +1221,17 @@
     <plugin name="Body-LBWheel_motor" filename="libdc_motor.so">
       <joint>Body-LBWheel</joint>
       <topic>/gazebo/frc/simulator/pwm/2</topic>
-      <multiplier>20</multiplier>
+      <multiplier>30</multiplier>
     </plugin>
     <plugin name="Body-RFWheel_motor" filename="libdc_motor.so">
       <joint>Body-RFWheel</joint>
       <topic>/gazebo/frc/simulator/pwm/4</topic>
-      <multiplier>20</multiplier>
+      <multiplier>30</multiplier>
     </plugin>
     <plugin name="Body-RCWheel_motor" filename="libdc_motor.so">
       <joint>Body-RCWheel</joint>
       <topic>/gazebo/frc/simulator/pwm/4</topic>
-      <multiplier>20</multiplier>
+      <multiplier>30</multiplier>
     </plugin>
     <plugin name="Body-RCWheel_encoder" filename="libencoder.so">
       <joint>Body-RCWheel</joint>
@@ -1241,7 +1241,7 @@
     <plugin name="Body-RBWheel_motor" filename="libdc_motor.so">
       <joint>Body-RBWheel</joint>
       <topic>/gazebo/frc/simulator/pwm/4</topic>
-      <multiplier>20</multiplier>
+      <multiplier>30</multiplier>
     </plugin>
     <plugin name="Body-Elevator_motor" filename="libdc_motor.so">
       <joint>Body-Elevator</joint>

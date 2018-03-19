@@ -4,6 +4,7 @@ import org.usfirst.frc.team159.robot.Constants;
 import org.usfirst.frc.team159.robot.PhysicalConstants;
 import org.usfirst.frc.team159.robot.Robot;
 import org.usfirst.frc.team159.robot.commands.DrivePath;
+import org.usfirst.frc.team159.robot.commands.DriveStraight;
 import org.usfirst.frc.team159.robot.commands.SetElevator;
 import org.usfirst.frc.team159.robot.commands.SetGrabberState;
 import org.usfirst.frc.team159.robot.commands.TurnToAngle;
@@ -150,32 +151,32 @@ public class AutoSelector extends Subsystem implements Constants, PhysicalConsta
     switch(target) {
     case GO_STRAIGHT:
       System.out.println("Go Straight");
-      autoCommand.addSequential(new DrivePath(GO_STRAIGHT,false));
+      autoCommand.addSequential(new DrivePath(GO_STRAIGHT,false,false));
       break;
     case CENTER_SWITCH:
       mirror=(targetSide==POSITION_RIGHT);
       System.out.println("Center Switch");
       autoCommand.addParallel(new SetElevator(SWITCH_DROP_HEIGHT, 2.0));
-      autoCommand.addSequential(new DrivePath(CENTER_SWITCH,mirror));
+      autoCommand.addSequential(new DrivePath(CENTER_SWITCH,mirror,false));
       autoCommand.addSequential(new SetGrabberState(PUSH, 1.0));
       break;
     case SAME_SWITCH:
       System.out.println("Same Switch");
       autoCommand.addParallel(new SetElevator(SWITCH_DROP_HEIGHT, 2.0));
-      autoCommand.addSequential(new DrivePath(SAME_SWITCH,mirror));
+      autoCommand.addSequential(new DrivePath(SAME_SWITCH,mirror,false));
       autoCommand.addSequential(new SetGrabberState(PUSH, 1.0));
       break;
     case SAME_SCALE:
       System.out.println("Same Scale");
       autoCommand.addParallel(new SetElevator(SWITCH_DROP_HEIGHT, 2.0));
-      autoCommand.addSequential(new DrivePath(SAME_SCALE,mirror));
+      autoCommand.addSequential(new DrivePath(SAME_SCALE,mirror,false));
       autoCommand.addSequential(new SetElevator(SCALE_DROP_HEIGHT, 2.0));
       autoCommand.addSequential(new SetGrabberState(PUSH, 1.0));
       break;
     case OTHER_SCALE:
       System.out.println("Other Scale");
       autoCommand.addParallel(new SetElevator(SWITCH_DROP_HEIGHT, 2.0));
-      autoCommand.addSequential(new DrivePath(OTHER_SCALE,mirror));
+      autoCommand.addSequential(new DrivePath(OTHER_SCALE,mirror,false));
       autoCommand.addSequential(new SetElevator(SCALE_DROP_HEIGHT, 2.0));
       autoCommand.addSequential(new SetGrabberState(PUSH, 1.0));
       break;
@@ -184,11 +185,11 @@ public class AutoSelector extends Subsystem implements Constants, PhysicalConsta
       autoCommand = getAutoCommand(SAME_SCALE); // reentrant call !
       autoCommand.addSequential(new SetElevator(0, 2.0)); // drop elevator and prepare to grab
       if (Robot.robotPosition == POSITION_RIGHT) // note: pathfinder can't turn in place or drive in reverse
-        autoCommand.addSequential(new TurnToAngle(135.0, 3.0));
+        autoCommand.addSequential(new TurnToAngle(125.0, 3.0));
       else
-        autoCommand.addSequential(new TurnToAngle(-135.0, 3.0));
+        autoCommand.addSequential(new TurnToAngle(-125.0, 3.0));
       autoCommand.addSequential(new SetGrabberState(GRAB, 0.5));
-      autoCommand.addSequential(new DrivePath(TWO_CUBE_SIDE,mirror));
+      autoCommand.addSequential(new DrivePath(TWO_CUBE_SIDE,mirror,false));
       autoCommand.addSequential(new SetElevator(SWITCH_DROP_HEIGHT, 2.0));
       if (Robot.robotPosition == POSITION_RIGHT) // turn more toward center of switch
         autoCommand.addSequential(new TurnToAngle(25.0, 3.0));
@@ -198,8 +199,20 @@ public class AutoSelector extends Subsystem implements Constants, PhysicalConsta
       break;
     case TWO_CUBE_CENTER:
       System.out.println("Two Cube Center");
-      autoCommand = getAutoCommand(CENTER_SWITCH);  // reentrant call !
-      // TODO: two-cube auto from center
+      autoCommand = getAutoCommand(CENTER_SWITCH);  // place first cube (reentrant call !)
+      // two-cube auto from center
+      mirror=(targetSide==POSITION_LEFT); // inverted for backwards travel
+      autoCommand.addSequential(new DrivePath(TWO_CUBE_CENTER,mirror,true)); // reverse s-turn from switch
+      autoCommand.addParallel(new SetElevator(0, 2.0));   // set intake to grab cube
+      autoCommand.addParallel(new SetGrabberState(OPEN, 0.5));
+      autoCommand.addParallel(new SetGrabberState(GRAB, 0.5));
+      autoCommand.addSequential(new DriveStraight(28, 0.4,2.0,0)); // drive forward and grab end cube
+      autoCommand.addSequential(new SetGrabberState(CLOSE, 0.5));
+      autoCommand.addSequential(new DriveStraight(-24, 0.4,2.0,0)); // back up
+      autoCommand.addParallel(new SetElevator(SWITCH_DROP_HEIGHT, 2.0));
+      autoCommand.addSequential(new DrivePath(TWO_CUBE_CENTER,!mirror,false)); // forward s-turn to switch
+      autoCommand.addSequential(new SetGrabberState(PUSH, 1.0));
+
       break;
     }
     return autoCommand;

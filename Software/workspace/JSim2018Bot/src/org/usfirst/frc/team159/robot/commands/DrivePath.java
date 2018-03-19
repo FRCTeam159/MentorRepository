@@ -56,14 +56,18 @@ public class DrivePath extends Command implements PhysicalConstants, Constants {
   int path_points = 0;
   int target = 0;
   boolean mirror=false;
-  public DrivePath(int target,boolean mirror) {
+  boolean reverse=false;
+
+  public DrivePath(int target,boolean mirror,boolean reverse) {
     requires(Robot.driveTrain);
     this.target = target;
+    this.mirror=mirror;
+    this.reverse=reverse;
+
     mytimer = new Timer();
     mytimer.start();
     mytimer.reset();
     
-    this.mirror=mirror;
 
     double MAX_VEL = Robot.MAX_VEL;
     double MAX_ACC = Robot.MAX_ACC;
@@ -164,13 +168,18 @@ public class DrivePath extends Command implements PhysicalConstants, Constants {
       return;
     double scale = Robot.auto_scale;
 
-    double ld = feet2meters(Robot.driveTrain.getLeftDistance());
-    double rd = feet2meters(Robot.driveTrain.getRightDistance());
-    double l = leftFollower.calculate(ld); // reversal ?
-    double r = rightFollower.calculate(rd);
-
+    double ld = (Robot.driveTrain.getLeftDistance());
+    double rd = (Robot.driveTrain.getRightDistance());
+    if(reverse) {
+      ld=-ld;
+      rd=-rd;
+    }
+    double l = leftFollower.calculate(feet2meters(ld)); // reversal ?
+    double r = rightFollower.calculate(feet2meters(rd));
     double turn = 0;
     double gh = Robot.driveTrain.getHeading(); // Assuming the gyro is giving a value in degrees
+    if(reverse)
+      gh=-gh;
     gh = unwrap(last_heading, gh);
 
     double th = Pathfinder.r2d(leftFollower.getHeading()); // Should also be in degrees
@@ -178,6 +187,8 @@ public class DrivePath extends Command implements PhysicalConstants, Constants {
     double herr = th - gh;
     if (Robot.useGyro)
       turn = Robot.GFACT * (-1.0 / 180.0) * herr;
+    //if(reverse)
+    //  turn=-turn;
     double lval = l + turn;
     double rval = r - turn;
     lval *= scale;
@@ -187,11 +198,13 @@ public class DrivePath extends Command implements PhysicalConstants, Constants {
     double curtime = getTime();
 
     if (debug_command)
-      System.out.format("%f %f %f %f %f %f %f\n", curtime, m2i * ld, m2i * rd, gh, th, lval, rval);
+      System.out.format("%f %f %f %f %f %f %f\n", curtime, ld, rd, gh, th, lval, rval);
     if (print_path || plot_path || publish_path)
-      debugPathError();
-
-    Robot.driveTrain.set(lval, rval);
+      debugPathError(ld,rd,gh);
+    if(reverse)
+      Robot.driveTrain.set(-lval, -rval);
+    else
+      Robot.driveTrain.set(lval, rval);
 
     pathIndex++;
     last_heading = gh;
@@ -233,16 +246,16 @@ public class DrivePath extends Command implements PhysicalConstants, Constants {
     return previous_angle + d;
   }
 
-  private void debugPathError() {
+  private void debugPathError(double ld, double rd,double g) {
     PathData pd = new PathData();
     pd.tm = getTime();
-    pd.d[0] = 12 * (Robot.driveTrain.getLeftDistance());
-    pd.d[2] = 12 * (Robot.driveTrain.getRightDistance());
+    pd.d[0] = 12 * ld;//(Robot.driveTrain.getLeftDistance());
+    pd.d[2] = 12 * rd;//(Robot.driveTrain.getRightDistance());
     Segment ls = leftTrajectory.get(pathIndex);
     Segment rs = rightTrajectory.get(pathIndex);
     pd.d[1] = m2i * (ls.position);
     pd.d[3] = m2i * (rs.position);
-    double gh = unwrap(last_heading, Robot.driveTrain.getHeading());
+    double gh = g;//unwrap(last_heading, Robot.driveTrain.getHeading());
 
     pd.d[4] = gh; // Assuming the gyro is giving a value in degrees
     double th = Pathfinder.r2d(rs.heading); // Should also be in degrees
@@ -262,10 +275,12 @@ public class DrivePath extends Command implements PhysicalConstants, Constants {
     return waypoints;
   }
 
-  private Waypoint[] calculateCenterSwitchPoints() {
-    double x = ROBOT_TO_SWITCH;
+  private Waypoint[] calculateSecondCenterSwitchPoints() {
+    double x = 70;//ROBOT_TO_SWITCH-36;
     double y = SWITCH_CENTER_TO_PLATE_EDGE;
-    y -= mirror ? ROBOT_Y_OFFSET_FROM_CENTER : 0;
+    boolean delta=mirror^reverse;
+    
+    y -= delta ? ROBOT_Y_OFFSET_FROM_CENTER-6 : 0;
 
     Waypoint[] waypoints = new Waypoint[3];
     waypoints[0] = new Waypoint(0, 0, 0);
@@ -276,7 +291,25 @@ public class DrivePath extends Command implements PhysicalConstants, Constants {
     else
       return waypoints;
   }
+  private Waypoint[] calculateCenterSwitchPoints() {
+    double x = ROBOT_TO_SWITCH;
+    double y = SWITCH_CENTER_TO_PLATE_EDGE;
+    y -= mirror ? ROBOT_Y_OFFSET_FROM_CENTER : 0;
 
+    Waypoint[] waypoints = new Waypoint[3];
+    waypoints[0] = new Waypoint(0, 0, 0);
+    waypoints[1] = new Waypoint(x / 2, y / 2, Pathfinder.d2r(45));
+    waypoints[2] = new Waypoint(x+4, y, 0);
+    if (mirror)
+      return mirrorWaypoints(waypoints);
+    else
+      return waypoints;
+  }
+
+  /**
+   * Same Side Switch Path
+   * - Fires cube from Switch plate corner (45 degrees)
+   */
   private Waypoint[] calculateSideSwitchPoints() {
     double y = SWITCH_HOOK_Y_DISTANCE - 12;
     double x = ROBOT_TO_SWITCH;
@@ -290,11 +323,21 @@ public class DrivePath extends Command implements PhysicalConstants, Constants {
       return waypoints;
   }
 
+  /**
+   * Same Side Scale Path
+   * - Fires cube from Scale plate corner (45 degrees)
+   */
   private Waypoint[] calculateSideScalePoints() {
+    Waypoint[] waypoints = new Waypoint[4];
     double y = SCALE_HOOK_Y_DISTANCE;
     double x = ROBOT_TO_SCALE_X - 6;
-    Waypoint[] waypoints = new Waypoint[4];
     waypoints[0] = new Waypoint(0, 0, 0);
+    // this path comes in from inside edge of Scale plate
+    // double y = SCALE_HOOK_Y_DISTANCE+SCALE_WIDTH/2-ROBOT_WIDTH/2;
+    // double x = ROBOT_TO_SCALE_X - 6;
+    // waypoints[1] = new Waypoint(ROBOT_TO_SWITCH+SWITCH_WIDTH, 0, 0);
+    // waypoints[2] = new Waypoint(ROBOT_TO_SCALE_X - 6, y, 0);
+
     waypoints[1] = new Waypoint(x - 6 * y, -6, 0);
     waypoints[2] = new Waypoint(x - 2 * y, -6, 0);
     waypoints[3] = new Waypoint(x, y - 6, Pathfinder.d2r(45));
@@ -306,9 +349,10 @@ public class DrivePath extends Command implements PhysicalConstants, Constants {
 
   // calculate second switch path in 2 cube auto
   private Waypoint[] calculateSecondSwitchPoints() {
-    Waypoint[] waypoints = new Waypoint[2];
+    Waypoint[] waypoints = new Waypoint[3];
     waypoints[0] = new Waypoint(0, 0, Pathfinder.d2r(0));
-    waypoints[1] = new Waypoint(70, 20, Pathfinder.d2r(45)); // best values by trial and error
+    waypoints[1] = new Waypoint(40, 0, Pathfinder.d2r(0));
+    waypoints[2] = new Waypoint(70, 20, Pathfinder.d2r(35)); // best values by trial and error
     if (mirror)
       return mirrorWaypoints(waypoints);
     else
@@ -318,10 +362,10 @@ public class DrivePath extends Command implements PhysicalConstants, Constants {
   private Waypoint[] calculateOtherScalePoints() {
     Waypoint[] waypoints = new Waypoint[5];
     waypoints[0] = new Waypoint(0, 0, 0);
-    waypoints[1] = new Waypoint(150, 0, 0);
-    waypoints[2] = new Waypoint(230, 50, Pathfinder.d2r(90));
-    waypoints[3] = new Waypoint(230, 150, Pathfinder.d2r(90));
-    waypoints[4] = new Waypoint(270, 200, 0);
+    waypoints[1] = new Waypoint(130, 0, 0);
+    waypoints[2] = new Waypoint(220, 90, Pathfinder.d2r(90));
+    waypoints[3] = new Waypoint(220, 135, Pathfinder.d2r(90));
+    waypoints[4] = new Waypoint(270, 175, Pathfinder.d2r(-15));
     if (mirror)
       return mirrorWaypoints(waypoints);
     else
@@ -378,6 +422,7 @@ public class DrivePath extends Command implements PhysicalConstants, Constants {
       returnWaypoints = calculateSecondSwitchPoints();
       break;
     case TWO_CUBE_CENTER:
+      returnWaypoints = calculateSecondCenterSwitchPoints();
       break;
     }
     return waypointsInchesToMeters(returnWaypoints);

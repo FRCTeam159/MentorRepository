@@ -8,15 +8,16 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class DriveStraight extends Command implements PIDSource, PIDOutput {
+public class DriveStraight extends TimedCommand implements PIDSource, PIDOutput {
   Timer mytimer;
 
-  static public double P = 1.0;
+  static public double P = 0.5;
   static public double I = 0.0;
   static public double D = 0.0;
   static public double TOL = 0.05;
@@ -28,11 +29,21 @@ public class DriveStraight extends Command implements PIDSource, PIDOutput {
   static boolean debug = false;
   double last_time;
   int count = 0;
+  double speed=1;
+  double heading;
+  boolean useGyro=false;
 
-  public DriveStraight(double d) {
+  public DriveStraight(double d, double s, double t) {
+    this(d, s, t, 0.0);
+    useGyro=false;
+  }
+  public DriveStraight(double d, double s, double t,double h) {
+    super(t);
     requires(Robot.driveTrain);
     pid = new PIDController(P, I, D, this, this, 0.02);
     distance = d;
+    speed=s;
+    heading=h;
     mytimer = new Timer();
     mytimer.start();
     mytimer.reset();
@@ -44,6 +55,7 @@ public class DriveStraight extends Command implements PIDSource, PIDOutput {
       SmartDashboard.putNumber("TOL", tolerance);
       SmartDashboard.putNumber("DIST", distance);
     }
+    useGyro=Robot.useGyro;
   }
 
   // Called just before this Command runs the first time
@@ -60,7 +72,7 @@ public class DriveStraight extends Command implements PIDSource, PIDOutput {
       distance = SmartDashboard.getNumber("DIST", distance);
       pid.setPID(p, i, d);
     }
-    Robot.driveTrain.reset();
+    Robot.driveTrain.resetEncoders();
     pid.reset();
     pid.setSetpoint(distance);
     pid.setAbsoluteTolerance(tolerance);
@@ -80,6 +92,8 @@ public class DriveStraight extends Command implements PIDSource, PIDOutput {
 
   // Make this return true when this Command no longer needs to run execute()
   protected boolean isFinished() {
+    if(super.isFinished())
+      return true;
     boolean new_target = pid.onTarget();
     if (new_target && last_target)
       return true;
@@ -92,7 +106,6 @@ public class DriveStraight extends Command implements PIDSource, PIDOutput {
     System.out.println("DriveStraight::end()");
     pid.disable();
   }
-
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   protected void interrupted() {
@@ -102,15 +115,32 @@ public class DriveStraight extends Command implements PIDSource, PIDOutput {
 
   @Override
   public void pidWrite(double d) {
+    double gh = Robot.driveTrain.getHeading();
+    double herr=heading-gh;
+    double turn=0;
+    if (useGyro)
+      turn = Robot.GFACT * (-1.0 / 180.0) * herr;
 
+    double lval = d + turn;
+    double rval = d - turn;
+
+    lval=clamp(lval);
+    rval=clamp(rval);
     if (debug)
-      System.out.println("DriveStraight::pidWrite(" + d + ")");
-    Robot.driveTrain.set(d, d);
+      System.out.println("DriveStraight::pidWrite(" + d + ","+turn+")");
+    Robot.driveTrain.set(lval, rval);
   }
 
+  double clamp(double d) {
+    if(d>speed)
+      d=speed;
+    else if(d<-speed)
+      d=-speed;
+    return d;
+  }
   @Override
   public double pidGet() {
-    double s = Robot.driveTrain.getDistance();
+    double s = 12*Robot.driveTrain.getDistance();
     return s;
   }
 

@@ -26,4 +26,6 @@ public interface Constants {
   public static final int HOLD = 1;
   public static final int PUSH = 2;
   public static final int GRAB = 3;
+  public static final int OPEN = 4;
+  public static final int CLOSE = 5;
 }
