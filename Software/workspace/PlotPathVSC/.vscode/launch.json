@@ -1,0 +1,66 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - PathPlotTest",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "PathPlotTest",
+      "args": "",
+      "projectName": "PlotPathVSC"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - PlotTest",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "PlotTest",
+      "args": "",
+      "projectName": "PlotPath"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - PlotTestClient",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "PlotTestClient",
+      "args": "localhost",
+      "projectName": "PlotPath"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - PlotTestServer",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "PlotTestServer",
+      "vmArgs": [
+        "-Djava.library.path=${workspaceFolder:PlotPath}/build/tmp/jniExtractDir"
+      ],
+      "projectName": "PlotPath",
+      "env": {}
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - PathPlotTest",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "PathPlotTest",
+      "args": "",
+      "projectName": "PlotPath"
+    }
+  ]
+}
