@@ -9,6 +9,8 @@ import jaci.pathfinder.Trajectory.Segment;
 import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.modifiers.TankModifier;
 
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+
 public class PathPlotTest {
     public static final int LEFT = 0;
     public static final int RIGHT = 1;
@@ -21,10 +23,13 @@ public class PathPlotTest {
     int robotSide = LEFT;
     int pathTest = H_TURN;
 
-    private static final boolean printCalculatedTrajectory = true;
-    private static final boolean plotCalculatedTrajectory = true;
-    private static final boolean printCalculatedPath = false;
-    private static final boolean plotCalculatedPath = true;
+    private boolean printCalculatedTrajectory = false;
+    private boolean plotCalculatedTrajectory = false;
+    private boolean publishCalculatedTrajectory = true;
+
+    private boolean printCalculatedPath = false;
+    private boolean plotCalculatedPath = false;
+    private boolean publishCalculatedPath = true;
 
     double distance = feetToMeters(10); // forward distance
     double offset = feetToMeters(3); // turn distance
@@ -40,6 +45,8 @@ public class PathPlotTest {
     private Trajectory leftTrajectory;
     private Trajectory rightTrajectory;
     static double last_heading = 0;
+    private static NetworkTable table = null;
+    private static int pathIndex = 0;
 
     // IDE PROBLEM
     // Sometimes after a coding error a "build error" popup is always displayed on
@@ -54,27 +61,28 @@ public class PathPlotTest {
     //
     // ref:https://github.com/Microsoft/vscode-java-debug/blob/master/Troubleshooting.md#try
     public static void main(String[] args) {
+        table = NetworkTable.getTable("datatable"); // starst up a new table server
+
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                createAndShowGui();
+                try { // Allow time for client to connect to server before sending table data
+                    Thread.sleep(1000); // 1 second
+                    PathPlotTest test = new PathPlotTest();
+                    test.showPathDynamics(); // if publish enabled writes trajectory plot data to server
+                    Thread.sleep(1000); // 1 second
+                    test.showPathMotion();  // publish path plot data 
+                    return;  
+                } catch (InterruptedException ex) {
+                    System.out.println("Thread.sleep exception in main)");
+                }
             }
         });
-    }
-
-    private static void createAndShowGui() {
-        PathPlotTest test = new PathPlotTest();
-        test.showPathDynamics();
-        test.showPathMotion();
     }
 
     public PathPlotTest() {
         trajectory = calculateTrajectory(distance, offset, MAX_VEL, MAX_ACC, MAX_JRK);
         TankModifier modifier = new TankModifier(trajectory);
         modifier.modify(wheelbase);
-
-        // Generate the Left and Right trajectories using the original trajectory as the
-        // center
-
         leftTrajectory = modifier.getLeftTrajectory(); // Get the Left Side
         rightTrajectory = modifier.getRightTrajectory(); // Get the Right Side
     }
@@ -96,7 +104,7 @@ public class PathPlotTest {
             if (printCalculatedPath)
                 System.out.format("%f %f %f %f %f %f %f\n", time, lx, ly, cx, cy, rx, ry);
             time += centerSegment.dt;
-            if (plotCalculatedPath) {
+            if (plotCalculatedPath || publishCalculatedPath) {
                 PathData pd = new PathData();
                 pd.tm = time;
                 pd.d[0] = lx;
@@ -110,11 +118,14 @@ public class PathPlotTest {
             }
         }
         if (plotCalculatedPath) {
-            JFrame frame = new PlotPath(data, 3, PlotPath.XY_MODE);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            JFrame frame = new PlotPath(data, 3, PlotPath.PATH_MODE);
+            //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
+        }
+        if (publishCalculatedPath) {
+            publish(data, 3, PlotPath.PATH_MODE);
         }
     }
 
@@ -136,7 +147,7 @@ public class PathPlotTest {
 
             if (printCalculatedTrajectory)
                 System.out.format("%f %f %f %f %f %f \n", time, x, y, v, a, h);
-            if (plotCalculatedTrajectory) {
+            if (plotCalculatedTrajectory || publishCalculatedTrajectory) {
                 PathData pd = new PathData();
                 pd.tm = time;
                 pd.d[0] = x;
@@ -150,12 +161,52 @@ public class PathPlotTest {
             last_heading = heading;
         }
         if (plotCalculatedTrajectory) {
-            JFrame frame = new PlotPath(data, 5);
+            JFrame frame = new PlotPath(data, 5, PlotPath.TRAJ_MODE);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         }
+        if (publishCalculatedTrajectory) {
+            publish(data, 5, PlotPath.TRAJ_MODE);
+        }
+    }
+
+    private void publish(ArrayList<PathData> dataList, int traces, int mode) {
+        double info[] = new double[4];
+        int points = dataList.size();
+        info[0] = pathIndex;
+        info[1] = traces;
+        info[2] = points;
+        info[3] = mode;
+       
+        System.out.println(
+                "Publishing Plot Data id:" + info[0] + " traces:" + info[1] + " pts:" + info[2] + " mode:" + info[3]);
+        // Problem:
+        //  1) NetworkTable valueChanged listener in client does not respond to changes in the data part of Double arrays
+        //  - e.g table.putValue("NewPlot", NetworkTableValue.makeDoubleArray(info));
+        //  - A solution is to assign a new String label to each plot (e.g. "NewPlot"+id)
+        //  - This requires restarting the client when the server is restarted to reset the plot id on both sides to 0
+        //  2) Another solution is to use a simple number value for the plot id instead of a number array
+        //  - The valueChanged listener in the client does respond to changes in the data part in this case
+        //  - Once the client knows the plot id it can look for the plot parameters in a separate double array like "PlotParams"+id"
+        table.putNumber("NewPlot",pathIndex); 
+        table.putNumberArray("PlotParams" + pathIndex, info);
+        if(mode==PlotPath.PATH_MODE)
+            traces*=2;
+
+        for (int i = 0; i < points; i++) {
+            PathData pathData = dataList.get(i);
+            double data[] = new double[traces + 2];
+            data[0] = (double) i;
+            data[1] = pathData.tm;
+            for (int j = 0; j < traces; j++) {
+                data[j + 2] = pathData.d[j];
+            }
+            table.putNumberArray("PlotData" + i, data);
+        }
+        dataList.clear();
+        pathIndex++;
     }
 
     double unwrap(double previous_angle, double new_angle) {

@@ -6,25 +6,13 @@
   "configurations": [
     {
       "type": "java",
-      "name": "CodeLens (Launch) - PathPlotTest",
+      "name": "CodeLens (Launch) - PlotTestServer",
       "request": "launch",
       "cwd": "${workspaceFolder}",
       "console": "internalConsole",
       "stopOnEntry": false,
-      "mainClass": "PathPlotTest",
-      "args": "",
-      "projectName": "PlotPathVSC"
-    },
-    {
-      "type": "java",
-      "name": "CodeLens (Launch) - PlotTest",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "console": "internalConsole",
-      "stopOnEntry": false,
-      "mainClass": "PlotTest",
-      "args": "",
-      "projectName": "PlotPath"
+      "mainClass": "PlotTestServer",
+      "args": ""
     },
     {
       "type": "java",
@@ -34,8 +22,27 @@
       "console": "internalConsole",
       "stopOnEntry": false,
       "mainClass": "PlotTestClient",
-      "args": "localhost",
-      "projectName": "PlotPath"
+      "args": "localhost"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - PlotTest",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "PlotTest",
+      "args": ""
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - PathPlotTest",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "PathPlotTest",
+      "args": ""
     },
     {
       "type": "java",
@@ -48,8 +55,29 @@
       "vmArgs": [
         "-Djava.library.path=${workspaceFolder:PlotPath}/build/tmp/jniExtractDir"
       ],
-      "projectName": "PlotPath",
-      "env": {}
+      "projectName": "PlotPathVSC"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - PlotTestClient",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "PlotTestClient",
+      "args": "localhost",
+      "projectName": "PlotPathVSC"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - PlotTest",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "PlotTest",
+      "args": "",
+      "projectName": "PlotPathVSC"
     },
     {
       "type": "java",
@@ -60,7 +88,7 @@
       "stopOnEntry": false,
       "mainClass": "PathPlotTest",
       "args": "",
-      "projectName": "PlotPath"
+      "projectName": "PlotPathVSC"
     }
   ]
 }

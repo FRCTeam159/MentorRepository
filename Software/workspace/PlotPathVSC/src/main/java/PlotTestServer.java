@@ -23,7 +23,7 @@ public class PlotTestServer {
 		int traces=3;
 		Random random = new Random();
 		int maxScore = 10;
-		double info[] = new double[3];
+		double info[] = new double[4];
 		int cnt=0;
 		int id=0;
 		String lpath=System.getProperty("java.library.path");
@@ -34,6 +34,7 @@ public class PlotTestServer {
 			info[0]=cnt;//plot id
 			info[1]=traces; // 1 trace
 			info[2]=maxDataPoints;
+			info[3]=PlotPath.DFLT_MODE;
 
 			try {
 				Thread.sleep(10000); // new plot every 10 seconds
