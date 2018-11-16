@@ -61,8 +61,6 @@ public class PlotTestClient implements ITableListener {
 		}
 	}
 
-	
-
 	@Override
 	public void valueChanged(ITable arg0, String arg1, Object arg2, boolean arg3) {
 		if (arg1.contentEquals("NewPlot")) {
@@ -99,9 +97,10 @@ public class PlotTestClient implements ITableListener {
 		if((count >= points) && (points > 0) && (id==plot_count)) {
 			count=0;
 			index=0;
-			System.out.println("showing new plot " + points);
+			System.out.println("showing new plot id:" + id);
 			plot_count++;
-			SwingUtilities.invokeLater(new Runnable() { // show plot in new thread
+			// show each plot in a ew thread
+			SwingUtilities.invokeLater(new Runnable() { 
 			public void run() {
 				System.out.println("points " + points);
 				//System.out.println("Showing plot: Size = " + list.size());
@@ -110,9 +109,7 @@ public class PlotTestClient implements ITableListener {
 				frame.pack();
 				frame.setLocationRelativeTo(null);
 				frame.setVisible(true);
-				//list = new ArrayList();
 				table.flush(); 
-			 	//createAndShowGui(id, list, traces,mode);
 			 	}
 			});
 		}
