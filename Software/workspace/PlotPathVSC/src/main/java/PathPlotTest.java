@@ -9,7 +9,11 @@ import jaci.pathfinder.Trajectory.Segment;
 import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.modifiers.TankModifier;
 
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
+//import edu.wpi.first.wpilibj.networktables.NetworkTable;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class PathPlotTest {
     public static final int LEFT = 0;
@@ -31,8 +35,8 @@ public class PathPlotTest {
     private boolean plotCalculatedPath = false;
     private boolean publishCalculatedPath = true;
 
-    double distance = feetToMeters(10); // forward distance
-    double offset = feetToMeters(3); // turn distance
+    double distance = 10;// feetToMeters(10); // forward distance
+    double offset = 3;// feetToMeters(3); // turn distance
     double ROBOT_WIDTH = 34.25;
 
     public static double MAX_VEL = 1.5;
@@ -46,12 +50,11 @@ public class PathPlotTest {
     private Trajectory rightTrajectory;
     static double last_heading = 0;
     private static NetworkTable table = null;
-    private static int pathIndex = 0;
+    private static int plotIndex = 0;
 
     // IDE PROBLEM
     // Sometimes after a coding error a "build error" popup is always displayed on
-    // subsequent runs
-    // even when the original problem has been corrected
+    // subsequent runs even when the original problem has been corrected
     // Only thing that seems to fix this is to clear the workspace cache:
     // 1) exit vscode
     // 2) open a bash shell (e.g. gitbash)
@@ -61,17 +64,15 @@ public class PathPlotTest {
     //
     // ref:https://github.com/Microsoft/vscode-java-debug/blob/master/Troubleshooting.md#try
     public static void main(String[] args) {
-        table = NetworkTable.getTable("datatable"); // starst up a new table server
-
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try { // Allow time for client to connect to server before sending table data
-                    Thread.sleep(1000); // 1 second
                     PathPlotTest test = new PathPlotTest();
-                    test.showPathDynamics(); // if publish enabled writes trajectory plot data to server
                     Thread.sleep(1000); // 1 second
-                    test.showPathMotion();  // publish path plot data 
-                    return;  
+                    test.showPathDynamics(); // if publish enabled writes trajectory plot data to server
+                    Thread.sleep(2000); // 2 seconds give client time to finish first plot
+                    test.showPathMotion(); // publish path plot data
+                    return;
                 } catch (InterruptedException ex) {
                     System.out.println("Thread.sleep exception in main)");
                 }
@@ -80,11 +81,20 @@ public class PathPlotTest {
     }
 
     public PathPlotTest() {
+        NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        table = inst.getTable("datatable");
         trajectory = calculateTrajectory(distance, offset, MAX_VEL, MAX_ACC, MAX_JRK);
         TankModifier modifier = new TankModifier(trajectory);
         modifier.modify(wheelbase);
-        leftTrajectory = modifier.getLeftTrajectory(); // Get the Left Side
-        rightTrajectory = modifier.getRightTrajectory(); // Get the Right Side
+        // HACK: Pathfinder inverts left and right wheel sense (i.e left=+1/2 wheelbase
+        // not -1/2 wheelbase !)
+        // as well as CCW rotation angles for heading and left turn direction +y vs -y
+        // so "getRightTrajectory" really refers to left side etc.
+        // work around (hack) is to swap calculated trajectories for left and right
+        // sides
+        leftTrajectory = modifier.getRightTrajectory(); // Get the Left Side
+        rightTrajectory = modifier.getLeftTrajectory(); // Get the Right Side
+        inst.startServer();
     }
 
     void showPathMotion() {
@@ -106,6 +116,7 @@ public class PathPlotTest {
             time += centerSegment.dt;
             if (plotCalculatedPath || publishCalculatedPath) {
                 PathData pd = new PathData();
+                // note: pathfinder inverts y order of left and right side
                 pd.tm = time;
                 pd.d[0] = lx;
                 pd.d[1] = ly;
@@ -113,13 +124,12 @@ public class PathPlotTest {
                 pd.d[3] = cy;
                 pd.d[4] = rx;
                 pd.d[5] = ry;
-
                 data.add(pd);
             }
         }
         if (plotCalculatedPath) {
-            JFrame frame = new PlotPath(data, 3, PlotPath.PATH_MODE);
-            //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            JFrame frame = new PlotPath(data, 0, 3, PlotPath.PATH_MODE);
+            // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
@@ -161,7 +171,7 @@ public class PathPlotTest {
             last_heading = heading;
         }
         if (plotCalculatedTrajectory) {
-            JFrame frame = new PlotPath(data, 5, PlotPath.TRAJ_MODE);
+            JFrame frame = new PlotPath(data, 0, 5, PlotPath.TRAJ_MODE);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.pack();
             frame.setLocationRelativeTo(null);
@@ -175,25 +185,20 @@ public class PathPlotTest {
     private void publish(ArrayList<PathData> dataList, int traces, int mode) {
         double info[] = new double[4];
         int points = dataList.size();
-        info[0] = pathIndex;
+        info[0] = plotIndex;
         info[1] = traces;
         info[2] = points;
         info[3] = mode;
-       
+
         System.out.println(
                 "Publishing Plot Data id:" + info[0] + " traces:" + info[1] + " pts:" + info[2] + " mode:" + info[3]);
-        // Problem:
-        //  1) NetworkTable valueChanged listener in client does not respond to changes in the data part of Double arrays
-        //  - e.g table.putValue("NewPlot", NetworkTableValue.makeDoubleArray(info));
-        //  - A solution is to assign a new String label to each plot (e.g. "NewPlot"+id)
-        //  - This requires restarting the client when the server is restarted to reset the plot id on both sides to 0
-        //  2) Another solution is to use a simple number value for the plot id instead of a number array
-        //  - The valueChanged listener in the client does respond to changes in the data part in this case
-        //  - Once the client knows the plot id it can look for the plot parameters in a separate double array like "PlotParams"+id"
-        table.putNumber("NewPlot",pathIndex); 
-        table.putNumberArray("PlotParams" + pathIndex, info);
-        if(mode==PlotPath.PATH_MODE)
-            traces*=2;
+
+        NetworkTableEntry entry = table.getEntry("NewPlot");
+        entry.setDouble(plotIndex);
+        entry = table.getEntry("PlotParams" + plotIndex);
+        entry.setDoubleArray(info);
+        if (mode == PlotPath.PATH_MODE)
+            traces *= 2;
 
         for (int i = 0; i < points; i++) {
             PathData pathData = dataList.get(i);
@@ -203,10 +208,11 @@ public class PathPlotTest {
             for (int j = 0; j < traces; j++) {
                 data[j + 2] = pathData.d[j];
             }
-            table.putNumberArray("PlotData" + i, data);
+            entry = table.getEntry("PlotData" + i);
+            entry.setDoubleArray(data);
         }
         dataList.clear();
-        pathIndex++;
+        plotIndex++;
     }
 
     double unwrap(double previous_angle, double new_angle) {
@@ -248,15 +254,15 @@ public class PathPlotTest {
     }
 
     private Waypoint[] calculateStraightPoints(double x) {
-        return new Waypoint[] { new Waypoint(0, 0, 0), new Waypoint(x, 0, 0) };
+        return new Waypoint[] { new MyWaypoint(0, 0, 0), new MyWaypoint(x, 0, 0) };
     }
 
     private Waypoint[] calculateHookpoints(double x, double y) {
         Waypoint[] waypoints = new Waypoint[3];
-        waypoints[0] = new Waypoint(0, 0, 0);
-        waypoints[1] = new Waypoint(x - y, 0, 0);
-        waypoints[2] = new Waypoint(x, y, Pathfinder.d2r(90));
-        if (robotSide == LEFT)
+        waypoints[0] = new MyWaypoint(0, 0, 0);
+        waypoints[1] = new MyWaypoint(x - y, 0, 0);
+        waypoints[2] = new MyWaypoint(x, y, 90.0);
+        if (robotSide == RIGHT)
             return waypoints;
         else
             return mirrorWaypoints(waypoints);
@@ -264,10 +270,10 @@ public class PathPlotTest {
 
     private Waypoint[] calculateSpoints(double x, double y) {
         Waypoint[] waypoints = new Waypoint[3];
-        waypoints[0] = new Waypoint(0, 0, 0);
-        waypoints[1] = new Waypoint(x / 2, y / 2, Pathfinder.d2r(45));
-        waypoints[2] = new Waypoint(x, y, 0);
-        if (robotSide == LEFT)
+        waypoints[0] = new MyWaypoint(0, 0, 0);
+        waypoints[1] = new MyWaypoint(x / 2, y / 2, 45);
+        waypoints[2] = new MyWaypoint(x, y, 0);
+        if (robotSide == RIGHT)
             return mirrorWaypoints(waypoints);
         else
             return waypoints;
@@ -299,4 +305,10 @@ public class PathPlotTest {
         }
         return newWaypoints;
     }
+
+    private class MyWaypoint extends Waypoint {
+        MyWaypoint(double x, double y, double h) {
+            super(feetToMeters(x), -feetToMeters(y), -Pathfinder.d2r(h));
+        }
+    };
 }

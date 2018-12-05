@@ -18,14 +18,18 @@ public class PlotPath extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	protected ArrayList<PathData> list = new ArrayList<>();
-	private static final int PREF_W = 800;
-	private static final int PREF_H = 650;
+	private int PREF_W = 800;
+	private int PREF_H = 650;
+	private int PIXELS_PER_FOOT = 80;
+	private int numberYDivisions = 10;
+	private int numberXDivisions = 10;
 	protected double tmax = 0;
 	protected double ymin = 1000;
 	protected double ymax = -1000;
 	protected double xmin = 1000;
 	protected double xmax = -1000;
-	protected int traces;
+	protected int traces = 0;
+	protected int id = 0;
 	public static final int DFLT_MODE = 0;
 	public static final int PATH_MODE = 1;
 	public static final int TRAJ_MODE = 2;
@@ -38,44 +42,71 @@ public class PlotPath extends JFrame {
 
 	private String traceLabels[] = null;
 	private String xAxisLabel = null;
-	private String plotTitle="Plot";
+	private String yAxisLabel = null;
+
+	private String plotTitle = "Plot";
 
 	static public Color colors[] = { Color.BLUE, Color.RED, Color.GREEN, Color.ORANGE, Color.DARK_GRAY, Color.GRAY };
 
-	public PlotPath(ArrayList<PathData> d, int n) {
-		this(d, n, DFLT_MODE);
+	public PlotPath(ArrayList<PathData> d, PlotInfo p) {
+		this(d, p.id, p.traces, p.mode);
 	}
 
-	public PlotPath(ArrayList<PathData> d, int n, int m) {
+	public PlotPath(ArrayList<PathData> d, int n) {
+		this(d, 0, n, DFLT_MODE);
+	}
+
+	public PlotPath(ArrayList<PathData> d, int i, int n, int m) {
 		plotMode = m;
 		list.addAll(d);
 		traces = n;
-		setSize(PREF_W, PREF_H);
-		setLocationRelativeTo(null);
+		id = i;
+		getLimits();
 		switch (plotMode) {
+		default:
+		case DFLT_MODE:
+			plotTitle = "Plot";
+			break;
 		case PATH_MODE:
 			traceLabels = pathLabels;
-			xAxisLabel="X";
-			plotTitle="Path Plot";
+			xAxisLabel = "X";
+			plotTitle = "Path Plot";
+			yAxisLabel = "Y";
+			setXYSize();
 			break;
 		case TRAJ_MODE:
 			traceLabels = trajLabels;
-			xAxisLabel="Time";
-			plotTitle="Trajectory Plot";
+			xAxisLabel = "Time";
+			plotTitle = "Trajectory Plot";
 			break;
 		case TEST_MODE:
 			traceLabels = testLabels;
-			xAxisLabel="Time";
-			plotTitle="Test Plot";
+			xAxisLabel = "Time";
+			plotTitle = "Test Plot";
 			break;
 		}
+		setSize(PREF_W, PREF_H);
+		setLocationRelativeTo(null);
+		plotTitle += " " + id;
 		setTitle(plotTitle);
-		System.out.println("new " + plotTitle + " traces=" + n + " points=" + list.size());getLimits();
+		System.out.println("PlotPath " + plotTitle + " traces=" + n + " points=" + list.size());
+
 		add(new DrawPlot(), BorderLayout.CENTER);
 		pack();
-		
-
 		setVisible(true);
+	}
+
+	// Set window size of XY plot so that tick spacing is the same in both
+	// dimentions
+	void setXYSize() {
+		int xrange = (int) (xmax - xmin + 0.5);
+		int yrange = (int) (ymax - ymin + 0.5);
+		PREF_W = xrange * PIXELS_PER_FOOT;
+		PREF_H = yrange * PIXELS_PER_FOOT;
+		System.out.println("W=" + PREF_W + " H=" + PREF_H);
+		numberXDivisions = xrange;
+		numberYDivisions = yrange;
+
 	}
 
 	void getLimits() {
@@ -107,8 +138,6 @@ public class PlotPath extends JFrame {
 		private int labelPadding = 35;
 		private Color gridColor = new Color(200, 200, 200, 200);
 		private int pointWidth = 2;
-		private int numberYDivisions = 10;
-		private int numberXDivisions = 10;
 
 		private Stroke BOX_STROKE = new BasicStroke(1f);
 		private Stroke GRAPH_STROKE = new BasicStroke(2f);
@@ -116,27 +145,34 @@ public class PlotPath extends JFrame {
 				new float[] { 5, 5 }, 0.0f);
 
 		public DrawPlot() {
-			setPreferredSize(new Dimension(800, 600));
+			setPreferredSize(new Dimension(PREF_W, PREF_H));
 		}
 
 		private void showAxisLabels(Graphics2D g) {
 			// draw x axis label
-			if(xAxisLabel==null)
-				return;
-			int x0 = (getWidth() - padding * 2 - labelPadding) / 2 + padding + labelPadding;
-			int y0 = getHeight() - labelPadding;
-			FontMetrics metrics = g.getFontMetrics();
-			int xLabelWidth = metrics.stringWidth(xAxisLabel);
-			int labelHeight = metrics.getHeight();
-			g.drawString(xAxisLabel, x0 - xLabelWidth / 2, y0 + metrics.getHeight() + 3);
+			if (xAxisLabel != null) {
+				int x0 = (getWidth() - padding * 2 - labelPadding) / 2 + padding + labelPadding;
+				int y0 = getHeight() - labelPadding;
+				FontMetrics metrics = g.getFontMetrics();
+				int xLabelWidth = metrics.stringWidth(xAxisLabel);
+				g.drawString(xAxisLabel, x0 - xLabelWidth / 2, y0 + metrics.getHeight() + 3);
+			}
+			if (yAxisLabel != null) {
+				int x0 = labelPadding / 2;
+				int y0 = (getHeight() - labelPadding) / 2;
+				FontMetrics metrics = g.getFontMetrics();
+				int labelWidth = metrics.stringWidth(yAxisLabel);
+				g.drawString(yAxisLabel, x0 - labelWidth / 2, y0 - metrics.getHeight() / 2);
+			}
 		}
 
 		private void showTraceLabels(Graphics2D g) {
-			if(traceLabels==null)
+			if (traceLabels == null)
 				return;
 			FontMetrics metrics = g.getFontMetrics();
 			int labelHeight = metrics.getHeight();
-			//System.out.println("label ht=" + labelHeight + " label width=" + xLabelWidth);
+			// System.out.println("label ht=" + labelHeight + " label width=" +
+			// xLabelWidth);
 			// draw trace legends
 			// - calculate box size (traces)
 			int textWidth = 50;
@@ -170,7 +206,7 @@ public class PlotPath extends JFrame {
 					g.setStroke(DASHED);
 				g.drawLine(X, Y, X + lineLength, Y);
 				g.setColor(Color.BLACK);
-				g.drawString(traceLabels[j], X + lineLength+6, Y+5);
+				g.drawString(traceLabels[j], X + lineLength + 6, Y + 5);
 				Y += labelHeight + labelSpacing;
 			}
 		}
@@ -187,34 +223,58 @@ public class PlotPath extends JFrame {
 			// yscale="+yScale);
 
 			// draw white background
-			g2.setColor(Color.WHITE);
-			g2.fillRect(padding + labelPadding, padding, getWidth() - (2 * padding) - labelPadding,
-					getHeight() - 2 * padding - labelPadding);
-			g2.setColor(Color.BLACK);
+			int px0=padding + labelPadding;
+			int py0=padding;
+			int pw=getWidth() - (2 * padding) - labelPadding;
+			int ph=getHeight() - (2 * padding) - labelPadding;
 
-			// create hatch marks and grid lines for y axis.
-			for (int i = 0; i < numberYDivisions + 1; i++) {
-				int x0 = padding + labelPadding;
-				int x1 = pointWidth + padding + labelPadding;
-				int y0 = getHeight() - ((i * (getHeight() - padding * 2 - labelPadding)) / numberYDivisions + padding
-						+ labelPadding);
-				int y1 = y0;
-				if (list.size() > 0) {
-					g2.setColor(gridColor);
-					g2.drawLine(padding + labelPadding + 1 + pointWidth, y0, getWidth() - padding, y1);
-					g2.setColor(Color.BLACK);
-					String yLabel = ((int) ((ymin + (ymax - ymin) * ((i * 1.0) / numberYDivisions)) * 100)) / 100.0
-							+ "";
-					FontMetrics metrics = g2.getFontMetrics();
-					int labelWidth = metrics.stringWidth(yLabel);
-					g2.drawString(yLabel, x0 - labelWidth - 5, y0 + (metrics.getHeight() / 2) - 3);
+			g2.setColor(Color.WHITE);
+			g2.fillRect(px0, py0, pw,ph);
+			g2.setColor(Color.BLACK);
+			double factor= (plotMode != PATH_MODE)?100:10;
+			int num=numberYDivisions+1;
+			if (plotMode != PATH_MODE) {
+				// create hatch marks and grid lines for y axis.
+				for (int i = 0; i < num; i++) {
+					int x0 = padding + labelPadding;
+					int x1 = pointWidth + padding + labelPadding;
+					int y0 = (int)(getHeight() - ((i * ph) / num + padding + labelPadding));
+					int y1 = y0;
+					if (list.size() > 0) {
+						g2.setColor(gridColor);
+						g2.drawLine(padding + labelPadding + 1 + pointWidth, y0, getWidth() - padding, y1);
+						g2.setColor(Color.BLACK);
+						double yLabel = ((int) ((ymin + (ymax - ymin) * i / num) * factor)) /factor;
+						FontMetrics metrics = g2.getFontMetrics();
+						int labelWidth = metrics.stringWidth(""+yLabel);
+						g2.drawString(""+yLabel, x0 - labelWidth - 5, y0 + (metrics.getHeight() / 2) - 3);
+					}
+					g2.drawLine(x0, y0, x1, y1);
 				}
-				g2.drawLine(x0, y0, x1, y1);
+			}
+			else{
+				for (int i = 0; i < num + 1; i++) {
+					int x0 = padding + labelPadding;
+					int x1 = pointWidth + padding + labelPadding;
+					int y0 = (int)((i * ph) / num+ py0);
+					int y1 = y0;
+					if (list.size() > 0) {
+						g2.setColor(gridColor);
+						g2.drawLine(padding + labelPadding + 1 + pointWidth, y0, getWidth() - padding, y1);
+						g2.setColor(Color.BLACK);
+						double yLabel = ((int) ((ymin + (ymax - ymin) * i  / num) * factor)) /factor;
+						FontMetrics metrics = g2.getFontMetrics();
+						int labelWidth = metrics.stringWidth(""+yLabel);
+						g2.drawString(""+yLabel, x0 - labelWidth - 5, y0 + (metrics.getHeight() / 2) - 3);
+					}
+					g2.drawLine(x0, y0, x1, y1);
+				}
 			}
 
 			// and for x axis
-			for (int i = 0; i < numberXDivisions + 1; i++) {
-				int x0 = i * (getWidth() - padding * 2 - labelPadding) / numberXDivisions + padding + labelPadding;
+			num=numberXDivisions+1;
+			for (int i = 0; i < num; i++) {
+				int x0 = (int)(i * (getWidth() - padding * 2 - labelPadding) / num + padding + labelPadding);
 				int x1 = x0;
 				int y0 = getHeight() - padding - labelPadding;
 				int y1 = y0 - pointWidth;
@@ -222,11 +282,10 @@ public class PlotPath extends JFrame {
 					g2.setColor(gridColor);
 					g2.drawLine(x0, getHeight() - padding - labelPadding - 1 - pointWidth, x1, padding);
 					g2.setColor(Color.BLACK);
-					String xLabel = ((int) ((xmin + (xmax - xmin) * ((i * 1.0) / numberXDivisions)) * 100)) / 100.0
-							+ "";
+					double xLabel = ((int) ((xmin + (xmax - xmin) * i / num) * factor)) / factor;
 					FontMetrics metrics = g2.getFontMetrics();
-					int labelWidth = metrics.stringWidth(xLabel);
-					g2.drawString(xLabel, x0 - labelWidth / 2, y0 + metrics.getHeight() + 3);
+					int labelWidth = metrics.stringWidth(""+xLabel);
+					g2.drawString(""+xLabel, x0 - labelWidth / 2, y0 + metrics.getHeight() + 3);
 				}
 				g2.drawLine(x0, y0, x1, y1);
 			}
@@ -260,7 +319,9 @@ public class PlotPath extends JFrame {
 					g2.setColor(colors[j]);
 					for (int i = 0; i < list.size(); i++) {
 						xs[i] = (int) ((list.get(i).d[2 * j]) * xScale + padding + labelPadding);
-						ys[i] = (int) ((ymax - list.get(i).d[2 * j + 1]) * yScale + padding);
+						// ys[i] = (int) ((ymax - list.get(i).d[2 * j + 1]) * yScale + padding);
+						ys[i] = (int) ((list.get(i).d[2 * j + 1] - ymin) * yScale + padding);
+
 					}
 					if ((j % 2) == 0)
 						g2.setStroke(GRAPH_STROKE);

@@ -19,7 +19,7 @@ public class PlotTest {
 			data.add(pd);
 			tm+=0.02;
 		}
-		JFrame frame = new PlotPath(data,1,PlotPath.DFLT_MODE);
+		JFrame frame = new PlotPath(data,0,1,PlotPath.DFLT_MODE);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setLocationRelativeTo(null);

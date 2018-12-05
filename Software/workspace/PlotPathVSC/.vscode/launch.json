@@ -6,71 +6,6 @@
   "configurations": [
     {
       "type": "java",
-      "name": "CodeLens (Launch) - PlotTestServer",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "console": "internalConsole",
-      "stopOnEntry": false,
-      "mainClass": "PlotTestServer",
-      "args": ""
-    },
-    {
-      "type": "java",
-      "name": "CodeLens (Launch) - PlotTestClient",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "console": "internalConsole",
-      "stopOnEntry": false,
-      "mainClass": "PlotTestClient",
-      "args": "localhost"
-    },
-    {
-      "type": "java",
-      "name": "CodeLens (Launch) - PlotTest",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "console": "internalConsole",
-      "stopOnEntry": false,
-      "mainClass": "PlotTest",
-      "args": ""
-    },
-    {
-      "type": "java",
-      "name": "CodeLens (Launch) - PathPlotTest",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "console": "internalConsole",
-      "stopOnEntry": false,
-      "mainClass": "PathPlotTest",
-      "args": ""
-    },
-    {
-      "type": "java",
-      "name": "CodeLens (Launch) - PlotTestServer",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "console": "internalConsole",
-      "stopOnEntry": false,
-      "mainClass": "PlotTestServer",
-      "args": "localhost",
-      "vmArgs": [
-        "-Djava.library.path=${workspaceFolder:PlotPath}/build/tmp/jniExtractDir"
-      ],
-      "projectName": "PlotPathVSC"
-    },
-    {
-      "type": "java",
-      "name": "CodeLens (Launch) - PlotTestClient",
-      "request": "launch",
-      "cwd": "${workspaceFolder}",
-      "console": "internalConsole",
-      "stopOnEntry": false,
-      "mainClass": "PlotTestClient",
-      "args": "localhost",
-      "projectName": "PlotPathVSC"
-    },
-    {
-      "type": "java",
       "name": "CodeLens (Launch) - PlotTest",
       "request": "launch",
       "cwd": "${workspaceFolder}",
@@ -78,6 +13,38 @@
       "stopOnEntry": false,
       "mainClass": "PlotTest",
       "args": "",
+      "projectName": "PlotPathVSC"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - SmartDashboardTest",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "SmartDashboardTest",
+      "args": "",
+      "projectName": "PlotPathVSC"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - PlotTestServer",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "PlotTestServer",
+      "projectName": "PlotPathVSC"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - PlotTestClient",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "PlotTestClient",
+      "args": "localhost",
       "projectName": "PlotPathVSC"
     },
     {

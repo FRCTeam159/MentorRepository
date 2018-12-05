@@ -1,10 +1,11 @@
+
 // PlotTestClient
 // plots data sent by a NetworkTable server
 // data sources
-//  1) fake data sent by running PlotTestServer main function included in this project 
-//   - ip=localhost (default if no program arguments given)
+//  1) fake data sent by running PlotTestServer or PathPlotTest main functions included in this project 
+//   - ip=localhost (default if no program argument given in launch.json)
 //  2) Pathfinder data generated on the Roborio as part of the Robot program
-//     ip=10.1.59.2
+//     ip=10.1.59.2 (set "args": "10.1.59.2" in launch.json)
 // - On startup looks at optional "ip" argument (set in launch.json)
 // - Network client attaches to a server named "datatable"
 // - waits for a new array string called NewPlot+id to appear in the table
@@ -19,99 +20,91 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.tables.ITable;
-import edu.wpi.first.wpilibj.tables.ITableListener;
+import edu.wpi.first.networktables.EntryListenerFlags;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableValue;
+import edu.wpi.first.networktables.TableEntryListener;
 
-public class PlotTestClient implements ITableListener {
-	ArrayList<PathData> list = new ArrayList<PathData>();
-	int traces=0;
-	int index=0;
-	int points=0;
-	int count=0;
-	int plot_count=0;
-	int id=-1;
-	int mode=PlotPath.DFLT_MODE;
-	static NetworkTable table;
+public class PlotTestClient implements TableEntryListener, EntryListenerFlags {
+    ArrayList<PathData> list = new ArrayList<PathData>();
+    PlotInfo info=new PlotInfo();
+    int count = 0;
+    int plot_count = 0;
 
-	public static void main(String[] args) {
-		new PlotTestClient(args).run();
-	}
-	
-	public PlotTestClient(String[] args) {
-		NetworkTable.setClientMode();
-		//NetworkTable.setIPAddress("10.1.59.2");
-		System.out.println("new PlotTestClient "+args.length);
-		if(args.length==0)
-			NetworkTable.setIPAddress("10.1.59.2");
-		else{
-			NetworkTable.setIPAddress(args[0]);
-		}
-		table = NetworkTable.getTable("datatable");
-	}
+    public static void main(String[] args) {
+        new PlotTestClient(args).run();
+    }
 
-	public void run() {
-		table.addTableListener(this,true);
-		while (true) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException ex) {
-				System.out.println("exception)");
-			}
-		}
-	}
+    public PlotTestClient(String[] args) {
+        NetworkTableInstance inst = NetworkTableInstance.getDefault();
+        NetworkTable table = inst.getTable("datatable");
+        String ip = "10.1.59.2";
+        //if (args.length > 0)
+        //    ip = args[0];
+        System.out.println("new PlotTestClient "+ip);
+        inst.startClient(ip);
+        table.addEntryListener(this, kImmediate | kNew | kUpdate);
+    }
 
-	@Override
-	public void valueChanged(ITable arg0, String arg1, Object arg2, boolean arg3) {
-		if (arg1.contentEquals("NewPlot")) {
-			plot_count = (int) arg0.getNumber("NewPlot",0);
-			System.out.println("NewPlot id:" + plot_count);
-		}
-		if (arg1.contentEquals("PlotParams"+plot_count)) {
-			list = new ArrayList<PathData>();
-			//list.clear();
-			double info[] = arg0.getNumberArray("PlotParams"+plot_count, new double[0]);
-			id = (int) info[0];
-			traces = (int) info[1];
-			points = (int) info[2];
-			mode= (int) info[3];
-			index=0;
-			count=0;
-			System.out.println("PlotParams id:" + id + " traces:" + traces + "  points:" + points+" mode:"+mode);
-		}
-		if (arg1.contentEquals("PlotData"+count)) {
-			double data[] = arg0.getNumberArray("PlotData"+count, new double[0]);
-			PathData pd = new PathData();
+    public void run() {
+        while (true) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                System.out.println("exception)");
+            }
+        }
+    }
 
-			index = (int) data[0];
-			pd.tm= data[1];
-			for(int i=0;i<data.length-2;i++) {
-				pd.d[i]=data[i+2];
-			}
-			list.add(pd);
-			count++;
-			double info[] = arg0.getNumberArray("NewPlot"+plot_count, new double[0]);
-			//System.out.println("Plotid:"+plot_count+" Data:" + index);
+    @Override
+    public void valueChanged(NetworkTable table, String key, NetworkTableEntry entry, NetworkTableValue value,
+            int flags) {
+        if (key.equals("NewPlot")) {
+            plot_count = (int) entry.getDouble(0.0);
+            System.out.println("PlotTestClient NewPlot id=" + plot_count);
+        }
+        if (key.equals("PlotParams" + plot_count)) {
+            list = new ArrayList<PathData>();
+            double data[] = entry.getDoubleArray(new double[0]);
+            info.id = (int) data[0];
+            info.traces = (int) data[1];
+            info.points = (int) data[2];
+            info.mode = (int) data[3];
+            //info.id = 0;
+            count = 0;
+            //System.out.println("PlotParams id:" + id + " traces:" + traces + "  points:" + points + " mode:" + mode);
+            System.out.println(info);
 
-		}
-		if((count >= points) && (points > 0) && (id==plot_count)) {
-			count=0;
-			index=0;
-			System.out.println("showing new plot id:" + id);
-			plot_count++;
-			// show each plot in a ew thread
-			SwingUtilities.invokeLater(new Runnable() { 
-			public void run() {
-				System.out.println("points " + points);
-				//System.out.println("Showing plot: Size = " + list.size());
-				JFrame frame = new PlotPath(list, traces,mode);
-				//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.pack();
-				frame.setLocationRelativeTo(null);
-				frame.setVisible(true);
-				table.flush(); 
-			 	}
-			});
-		}
-	}
+        }
+        if (key.equals("PlotData" + count)) {
+            double data[] = entry.getDoubleArray(new double[0]);
+            PathData pd = new PathData();
+            //index = (int) data[0];
+            pd.tm = data[1];
+            for (int i = 0; i < data.length - 2; i++) {
+                pd.d[i] = data[i + 2];
+            }
+            list.add(pd);
+            count++;
+        }
+        if ((count >= info.points) && (info.points > 0) && (info.id == plot_count)) {
+            System.out.println("PlotTestClient showing plot id:" + info.id);
+            count = 0;
+            plot_count++;
+            // show each plot in a ew thread
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    //System.out.println("points " + info.points);
+                    // System.out.println("Showing plot: Size = " + list.size());
+                    JFrame frame = new PlotPath(list, info);
+                    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    frame.pack();
+                    frame.setLocationRelativeTo(null);
+                    frame.setVisible(true);
+                }
+            });
+        }
+    }
 }
