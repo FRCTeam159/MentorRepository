@@ -4,12 +4,13 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
 package frc.robot;
+// note: need to set java.home in file->preferences->settings to avoid warnings
+//       about unable to ressolve system classes (java.lang.object etc)
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.VisionProcess;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -19,24 +20,25 @@ import frc.robot.subsystems.VisionProcess;
  */
 public class Robot extends IterativeRobot {
   /**
-   * This function is run when the robot is first started up and shou;d be
-   * used for any initialization code.
+   * This function is run when the robot is first started up and shou;d be used
+   * for any initialization code.
    */
   VisionProcess vision;
+
   @Override
   public void robotInit() {
     vision = new VisionProcess();
     vision.init();
     vision.start();
   }
+
   @Override
   public void robotPeriodic() {
   }
 
-
   @Override
   public void autonomousInit() {
-   
+
   }
 
   /**
@@ -44,7 +46,7 @@ public class Robot extends IterativeRobot {
    */
   @Override
   public void autonomousPeriodic() {
-   
+
   }
 
   /**
