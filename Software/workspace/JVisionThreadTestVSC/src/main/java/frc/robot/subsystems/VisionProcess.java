@@ -40,14 +40,15 @@ public class VisionProcess extends Thread {
 
   public static double imageWidth = 320;
   public static double imageHeight = 240;
-  // multiply these factors by target screen projection (pixes) to get distance
+  // multiply these factors by target screen projection (pixels) to get distance
   double distanceFactorWidth = 0.5 * targetWidth * imageWidth / Math.tan(cameraFovW / 2.0);
   double distanceFactorHeight = 0.5 * targetHeight * imageHeight / Math.tan(cameraFovH / 2.0);
   // multiply these factors by target center offset (pixels) to get horizontal and
   // vertical angle offsets
   double angleFactorWidth = Math.toDegrees(cameraFovW) / imageWidth;
   double angleFactorHeight = Math.toDegrees(cameraFovH) / imageHeight;
-  double targetAspectRatio=targetWidth/targetHeight;
+  // expected width/height ratio
+  double targetAspectRatio=targetWidth/targetHeight; 
 
   public void init() {
     camera = CameraServer.getInstance().startAutomaticCapture("Targeting", 0);
@@ -77,10 +78,10 @@ public class VisionProcess extends Thread {
   public void run() {
     GripPipeline grip = new GripPipeline();
     CvSink cvSink = CameraServer.getInstance().getVideo();
-
     CvSource outputStream = CameraServer.getInstance().putVideo("Rectangle", 320, 240);
     Mat mat = new Mat();
     ArrayList<Rect> rects = new ArrayList<Rect>();
+    // TODO: use a network tables data structure to pass target params to Robot Program
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("targetdata");
     while (true) {
