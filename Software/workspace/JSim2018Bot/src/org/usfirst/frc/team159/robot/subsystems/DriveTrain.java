@@ -68,7 +68,7 @@ public class DriveTrain extends Subsystem implements MotorSafety {
 
   void Publish(boolean init) {
     if (init) {
-      // SmartDashboard.putBoolean("HighGear", false);
+      SmartDashboard.putBoolean("HighGear", false);
       SmartDashboard.putNumber("Heading", 0);
       SmartDashboard.putNumber("LeftDistance", 0);
       SmartDashboard.putNumber("RightDistance", 0);
@@ -76,7 +76,7 @@ public class DriveTrain extends Subsystem implements MotorSafety {
       SmartDashboard.putNumber("LeftWheels", 0);
       SmartDashboard.putNumber("RightWheels", 0);
     } else {
-      // SmartDashboard.putBoolean("HighGear", !inlowgear);
+      SmartDashboard.putBoolean("HighGear", !inlowgear);
       SmartDashboard.putNumber("Heading", getHeading());
       SmartDashboard.putNumber("LeftDistance", feet_to_inches(getLeftDistance()));
       SmartDashboard.putNumber("RightDistance", feet_to_inches(getRightDistance()));
@@ -168,7 +168,8 @@ public class DriveTrain extends Subsystem implements MotorSafety {
     // local variables to hold the computed PWM values for the motors
     double leftMotorOutput;
     double rightMotorOutput;
-
+    if(inlowgear)
+      moveValue*=0.7;
     if (squaredInputs) {
       // square the inputs (while preserving the sign) to increase fine control
       // while permitting full power

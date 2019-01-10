@@ -1,21 +1,11 @@
 <xml version="1.0">
 <dashboard>
-	<widget field="Strategy Selector" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="432" y="29"/>
-	</widget>
-	<widget field="All Good Strategy" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="464" y="15"/>
-	</widget>
-	<widget field="Turn Scale" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="363" y="243"/>
-		<width>120</width>
+	<widget field="HighGear" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="247" y="251"/>
 	</widget>
 	<widget field="Auto Scale" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="608" y="193"/>
-		<width>111</width>
-	</widget>
-	<widget field="All Bad Strategy" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="462" y="115"/>
+		<width>117</width>
 	</widget>
 	<widget field="ArmsOpen" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
 		<location x="418" y="284"/>
@@ -41,12 +31,12 @@
 		<location x="657" y="327"/>
 	</widget>
 	<widget field="Target" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="324" y="152"/>
+		<location x="345" y="194"/>
 		<width>161</width>
 		<height>28</height>
 	</widget>
 	<widget field="FMS-STR" type="String" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="323" y="118"/>
+		<location x="391" y="149"/>
 		<width>109</width>
 	</widget>
 	<widget field="Elevator" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
@@ -54,25 +44,25 @@
 		<width>96</width>
 	</widget>
 	<widget field="RightWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="297" y="321"/>
+		<location x="315" y="345"/>
 		<width>252</width>
 		<height>188</height>
 	</widget>
 	<widget field="LeftWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.LinePlot">
-		<location x="13" y="318"/>
+		<location x="26" y="339"/>
 		<width>266</width>
 		<height>192</height>
 	</widget>
 	<widget field="GFACT" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="628" y="230"/>
-		<width>90</width>
+		<width>97</width>
 	</widget>
 	<widget field="KD" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="665" y="157"/>
-		<width>55</width>
+		<width>62</width>
 	</widget>
 	<widget field="Error" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="559" y="331"/>
+		<location x="664" y="361"/>
 	</widget>
 	<widget field="UseGyro" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
 		<location x="530" y="235"/>
@@ -82,19 +72,19 @@
 	</widget>
 	<widget field="KP" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="666" y="124"/>
-		<width>56</width>
+		<width>63</width>
 	</widget>
 	<widget field="MAX_JRK" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="624" y="90"/>
-		<width>100</width>
+		<width>105</width>
 	</widget>
 	<widget field="MAX_ACC" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="620" y="52"/>
-		<width>104</width>
+		<width>106</width>
 	</widget>
 	<widget field="MAX_VEL" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="621" y="17"/>
-		<width>103</width>
+		<width>104</width>
 	</widget>
 	<widget field="Travel" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
 		<location x="132" y="246"/>
@@ -105,13 +95,21 @@
 		<width>121</width>
 	</widget>
 	<widget field="RightDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="2" y="280"/>
+		<location x="7" y="286"/>
 		<width>151</width>
 	</widget>
 	<widget field="LeftDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="163" y="280"/>
+		<location x="162" y="286"/>
 		<width>139</width>
 		<height>28</height>
+	</widget>
+	<widget field="Position" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="331" y="26"/>
+		<property name="Use Radio Buttons" value="false"/>
+	</widget>
+	<widget field="Strategy" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="443" y="18"/>
+		<property name="Use Radio Buttons" value="false"/>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.MjpgStreamViewerImpl">
 		<location x="3" y="9"/>
@@ -119,9 +117,6 @@
 		<height>226</height>
 		<property name="MJPG Server URL" value="http://localhost:5004/?action=stream"/>
 	</static-widget>
-	<widget field="Position" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
-		<location x="331" y="26"/>
-	</widget>
 </dashboard>
 <live-window>
 </live-window>

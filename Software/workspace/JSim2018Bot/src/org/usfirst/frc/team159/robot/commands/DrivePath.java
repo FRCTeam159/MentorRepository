@@ -276,9 +276,9 @@ public class DrivePath extends Command implements PhysicalConstants, Constants {
   }
 
   private Waypoint[] calculateSecondCenterSwitchPoints() {
-    double x = 70;//ROBOT_TO_SWITCH-36;
+    double x = 70;// back up distance can be shorter than start distance
     double y = SWITCH_CENTER_TO_PLATE_EDGE;
-    boolean delta=mirror^reverse;
+    boolean delta=mirror^reverse; // true if the target is right side
     
     y -= delta ? ROBOT_Y_OFFSET_FROM_CENTER-6 : 0;
 

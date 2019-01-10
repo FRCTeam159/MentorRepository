@@ -3,6 +3,7 @@ package org.usfirst.frc.team159.robot.commands;
 import org.usfirst.frc.team159.robot.OI;
 import org.usfirst.frc.team159.robot.Robot;
 import org.usfirst.frc.team159.robot.RobotMap;
+import org.usfirst.frc.team159.robot.subsystems.Elevator;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
@@ -39,9 +40,16 @@ public class ElevatorCommands extends Command implements RobotMap {
   // Called repeatedly when this Command is scheduled to run
   protected void execute() {
     Joystick stick = OI.stick;
+    boolean goToZeroPressed = stick.getRawButton(RobotMap.RESET_ELEVATOR_BUTTON);
+    boolean goToSwitchPressed = stick.getRawButton(RobotMap.ELEVATOR_GO_TO_SWITCH_BUTTON);
+
     double left = 0.5 * (1 + stick.getRawAxis(LEFTTRIGGER));
     double right = 0.5 * (1 + stick.getRawAxis(RIGHTTRIGGER));
-    if (left > 0)
+    if(goToSwitchPressed) 
+      Robot.elevator.setPosition(Elevator.SWITCH_HEIGHT);    
+    else if(goToZeroPressed) 
+      Robot.elevator.setPosition(0);
+    else if (left > 0)
       decrement(left);
     else if (right > 0)
       increment(right);

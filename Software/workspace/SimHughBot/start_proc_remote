@@ -7,7 +7,8 @@ HOST=`hostname`".local"
 
 #roxterm --tab --tab-name=SSDProc -e ../SSDProc/Ubuntu/gazebo_test-2017.sh $HOST;
 #ssh nvidia@tegra-ubuntu.local "SSDProc/Jetson-TX2/gazebo_test.sh  $HOST"
-ssh nvidia@tegra-ubuntu.local "SSDProc/Jetson-TX2/gazebo_test-2017.sh $HOST"
+#ssh nvidia@tegra-ubuntu.local "SSDProc/Jetson-TX2/gazebo_test-2017.sh $HOST"
+#ssh nvidia@tegra-ubuntu.local "SSDProc/Jetson-TX2/gazebo_test-2016.sh $HOST"
 
 #ssh nvidia@tegra-ubuntu.local "YOLOProc/Jetson-TX2/gazebo_test.sh $HOST"
 

@@ -26,6 +26,8 @@ public interface RobotMap {
   public static final int RIGHTTRIGGER = 5;
 
   public static final int GEARSHIFTID = 0;
+  public static final int RESET_ELEVATOR_BUTTON = 5;
+  public static final int ELEVATOR_GO_TO_SWITCH_BUTTON = 6;
 
   public static final boolean SQUARE_INPUTS = true;
  

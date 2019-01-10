@@ -18,7 +18,11 @@ import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.CvSink;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
+
 import org.opencv.core.Rect;
+import org.opencv.core.RotatedRect;
+
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -57,9 +61,14 @@ public class VisionProcess extends Thread {
     SmartDashboard.putNumber("Targets", 0);
     SmartDashboard.putNumber("H distance", 0);
     SmartDashboard.putNumber("W distance", 1);
-    SmartDashboard.putNumber("V angle", 0);
-    SmartDashboard.putNumber("H angle", 0);
-    SmartDashboard.putNumber("Aspect Ratio", 0);
+    SmartDashboard.putNumber("V offset", 0);
+    SmartDashboard.putNumber("H offset", 0);
+    SmartDashboard.putNumber("Target Width", 0);
+    SmartDashboard.putNumber("Target Height", 0);
+
+    SmartDashboard.putNumber("Target Aspect", 0);
+    SmartDashboard.putNumber("Target Angle", 0);
+
 
     // SmartDashboard.putNumber("Angle", 0);
     SmartDashboard.putBoolean("Show HSV", false);
@@ -80,8 +89,10 @@ public class VisionProcess extends Thread {
     CvSink cvSink = CameraServer.getInstance().getVideo();
     CvSource outputStream = CameraServer.getInstance().putVideo("Rectangle", 320, 240);
     Mat mat = new Mat();
-    ArrayList<Rect> rects = new ArrayList<Rect>();
-    // TODO: use a network tables data structure to pass target params to Robot Program
+    ArrayList<RotatedRect> rects = new ArrayList<RotatedRect>();
+    ArrayList<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+
+    // TODO: use a network tables data struct to pass target params to Robot Program
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("targetdata");
     while (true) {
@@ -103,45 +114,75 @@ public class VisionProcess extends Thread {
         Mat hsv = grip.hsvThresholdOutput(); // display HSV image
         hsv.copyTo(mat);
       }
-      ArrayList<MatOfPoint> contours = grip.filterContoursOutput();
+      ArrayList<MatOfPoint> grip_contours = grip.filterContoursOutput();
+
       rects.clear();
+      contours.clear();
       double max_area = 0;
-      Rect biggest = null;
+      RotatedRect biggest = null;
+      
       // find the bounding boxes of all targets
-      for (int i = 0; i < contours.size(); i++) {
-        MatOfPoint contour = contours.get(i);
-        Rect r = Imgproc.boundingRect(contour);
-        double area = r.area();
+      for (int i = 0; i < grip_contours.size(); i++) {
+        MatOfPoint contour = grip_contours.get(i);
+        //Rect r = Imgproc.boundingRect(contour);
+        double area = Imgproc.contourArea(contour);
+        MatOfPoint2f  NewMtx = new MatOfPoint2f( contour.toArray() );
+        RotatedRect r = Imgproc.minAreaRect(NewMtx);
         if (area > max_area) {
           biggest = r;
           max_area = area;
         }
         rects.add(r);
+        contours.add(contour);
       }
       // calculate distance to target
       // - using ht
       SmartDashboard.putNumber("Targets", rects.size());
       if (biggest != null) {
-        double dh = distanceFactorHeight / biggest.height;
-        double dw = distanceFactorWidth / biggest.width;
-        Point ctr = center(biggest);
+        double h=biggest.size.height;
+        double w=biggest.size.width;
+        double a=biggest.angle;
+
+        if(biggest.size.width > biggest.size.height){
+          h=biggest.size.width;
+          w=biggest.size.height;
+          a+=90.0;
+        }
+        double dh = distanceFactorHeight / h;
+        double dw = distanceFactorWidth / w;
+        //Point ctr = center(biggest);
+        Point ctr = biggest.center;
+
         double hoff=angleFactorWidth*(ctr.x-0.5*imageWidth);
         double voff=-angleFactorHeight*(ctr.y-0.5*imageHeight); // invert y !
 
         SmartDashboard.putNumber("H distance", round10(dh));
         SmartDashboard.putNumber("W distance", round10(dw));
-        SmartDashboard.putNumber("H angle", round10(hoff));
-        SmartDashboard.putNumber("V angle", round10(voff));
-        SmartDashboard.putNumber("Aspect Ratio", round10((double)(biggest.width)/biggest.height));
+        SmartDashboard.putNumber("H offset", round10(hoff));
+        SmartDashboard.putNumber("V offset", round10(voff));
+        SmartDashboard.putNumber("Target Width", round10(w));
+        SmartDashboard.putNumber("Target Height", round10(h));
+        SmartDashboard.putNumber("Target Aspect", round10((double)(w)/h));
+        SmartDashboard.putNumber("Target Angle", round10((double)a));
+
       }
       for (int i = 0; i < rects.size(); i++) {
-        Rect r = rects.get(i);
-        Point tl = r.tl();
-        Point br = r.br();
-        if (r == biggest)
-          Imgproc.rectangle(mat, tl, br, new Scalar(255.0, 255.0, 0.0), 2);
-        else
-          Imgproc.rectangle(mat, tl, br, new Scalar(255.0, 255.0, 255.0), 1);
+        RotatedRect r = rects.get(i);
+        //Rect b=r.boundingRect();
+        //Point tl = b.tl();
+        //Point br = b.br();
+        // if (r == biggest)
+        //    Imgproc.rectangle(mat, tl, br, new Scalar(255.0, 255.0, 0.0), 2);
+        // else
+        //    Imgproc.rectangle(mat, tl, br, new Scalar(255.0, 255.0, 255.0), 1);
+        Point[] vertices = new Point[4];  
+        r.points(vertices);  
+        for (int j = 0; j < 4; j++){ 
+          if (r == biggest)
+            Imgproc.line(mat, vertices[j], vertices[(j+1)%4], new Scalar(255,255,0),2);
+          else
+            Imgproc.line(mat, vertices[j], vertices[(j+1)%4], new Scalar(255,255,255),1);
+        }
       }
       outputStream.putFrame(mat);
     }

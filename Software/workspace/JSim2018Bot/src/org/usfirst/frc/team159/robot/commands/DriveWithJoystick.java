@@ -41,7 +41,7 @@ public class DriveWithJoystick extends Command implements RobotMap {
     rotate = -stick.getRawAxis(3); // right stick - rotate
     turnScale = SmartDashboard.getNumber("Turn Scale", turnScale);
     rotate *= Math.abs(move) * (1 - turnScale) + turnScale;
-
+   
     Robot.driveTrain.arcadeDrive(move, rotate, SQUARE_INPUTS);
   }
 

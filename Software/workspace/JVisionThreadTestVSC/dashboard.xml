@@ -1,0 +1,52 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="Target Width" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="491" y="161"/>
+		<width>149</width>
+	</widget>
+	<widget field="Target Height" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="487" y="118"/>
+		<width>152</width>
+	</widget>
+	<widget field="Target Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="491" y="254"/>
+		<width>150</width>
+	</widget>
+	<widget field="V offset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="610" y="54"/>
+		<width>117</width>
+	</widget>
+	<widget field="H offset" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="610" y="13"/>
+		<width>115</width>
+	</widget>
+	<widget field="Target Aspect" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="486" y="207"/>
+		<width>151</width>
+	</widget>
+	<widget field="Show HSV" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
+		<location x="148" y="44"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="16" y="11"/>
+		<width>435</width>
+		<height>465</height>
+		<property name="Camera Choice" value="Rectangle"/>
+	</static-widget>
+	<widget field="H distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="467" y="16"/>
+		<width>126</width>
+		<height>34</height>
+	</widget>
+	<widget field="W distance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="471" y="57"/>
+		<width>124</width>
+	</widget>
+	<widget field="Targets" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="17" y="43"/>
+		<width>108</width>
+	</widget>
+</dashboard>
+<live-window>
+</live-window>
+</xml>

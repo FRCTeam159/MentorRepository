@@ -22,6 +22,7 @@ public class AutoSelector extends Subsystem implements Constants, PhysicalConsta
   public static int targetSide = POSITION_LEFT;
   
   //strategy options
+
   
   public static final int SAME_SIDE_SWITCH = 0;
   public static final int SAME_SIDE_SCALE = 1;
@@ -43,7 +44,7 @@ public class AutoSelector extends Subsystem implements Constants, PhysicalConsta
     strategyChooser.addDefault("Same Side Scale", new Integer(SAME_SIDE_SCALE));
     strategyChooser.addObject("Other Side Scale", new Integer(OTHER_SIDE_SCALE));
     strategyChooser.addObject("Two Cube Auto", new Integer(TWO_CUBE_AUTO));
-    SmartDashboard.putData("Strategy Selector", strategyChooser);
+    SmartDashboard.putData("Strategy", strategyChooser);
   }
   int getSoftStrategy() {
     return strategyChooser.getSelected();
@@ -200,7 +201,6 @@ public class AutoSelector extends Subsystem implements Constants, PhysicalConsta
     case TWO_CUBE_CENTER:
       System.out.println("Two Cube Center");
       autoCommand = getAutoCommand(CENTER_SWITCH);  // place first cube (reentrant call !)
-      // two-cube auto from center
       mirror=(targetSide==POSITION_LEFT); // inverted for backwards travel
       autoCommand.addSequential(new DrivePath(TWO_CUBE_CENTER,mirror,true)); // reverse s-turn from switch
       autoCommand.addParallel(new SetElevator(0, 2.0));   // set intake to grab cube
@@ -212,7 +212,6 @@ public class AutoSelector extends Subsystem implements Constants, PhysicalConsta
       autoCommand.addParallel(new SetElevator(SWITCH_DROP_HEIGHT, 2.0));
       autoCommand.addSequential(new DrivePath(TWO_CUBE_CENTER,!mirror,false)); // forward s-turn to switch
       autoCommand.addSequential(new SetGrabberState(PUSH, 1.0));
-
       break;
     }
     return autoCommand;

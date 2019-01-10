@@ -20,7 +20,7 @@ import frc.robot.subsystems.VisionProcess;
  */
 public class Robot extends IterativeRobot {
   /**
-   * This function is run when the robot is first started up and shou;d be used
+   * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
   VisionProcess vision;

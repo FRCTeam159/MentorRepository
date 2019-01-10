@@ -1,3 +1,3 @@
 cp dashboard.xml ~/wpilib
-java -jar ~/wpilib/tools/SmartDashboard.jar -ip localhost -file $SWDEV/SimHughBot/dashboard.xml
+java -jar ~/wpilib/tools/SmartDashboard-all.jar -ip localhost -file $SWDEV/SimHughBot/dashboard.xml
 

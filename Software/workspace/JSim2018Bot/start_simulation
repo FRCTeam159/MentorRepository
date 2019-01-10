@@ -26,7 +26,7 @@ sleep 1;
 roxterm --tab --tab-name=driver-camera -e start_driver_camera;
 sleep 1;
 roxterm --tab --tab-name=java -e start_java $POSITION;
-sleep 1;
+sleep 3;
 roxterm --tab --tab-name=dashboard -e start_smartdashboard;
 sleep 3;
 roxterm --tab --tab-name=sim_ds -e sim_ds;
