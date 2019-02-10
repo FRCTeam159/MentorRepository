@@ -1,0 +1,19 @@
+<xml version="1.0">
+<dashboard>
+	<widget field="Show HSV" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="0" y="121"/>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="0" y="0"/>
+		<property name="Camera Choice" value="Rectangle"/>
+	</static-widget>
+</dashboard>
+<live-window>
+</live-window>
+	<hidden field="V angle"/>
+	<hidden field="Targets"/>
+	<hidden field="W distance"/>
+	<hidden field="H distance"/>
+	<hidden field="H angle"/>
+	<hidden field="Aspect Ratio"/>
+</xml>

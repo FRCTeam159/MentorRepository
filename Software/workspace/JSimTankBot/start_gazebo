@@ -1,10 +1,8 @@
 
 export SWEXPORTS=$HOME/Robotics/MentorRepository/Solidworks/Exported
-#export SWMODEL=$SWEXPORTS/Tank2017_Exported
-export SWMODEL=$SWEXPORTS/ClimberBot_Exported
+export SWMODEL=$SWEXPORTS/FRC2019
 
 export GAZEBO_MODEL_PATH=$SWMODEL:$WPILIB/simulation/models:/usr/share/gazebo/models
 
-#gazebo --verbose $SWMODEL/Tank2017.world
-gazebo --verbose $SWMODEL/ClimberBot.world
+gazebo --verbose $SWMODEL/FRC2019.world
 

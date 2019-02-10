@@ -35,7 +35,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		oi = new OI();
 		autonomousCommand=new Autonomous();
-		//chooser.addDefault("Default Auto", new Autonomous());
+		System.out.println("robotInit");
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+		System.out.println("disabledInit");
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		//autonomousCommand = chooser.getSelected();
-
+		System.out.println("autonomousInit");
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -80,10 +80,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
+		System.out.println("teleopInit");
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 	}

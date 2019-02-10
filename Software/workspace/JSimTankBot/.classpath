@@ -13,11 +13,12 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/home/dean/wpilib/user/java/lib/CTRLib.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRLib.jar"/>
-	<classpathentry kind="lib" path="/usr/local/wpi/2017/sim/jar/Pathfinder-Java.jar"/>
+	<classpathentry kind="lib" path="/usr/local/wpi/2019/sim/jar/Pathfinder-Java.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/Pathfinder-Java.jar"/>
 	<classpathentry kind="var" path="wpiutil" sourcepath="wpiutil.sources"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/wpilibj.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRE_Phoenix-sources.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRE_Phoenix.jar"/>
+	<classpathentry kind="com" path="USERLIBS_DIR/wpilibjSimulation.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

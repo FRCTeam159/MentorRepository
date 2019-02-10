@@ -1,0 +1,32 @@
+
+<sdf version='1.6'>
+  <world name="default">
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose frame=''>-2.16991 -6.15006 3.82909 -0 0.823644 2.62738</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://SimBot2019-4</uri>
+     <pose>-4.1 -3.96 0.183 0 0 0</pose>    
+    </include>
+    <!--
+         <pose>-4.10115 -3.77117 0.18107 -0.000559 0.02001 0.00013</pose>    
+    -->
+    <!--
+    <include>
+      <uri>model://2019-Field-2</uri>
+      <pose>13.2 -3.861 4.5797 1.57 0 0</pose>
+    </include>
+    -->
+   </world>
+</sdf>

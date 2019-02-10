@@ -55,7 +55,7 @@ public class VisionProcess extends Thread {
   double targetAspectRatio=targetWidth/targetHeight; 
 
   public void init() {
-    camera = CameraServer.getInstance().startAutomaticCapture("Targeting", 0);
+    camera = CameraServer.getInstance().startAutomaticCapture("Targeting", 1);
     camera.setFPS(15);
     camera.setResolution(320, 240);
     SmartDashboard.putNumber("Targets", 0);
@@ -150,7 +150,6 @@ public class VisionProcess extends Thread {
         }
         double dh = distanceFactorHeight / h;
         double dw = distanceFactorWidth / w;
-        //Point ctr = center(biggest);
         Point ctr = biggest.center;
 
         double hoff=angleFactorWidth*(ctr.x-0.5*imageWidth);

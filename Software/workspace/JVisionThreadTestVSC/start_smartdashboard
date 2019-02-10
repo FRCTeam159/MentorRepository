@@ -1,2 +1,2 @@
-java -jar ~/wpilib/tools/SmartDashboard.jar -ip localhost file dashboard.xml
+java -jar ~/wpilib/tools/SmartDashboard.jar ip localhost file dashboard.xml
 
