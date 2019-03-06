@@ -437,6 +437,21 @@
         </limit>
       </axis>
     </joint>
+       <joint name="TilterEleArm-TilterBaseArm" type="revolute">
+      <parent>TilterEleArm</parent>
+      <child>TilterBaseArm</child>
+      <pose>0.0634982471572795 0.0634171082765121 -1.24379673227537E-15 0 0 0</pose>
+      <axis>
+        <xyz>5.02893531012506E-16 -2.79217922287273E-18 1</xyz>
+        <dynamics>
+          <damping>1</damping>
+          <friction>1</friction>
+        </dynamics>
+        <limit>
+          <effort>1</effort>
+        </limit>
+      </axis>
+    </joint>
     <link name="TilterEleArm">
       <gravity>1</gravity>
       <self_collide>0</self_collide>
@@ -512,17 +527,21 @@
    
     <plugin name="ElevatorBase-Stage1_motor" filename="libgz_dc_motor.so">
       <joint>ElevatorBase-Stage1</joint>
-      <topic>/gazebo/frc/simulator/pwm/5</topic>
+      <topic>/gazebo/frc/simulator/pwm/7</topic>
       <multiplier>20</multiplier>
+    </plugin>
+    <plugin name="Body-Elevator_encoder" filename="libencoder.so">
+      <joint>ElevatorBase-Stage1</joint>
+      <topic>/gazebo/frc/simulator/dio/13/14</topic>
     </plugin>
     <plugin name="Stage1-Stage2_motor" filename="libgz_dc_motor.so">
       <joint>Stage1-Stage2</joint>
-      <topic>/gazebo/frc/simulator/pwm/5</topic>
+      <topic>/gazebo/frc/simulator/pwm/8</topic>
       <multiplier>20</multiplier>
     </plugin>
     <plugin name="Stage2-Carriage_motor" filename="libgz_dc_motor.so">
       <joint>Stage2-Carriage</joint>
-      <topic>/gazebo/frc/simulator/pwm/5</topic>
+      <topic>/gazebo/frc/simulator/pwm/9</topic>
       <multiplier>20</multiplier>
     </plugin>
   </model>

@@ -6,11 +6,11 @@ killall gzserver
 
 roxterm --title="Gazebo Simulation" --tab-name=gazebo -e start_gazebo;
 sleep 1;
-#roxterm --tab --tab-name=driver-camera -e start_driver_camera;
-#sleep 1;
+roxterm --tab --tab-name=driver-camera -e start_driver_camera;
+sleep 1;
 roxterm --tab --tab-name=java -e start_java;
 sleep 1;
 roxterm --tab --tab-name=sim_ds -e start_simds;
-#sleep 1;
-# roxterm --tab --tab-name=dashboard -e start_smartdashboard;
+sleep 1;
+roxterm --tab --tab-name=dashboard -e start_smartdashboard;
 

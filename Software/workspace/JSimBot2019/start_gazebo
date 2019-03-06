@@ -5,6 +5,11 @@ export SWMODEL=$SWEXPORTS/FRC2019
 export GAZEBO_MODEL_PATH=$SWMODEL:$WPILIB/simulation/models:/usr/share/gazebo/models
 
 gazebo --verbose $SWMODEL/FRC2019.world
-#gazebo -u --verbose $SWMODEL/ElevatorBot2.world
+#gazebo --verbose $SWMODEL/Grabber2.world
+#gazebo -u --verbose $SWMODEL/2019-Field-3.world
+#gazebo --verbose $SWMODEL/RightWithPanel.world
+#gazebo --verbose $SWMODEL/ElevatorTest.world
+#gazebo -u --verbose $SWMODEL/Elevator3.world
+
 
 

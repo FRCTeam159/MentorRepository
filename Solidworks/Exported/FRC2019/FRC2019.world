@@ -1,6 +1,25 @@
 
 <sdf version='1.6'>
   <world name="default">
+  <physics type='ode'>
+<!-- slow but more stable -->
+<!--
+    <max_step_size>0.0005</max_step_size>
+    <real_time_update_rate>2000.000000</real_time_update_rate>
+-->
+
+    <ode>
+    <!-- 
+      <solver>
+        <iters>100</iters>
+      </solver>
+     -->
+      <constraints>
+        <contact_max_correcting_vel>0</contact_max_correcting_vel>
+        <!--<contact_surface_layer>0.001</contact_surface_layer>-->
+      </constraints>
+    </ode>
+  </physics>
     <gui fullscreen='0'>
       <camera name='user_camera'>
         <pose frame=''>-2.16991 -6.15006 3.82909 -0 0.823644 2.62738</pose>
@@ -8,25 +27,46 @@
         <projection_type>perspective</projection_type>
       </camera>
     </gui>
-    <include>
-      <uri>model://sun</uri>
-    </include>
-
+   
+   <light name='sun' type='directional'>
+      <cast_shadows>1</cast_shadows>
+      <pose frame=''>0 0 10 0 -0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>1.0</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    
     <include>
       <uri>model://ground_plane</uri>
     </include>
+   
     <include>
       <uri>model://SimBot2019-4</uri>
-     <pose>-4.1 -3.96 0.183 0 0 0</pose>    
+      <!-- on right step pose 0.3346 -->
+      <pose>-6.148 -5.035 0.3346 0 0 3.14</pose>
+     
     </include>
-    <!--
-         <pose>-4.10115 -3.77117 0.18107 -0.000559 0.02001 0.00013</pose>    
-    -->
-    <!--
+ <!---->
     <include>
-      <uri>model://2019-Field-2</uri>
+      <uri>model://2019-Field-3</uri>
       <pose>13.2 -3.861 4.5797 1.57 0 0</pose>
     </include>
-    -->
-   </world>
+    
+    <include>
+      <uri>model://Platform</uri>
+      <pose>-3.9091 -3.854 0.02 3.13862 0 0</pose>
+    </include>
+    
+   <include>
+      <uri>model://TapePatterns</uri>
+      <pose>13.2 -3.861 4.5797 1.57 0 0</pose>
+    </include>
+    
+  </world>
 </sdf>

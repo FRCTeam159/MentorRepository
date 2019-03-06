@@ -106,7 +106,6 @@ public class PlotPath extends JFrame {
 		System.out.println("W=" + PREF_W + " H=" + PREF_H);
 		numberXDivisions = xrange;
 		numberYDivisions = yrange;
-
 	}
 
 	void getLimits() {

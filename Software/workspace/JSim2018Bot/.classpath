@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="var" path="wpilibj" sourcepath="/wpilibj.sources"/>
-	<classpathentry exported="true" kind="lib" path="/usr/local/wpi/2018/sim/jar/wpilibjSimulation.jar" sourcepath="/usr/local/wpi/2017/sim/jar/wpilibj-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="/usr/local/wpi/2017/sim/jar/wpilibjSimulation.jar" sourcepath="/usr/local/wpi/2017/sim/jar/wpilibj-sources.jar"/>
 	<classpathentry exported="true" kind="var" path="networktables" sourcepath="networktables.sources"/>
 	<classpathentry kind="var" path="opencv" sourcepath="opencv.sources"/>
 	<classpathentry kind="var" path="cscore" sourcepath="cscore.sources"/>

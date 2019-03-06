@@ -1,19 +1,54 @@
 <xml version="1.0">
 <dashboard>
-	<widget field="Show HSV" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="0" y="121"/>
-	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
-		<location x="0" y="0"/>
-		<property name="Camera Choice" value="Rectangle"/>
+		<location x="526" y="38"/>
+		<width>470</width>
+		<height>385</height>
+		<property name="Camera Choice" value=""/>
 	</static-widget>
+	<widget field="Show HSV" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
+		<location x="804" y="422"/>
+	</widget>
+	<widget field="Targets" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="544" y="423"/>
+		<width>98</width>
+	</widget>
+	<widget field="Range" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="659" y="421"/>
+		<width>113</width>
+	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.MjpgStreamViewerImpl">
+		<location x="8" y="6"/>
+		<width>494</width>
+		<height>437</height>
+		<property name="MJPG Server URL" value="http://localhost:5004/?action=stream"/>
+	</static-widget>
+	<widget field="Elevator" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="22" y="431"/>
+		<width>112</width>
+	</widget>
+	<widget field="LeftDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="17" y="482"/>
+		<width>138</width>
+	</widget>
+	<widget field="RightDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="168" y="483"/>
+		<width>144</width>
+	</widget>
+	<widget field="LeftWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="18" y="538"/>
+		<width>130</width>
+	</widget>
+	<widget field="RightWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="170" y="539"/>
+		<width>136</width>
+	</widget>
 </dashboard>
 <live-window>
 </live-window>
-	<hidden field="V angle"/>
-	<hidden field="Targets"/>
-	<hidden field="W distance"/>
-	<hidden field="H distance"/>
-	<hidden field="H angle"/>
-	<hidden field="Aspect Ratio"/>
+	<hidden field="Heading"/>
+	<hidden field="Target Tilt"/>
+	<hidden field="HighGear"/>
+	<hidden field="Travel"/>
+	<hidden field="H offset"/>
 </xml>

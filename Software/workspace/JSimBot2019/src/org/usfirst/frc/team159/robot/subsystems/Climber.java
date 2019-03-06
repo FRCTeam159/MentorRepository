@@ -22,7 +22,7 @@ public class Climber extends Subsystem{
 	
 	public Climber() {
 		super();
-		motor = new CANTalon(RobotMap.CLIMBER);
+		motor = new CANTalon(RobotMap.CLIMBER_MOTOR);
 	}
 	
 	public void enable() {
