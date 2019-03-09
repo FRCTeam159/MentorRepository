@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc.team159.robot.Robot;
 import org.usfirst.frc.team159.robot.RobotMap;
 import org.usfirst.frc.team159.robot.commands.GrabberCommands;
 
@@ -25,21 +28,24 @@ public class Grabber extends Subsystem {
   DoubleSolenoid grabPneumatic = new DoubleSolenoid(2, 3);
   DoubleSolenoid tiltPneumatic = new DoubleSolenoid(4, 5);
 
-  private double ejectValue = 1.0;
-  private double grabValue = -1.0;
+  private double spinCW = 1.0;
+  private double spinCCW = -1.0;
   private boolean clawOpen = false;
-  boolean tilted=true;
+  private boolean inputActive=false;
+  private boolean ejectActive=false;
+
+  boolean tilted=false;
 
   public Grabber(){
-    
+   log();
   }
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new GrabberCommands());
   }
   public void init(){
-    //tilt(false);
-    //closeClaw();
+    tilt(false);
+    openClaw();
   }
   public boolean isTilted(){
     return tilted;
@@ -47,40 +53,59 @@ public class Grabber extends Subsystem {
   public boolean isClawOpen(){
     return clawOpen;
   }
-
   public void closeClaw(){
-    System.out.println("Grabber.closeClaw()");
     grabPneumatic.set(DoubleSolenoid.Value.kReverse);
     clawOpen = false;
+    log();
   }
   public void openClaw(){
-    System.out.println("Grabber.openClaw()");
     grabPneumatic.set(DoubleSolenoid.Value.kForward);
     clawOpen = true;
+    log();
   }
   public void eject(){
-    grabberMotor.set(ejectValue);
+    if(Robot.hatchMode)
+      grabberMotor.set(spinCW);
+    else
+      grabberMotor.set(spinCCW);
+    ejectActive=true;
+    log();
   }
   public void grab(){
-    grabberMotor.set(grabValue);
+    if(Robot.hatchMode)
+      grabberMotor.set(spinCCW);
+    else
+      grabberMotor.set(spinCW);
+    inputActive=true;
+    log();
   }
   public void hold(){
     grabberMotor.set(0);
+    inputActive=false;
+    ejectActive=false;
+    log();
   }
   public void dropGrabber(){
-    //armMover.set(RobotMap.GRABBER_SERVO_VALUE);
     tilt(true);
   }
   public void tilt(boolean forward){
     if(forward){
       System.out.println("Grabber.tilt(forward)");
       tiltPneumatic.set(DoubleSolenoid.Value.kReverse);
-      tilted=true;
+      tilted=false;
     }
     else{
       System.out.println("Grabber.tilt(back)");
       tiltPneumatic.set(DoubleSolenoid.Value.kForward);
-      tilted=false;
+      tilted=true;
     }
+    log();
+  }
+  void log(){
+    SmartDashboard.putBoolean("Input On", inputActive);
+    SmartDashboard.putBoolean("Eject On", ejectActive);
+    SmartDashboard.putBoolean("Claw Open", clawOpen);
+    SmartDashboard.putBoolean("Grabber Tilted", tilted);
+    SmartDashboard.putBoolean("Hatch-Cargo", Robot.hatchMode);
   }
 }

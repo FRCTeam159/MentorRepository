@@ -30,8 +30,8 @@
    
    <light name='sun' type='directional'>
       <cast_shadows>1</cast_shadows>
-      <pose frame=''>0 0 10 0 -0 0</pose>
-      <diffuse>1 1 1 1</diffuse>
+      <pose frame=''>-0.1 0 10 0 -0 0</pose>
+      <diffuse>0.9 0.9 0.9 1</diffuse>
       <specular>0.2 0.2 0.2 1</specular>
       <attenuation>
         <range>1000</range>
@@ -41,18 +41,18 @@
       </attenuation>
       <direction>-0.5 0.1 -0.9</direction>
     </light>
-    
+  
     <include>
       <uri>model://ground_plane</uri>
     </include>
    
     <include>
       <uri>model://SimBot2019-4</uri>
-      <!-- on right step pose 0.3346 -->
+      <!-- on right step pose z=0.3346 (or 0.1 on ground)-->
       <pose>-6.148 -5.035 0.3346 0 0 3.14</pose>
      
     </include>
- <!---->
+ <!--  -->
     <include>
       <uri>model://2019-Field-3</uri>
       <pose>13.2 -3.861 4.5797 1.57 0 0</pose>
@@ -60,13 +60,13 @@
     
     <include>
       <uri>model://Platform</uri>
-      <pose>-3.9091 -3.854 0.02 3.13862 0 0</pose>
+      <pose>-3.9091 -3.861 0.0 3.13862 0 0</pose>
     </include>
     
    <include>
       <uri>model://TapePatterns</uri>
-      <pose>13.2 -3.861 4.5797 1.57 0 0</pose>
+      <pose>13.2 -3.85 4.5797 1.57 0 0</pose>
     </include>
-    
+
   </world>
 </sdf>

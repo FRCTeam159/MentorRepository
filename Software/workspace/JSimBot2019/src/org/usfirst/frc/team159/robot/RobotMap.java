@@ -7,10 +7,8 @@ package org.usfirst.frc.team159.robot;
  * floating around.
  */
 public interface RobotMap {
-	public static int FRONTLEFT = 1;
-	public static int FRONTRIGHT = 4;
-	public static int BACKLEFT = 2; // unused in sim
-	public static int BACKRIGHT = 3; // unused in sim
+	public static int RIGHTWHEELS = 1;
+	public static int LEFTWHEELS = 2;
 
 	public static final int CLIMBER_MOTOR = 5; // MAXbot: 6
 	public static final int GRABBER_MOTOR = 6; // MAXbot: 7
@@ -25,20 +23,21 @@ public interface RobotMap {
 	public static final int ARM_SERVO = 0;
 
 	// Button axis IDs
-	public static final int LEFT_JOYSTICK = 3; // MAXbot: 1
-	public static final int RIGHT_JOYSTICK = 1; // MAXbot: 4
+	public static final int LEFT_JOYSTICK = 1; // MAXbot: 1
+	public static final int RIGHT_JOYSTICK = 3; // MAXbot: 4
 	public static final int LEFT_TRIGGER = 2;
 	public static final int RIGHT_TRIGGER = 5;
-	
+	public static final int HATCH_CARGO_MODE = 0;  // MAXbot: 6
+	public static final int EMERGENCY_STOP = 4;    // MAXbot: 7
+
 	// Button IDs
 	public static final int LEFT_TRIGGER_BUTTON = 5;
 	public static final int RIGHT_TRIGGER_BUTTON = 6;
-	public static final int ELEVATOR_GO_TO_HATCH_BUTTON = 2;
 	public static final int DEPLOY_CLIMBER_BUTTON = 7;
 	public static final int ELEVATOR_TILT_BUTTON = 9;
 	public static final int GRABBER_TILT_BUTTON = 10;
-
 	public static final int INTAKE_BUTTON = 1;
+	public static final int ELEVATOR_RESET_HEIGHT_BUTTON = 2;
 	public static final int OUTPUT_BUTTON = 3;
 	public static final int ARMS_TOGGLE_BUTTON = 4;
 

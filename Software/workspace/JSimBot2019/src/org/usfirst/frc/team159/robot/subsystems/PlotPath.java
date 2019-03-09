@@ -43,7 +43,7 @@ public class PlotPath extends JFrame {
 	private int plotMode = DFLT_MODE;
 	private static String pathLabels[] = { "LEFT", "CTR", "RIGHT" };
 	private static String trajLabels[] = { "X", "Y", "VEL", "ACC", "HDG" };
-	private static String distLabels[] = { "L-OBS", "L-TGT", "R-OBS", "R-TGT", "L-PWR", "R-PWR" };
+	private static String distLabels[] = { "L-OBS", "L-TGT", "R-OBS", "R-TGT", "H-OBS", "H-TGT" };
 	private static String testLabels[] = { "X-TGT", "X-OBS", "Y-TGT", "Y-OBS", "H-TGT", "H-OBS" };
 
 	private String traceLabels[] = null;

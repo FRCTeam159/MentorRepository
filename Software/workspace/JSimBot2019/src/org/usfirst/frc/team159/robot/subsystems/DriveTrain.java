@@ -16,12 +16,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class DriveTrain extends Subsystem implements MotorSafety {
+public class DriveTrain extends Subsystem implements MotorSafety, RobotMap {
 
-	private CANTalon frontLeft;
-	private CANTalon frontRight;
-	private CANTalon backLeft;
-	private CANTalon backRight;
+	private CANTalon leftMotor;
+	private CANTalon rightMotor;
 
 	private AnalogGyro gyro = new AnalogGyro(3);
 
@@ -39,21 +37,16 @@ public class DriveTrain extends Subsystem implements MotorSafety {
 
 	public DriveTrain() {
 		super();
-		frontLeft = new CANTalon(RobotMap.FRONTLEFT);
-		frontRight = new CANTalon(RobotMap.FRONTRIGHT);
-		backLeft = new CANTalon(RobotMap.BACKLEFT);
-		backRight = new CANTalon(RobotMap.BACKRIGHT);
-
-		frontRight.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-		backLeft.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
-
-		frontLeft.changeControlMode(CANTalon.TalonControlMode.Follower);
-		backRight.changeControlMode(CANTalon.TalonControlMode.Follower);
+		leftMotor = new CANTalon(LEFTWHEELS);
+		rightMotor = new CANTalon(RIGHTWHEELS);
+		
+		rightMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		leftMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 
 		int ticks_per_foot = (int) (1.0 / getFeetPerTick());
 
-		frontRight.configEncoderCodesPerRev(ticks_per_foot);
-		backLeft.configEncoderCodesPerRev(ticks_per_foot);
+		rightMotor.configEncoderCodesPerRev(ticks_per_foot);
+		leftMotor.configEncoderCodesPerRev(ticks_per_foot);
 		setLowGear();
 		setExpiration(0.1);
 		setSafetyEnabled(true);
@@ -74,14 +67,14 @@ public class DriveTrain extends Subsystem implements MotorSafety {
 	}
 
 	public void enable() {
-		frontRight.enable();
-		backLeft.enable();
+		rightMotor.enable();
+		leftMotor.enable();
 		Publish(true);
 	}
 
 	public void disable() {
-		frontRight.disable();
-		backLeft.disable();
+		rightMotor.disable();
+		leftMotor.disable();
 		Publish(true);
 	}
 
@@ -100,8 +93,8 @@ public class DriveTrain extends Subsystem implements MotorSafety {
 			SmartDashboard.putNumber("LeftDistance", feet_to_inches(getLeftDistance()));
 			SmartDashboard.putNumber("RightDistance", feet_to_inches(getRightDistance()));
 			SmartDashboard.putNumber("Travel", feet_to_inches(getDistance()));
-			SmartDashboard.putNumber("LeftWheels", round(backLeft.get()));
-			SmartDashboard.putNumber("RightWheels", round(frontRight.get()));
+			SmartDashboard.putNumber("LeftWheels", round(leftMotor.get()));
+			SmartDashboard.putNumber("RightWheels", round(rightMotor.get()));
 		}
 	}
 
@@ -110,11 +103,11 @@ public class DriveTrain extends Subsystem implements MotorSafety {
 	}
 
 	public double getRightDistance() {
-		return -frontRight.getPosition();
+		return rightMotor.getPosition();
 	}
 
 	public double getLeftDistance() {
-		return -backLeft.getPosition();
+		return leftMotor.getPosition();
 	}
 
 	public double getDistance() {
@@ -125,11 +118,11 @@ public class DriveTrain extends Subsystem implements MotorSafety {
 	}
 
 	public double getLeftVelocity() {
-		return -backLeft.getSpeed();
+		return leftMotor.getSpeed();
 	}
 
 	public double getRightVelocity() {
-		return -frontRight.getSpeed();
+		return rightMotor.getSpeed();
 	}
 
 	public double getVelocity() {
@@ -174,11 +167,8 @@ public class DriveTrain extends Subsystem implements MotorSafety {
 	}
 
 	public void tankDrive(double left, double right) {
-		backLeft.set(-left);
-		frontRight.set(-right);
-		backRight.set(RobotMap.FRONTRIGHT);
-		frontLeft.set(RobotMap.BACKLEFT);
-
+		leftMotor.set(left);
+		rightMotor.set(right);
 		Publish(false);
 		safetyHelper.feed();
 	}
@@ -187,26 +177,10 @@ public class DriveTrain extends Subsystem implements MotorSafety {
 		tankDrive(left, right);
 	}
 
-	public void arcadeDrive(double moveValue, double rotateValue, boolean squaredInputs) {
-
+	public void arcadeDrive(double moveValue, double rotateValue) {
 		// local variables to hold the computed PWM values for the motors
 		double leftMotorOutput;
 		double rightMotorOutput;
-
-		if (squaredInputs) {
-			// square the inputs (while preserving the sign) to increase fine control
-			// while permitting full power
-			if (moveValue >= 0.0) {
-				moveValue = (moveValue * moveValue);
-			} else {
-				moveValue = -(moveValue * moveValue);
-			}
-			if (rotateValue >= 0.0) {
-				rotateValue = (rotateValue * rotateValue);
-			} else {
-				rotateValue = -(rotateValue * rotateValue);
-			}
-		}
 
 		if (moveValue > 0.0) {
 			if (rotateValue > 0.0) {
@@ -230,14 +204,7 @@ public class DriveTrain extends Subsystem implements MotorSafety {
 		leftMotorOutput = coerce(-1.0, 1.0, leftMotorOutput);
 		rightMotorOutput = coerce(-1.0, 1.0, rightMotorOutput);
 
-		backLeft.set(leftMotorOutput);
-		frontRight.set(-rightMotorOutput);
-		backRight.set(RobotMap.FRONTRIGHT);
-		frontLeft.set(RobotMap.BACKLEFT);
-
-		Publish(false);
-
-		safetyHelper.feed();
+		set(leftMotorOutput,rightMotorOutput);	
 	}
 
 	/**
@@ -245,8 +212,8 @@ public class DriveTrain extends Subsystem implements MotorSafety {
 	 */
 	public void reset() {
 		gyro.reset();
-		frontRight.reset();
-		backLeft.reset();
+		rightMotor.reset();
+		leftMotor.reset();
 	}
 
 	// MotorSafty methods
@@ -267,10 +234,9 @@ public class DriveTrain extends Subsystem implements MotorSafety {
 
 	@Override
 	public void stopMotor() {
-		frontLeft.stopMotor();
-		frontRight.stopMotor();
-		backLeft.stopMotor();
-		backRight.stopMotor();
+		leftMotor.stopMotor();
+		rightMotor.stopMotor();
+		
 		safetyHelper.feed();
 	}
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <sdf version="1.5">
   <model name="Elevator">
-    <pose>0 0 0.00254 3.14159 -0.003567 3.14159</pose>
+    <pose>-0.66 -0.265 0.03 3.14159 -0.003567 3.14159</pose>
     <plugin name="clock" filename="libgz_clock.so">
       <topic>/gazebo/frc/time</topic>
     </plugin>
@@ -9,7 +9,7 @@
       <gravity>1</gravity>
       <self_collide>0</self_collide>
       <pose>-0.0692332840636431 0.266711468696946 -0.0135500056389031 -1.5707963267949 0 0</pose>
-      <must_be_base_link>1</must_be_base_link>
+      <must_be_base_link>0</must_be_base_link>
       <velocity_decay>
         <linear>0</linear>
         <angular>0</angular>
@@ -120,16 +120,16 @@
       <child>ElevatorBase</child>
       <pose>-0.0396732278936056 -0.568802393685777 7.7012235564361E-18 0 0 0</pose>
       <axis>
-        <xyz>-1.62319783125387E-32 -1.46852158259527E-33 1</xyz>
+        <xyz>0 0 -1</xyz>
         <dynamics>
           <damping>1</damping>
           <friction>1</friction>
         </dynamics>
         <limit>
-          <upper>0</upper>
+          <upper>0.6</upper>
           <lower>0</lower>
-          <effort>1</effort>
         </limit>
+        <use_parent_model_frame>0</use_parent_model_frame>       
       </axis>
     </joint>
     <link name="Stage1">
@@ -167,8 +167,8 @@
           </contact>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>1</mu>
+              <mu2>1</mu2>
             </ode>
           </friction>
         </surface>
@@ -190,18 +190,19 @@
     <joint name="ElevatorBase-Stage1" type="prismatic">
       <parent>ElevatorBase</parent>
       <child>Stage1</child>
-      <pose>0.00685148450608597 -1.11022302462516E-16 0.230368674227266 0 0 4.71238898038469</pose>
+      <pose>0.006851 -0 0.230369 0 -0 -1.5708</pose>
       <axis>
-        <xyz>1 2.22044604925031E-16 0</xyz>
+        <xyz>1 0 0</xyz>
         <dynamics>
           <damping>1</damping>
           <friction>1</friction>
         </dynamics>
         <limit>
-          <upper>0</upper>
-          <lower>0</lower>
-          <effort>1</effort>
+          <upper>0.85</upper>
+          <lower>0.0</lower>
+          <effort>500</effort>
         </limit>
+        <use_parent_model_frame>0</use_parent_model_frame>
       </axis>
     </joint>
     <link name="Stage2">
@@ -239,8 +240,8 @@
           </contact>
           <friction>
             <ode>
-              <mu>0</mu>
-              <mu2>0</mu2>
+              <mu>1</mu>
+              <mu2>1</mu2>
             </ode>
           </friction>
         </surface>
@@ -264,16 +265,17 @@
       <child>Stage2</child>
       <pose>2.59334506020675E-08 -4.44089209850063E-16 0.231820580081516 0 0 1.5707963267949</pose>
       <axis>
-        <xyz>-1 -2.22044604925031E-16 0</xyz>
+        <xyz>-1 0 0</xyz>
         <dynamics>
           <damping>1</damping>
           <friction>1</friction>
         </dynamics>
         <limit>
-          <upper>0</upper>
-          <lower>0</lower>
-          <effort>1</effort>
+          <upper>0.95</upper>
+          <lower>0.0</lower>
+          <effort>200</effort>
         </limit>
+        <use_parent_model_frame>0</use_parent_model_frame>
       </axis>
     </joint>
     <link name="Carriage">
@@ -286,15 +288,15 @@
         <angular>0</angular>
       </velocity_decay>
       <inertial>
-        <mass>0.952467113073436</mass>
-        <pose>0 0 0 0 0 0</pose>
+        <mass>0.1</mass>
+        <pose frame=''>0 0 0 0 -0 0</pose>
         <inertia>
-          <ixx>0.00444644500613112</ixx>
-          <ixy>1.50809618250805E-11</ixy>
-          <ixz>1.27972245383596E-11</ixz>
-          <iyy>0.00123828433448723</iyy>
-          <iyz>2.46468190637488E-11</iyz>
-          <izz>0.00368568713416048</izz>
+        <ixx>0</ixx>
+        <ixy>0</ixy>
+        <ixz>0</ixz>
+        <iyy>0</iyy>
+        <iyz>0</iyz>
+        <izz>0</izz>
         </inertia>
       </inertial>
       <collision name="Carriage_collision">
@@ -331,9 +333,10 @@
         </geometry>
       </visual>
       <sensor name="CarriageCamera" type="camera">
-        <visualize>1</visualize>
+        <visualize>0</visualize>
         <always_on>1</always_on>
-        <pose>0.0380999999163022 -0.0858317431545866 -2.6627613988936E-10 1.5707963267949 0 0</pose>
+        <update_rate>10</update_rate>
+        <pose frame=''>0.0381 0.0 -0 1.5708 3.14 3.14</pose>
         <camera name="Carriagecamera">
           <horizontal_fov>1.5707963267949</horizontal_fov>
           <image>
@@ -341,10 +344,13 @@
             <height>240</height>
           </image>
           <clip>
-            <near>0.1</near>
-            <far>100</far>
+            <near>0.05</near>
+            <far>50</far>
           </clip>
-        </camera>
+          <save enabled="true">
+              <path>/tmp/driver-camera</path>
+          </save>        
+          </camera>
       </sensor>
     </link>
     <joint name="Stage2-Carriage" type="prismatic">
@@ -352,19 +358,19 @@
       <child>Carriage</child>
       <pose>-8.36978548987117E-11 -3.8746783559418E-14 0.231825799733719 0 0 1.5707963267949</pose>
       <axis>
-        <xyz>-1 -2.22044604925031E-16 0</xyz>
+        <xyz>-1 0 0</xyz>
         <dynamics>
           <damping>1</damping>
           <friction>1</friction>
         </dynamics>
         <limit>
-          <upper>0</upper>
-          <lower>0</lower>
-          <effort>1</effort>
+          <upper>0.75</upper>
+          <lower>0.0</lower>
+          <effort>100</effort>
         </limit>
+        <use_parent_model_frame>0</use_parent_model_frame>
       </axis>
     </joint>
-    <!-- -->
     <link name="TilterBaseArm">
       <gravity>1</gravity>
       <self_collide>0</self_collide>
@@ -420,21 +426,21 @@
         </geometry>
       </visual>
     </link>
-    <joint name="ElevatorBase-TilterBaseArm" type="fixed">
-      <parent>ElevatorBase</parent>
+    <joint name="FrameBase-TilterBaseArm" type="revolute">
+      <parent>FrameBase</parent>
       <child>TilterBaseArm</child>
       <pose>-0.188109626742797 -0.187869257830928 3.69454822637949E-11 0 0 0</pose>
       <axis>
-        <xyz>0 0 -1</xyz>
+        <xyz>0 0 1</xyz>
         <dynamics>
           <damping>1</damping>
           <friction>1</friction>
         </dynamics>
         <limit>
-          <upper>0</upper>
-          <lower>0</lower>
-          <effort>1</effort>
+          <upper>1</upper>
+          <lower>-1</lower>
         </limit>
+        <use_parent_model_frame>0</use_parent_model_frame>
       </axis>
     </joint>
        <joint name="TilterEleArm-TilterBaseArm" type="revolute">
@@ -442,13 +448,15 @@
       <child>TilterBaseArm</child>
       <pose>0.0634982471572795 0.0634171082765121 -1.24379673227537E-15 0 0 0</pose>
       <axis>
-        <xyz>5.02893531012506E-16 -2.79217922287273E-18 1</xyz>
+        <xyz>0 1 0</xyz>
         <dynamics>
           <damping>1</damping>
           <friction>1</friction>
         </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
         <limit>
-          <effort>1</effort>
+            <upper>1.25</upper>
+            <lower>0</lower>
         </limit>
       </axis>
     </joint>
@@ -507,7 +515,7 @@
         </geometry>
       </visual>
     </link>
-    <joint name="ElevatorBase-TilterEleArm" type="fixed">
+    <joint name="ElevatorBase-TilterEleArm" type="revolute">
       <parent>ElevatorBase</parent>
       <child>TilterEleArm</child>
       <pose>0.147246063049962 0.0996565949462797 2.38343795837915E-16 0 0 0</pose>
@@ -518,31 +526,46 @@
           <friction>1</friction>
         </dynamics>
         <limit>
-          <upper>0</upper>
-          <lower>0</lower>
-          <effort>1</effort>
+          <upper>3</upper>
+          <lower>-3</lower>
+          <effort>100</effort>
         </limit>
+        <use_parent_model_frame>0</use_parent_model_frame>
       </axis>
     </joint>
+        <plugin name="TilterEleArm-TilterBaseArm_piston" filename="libpneumatic_piston.so">
+        <joint>TilterEleArm-TilterBaseArm</joint>
+        <topic>/gazebo/frc/simulator/pneumatic/1/1/1/2</topic>
+        <forward-force>50</forward-force>
+        <reverse-force>50</reverse-force>
+    </plugin>
    
     <plugin name="ElevatorBase-Stage1_motor" filename="libgz_dc_motor.so">
       <joint>ElevatorBase-Stage1</joint>
       <topic>/gazebo/frc/simulator/pwm/7</topic>
-      <multiplier>20</multiplier>
+      <multiplier>200</multiplier>
     </plugin>
-    <plugin name="Body-Elevator_encoder" filename="libencoder.so">
+    <plugin name="ElevatorBase-Stage1_encoder" filename="libencoder.so">
       <joint>ElevatorBase-Stage1</joint>
       <topic>/gazebo/frc/simulator/dio/13/14</topic>
     </plugin>
     <plugin name="Stage1-Stage2_motor" filename="libgz_dc_motor.so">
       <joint>Stage1-Stage2</joint>
       <topic>/gazebo/frc/simulator/pwm/8</topic>
-      <multiplier>20</multiplier>
+      <multiplier>100</multiplier>
+    </plugin>
+    <plugin name="Stage1-Stage2_encoder" filename="libencoder.so">
+      <joint>Stage1-Stage2</joint>
+      <topic>/gazebo/frc/simulator/dio/15/16</topic>
     </plugin>
     <plugin name="Stage2-Carriage_motor" filename="libgz_dc_motor.so">
       <joint>Stage2-Carriage</joint>
       <topic>/gazebo/frc/simulator/pwm/9</topic>
-      <multiplier>20</multiplier>
+      <multiplier>50</multiplier>
+    </plugin>
+       <plugin name="Stage2-Carriage_encoder" filename="libencoder.so">
+        <joint>Stage2-Carriage</joint>
+        <topic>/gazebo/frc/simulator/dio/17/18</topic>
     </plugin>
   </model>
 </sdf>

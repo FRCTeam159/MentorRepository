@@ -92,7 +92,7 @@ return pid.onTarget();
 
   @Override
   public void pidWrite(double output) {
-    Robot.driveTrain.arcadeDrive(output, 0,false);
+    Robot.driveTrain.set(output, output);
   //  SmartDashboard.putNumber("pidWrite", output);
     System.out.println("pidWrite is: " + output);
   }

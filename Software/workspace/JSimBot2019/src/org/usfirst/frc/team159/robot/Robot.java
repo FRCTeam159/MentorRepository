@@ -5,8 +5,6 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-//import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team159.robot.commands.Autonomous;
 import org.usfirst.frc.team159.robot.subsystems.DriveTrain;
@@ -14,7 +12,6 @@ import org.usfirst.frc.team159.robot.subsystems.Climber;
 import org.usfirst.frc.team159.robot.subsystems.Elevator;
 import org.usfirst.frc.team159.robot.subsystems.Grabber;
 import org.usfirst.frc.team159.robot.subsystems.VisionProcess;
-
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -35,9 +32,10 @@ public class Robot extends IterativeRobot {
 	public static boolean isAuto = false;
 	public static boolean isTele = false;
 	public static boolean doAuto = true;
-	public static boolean haveAuto = false;
+	public static boolean haveAuto = true;
+	public static boolean hatchMode = true;
 
-	public static double auto_scale = 1.0;
+	public static double auto_scale = 0.75;
 	// SendableChooser<Command> chooser = new SendableChooser<>();
 	Command autonomousCommand;
 
@@ -68,7 +66,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void disabledPeriodic() {
-		//oi.buttonTest();
+		oi.buttonTest();
 		Scheduler.getInstance().run();
 	}
 

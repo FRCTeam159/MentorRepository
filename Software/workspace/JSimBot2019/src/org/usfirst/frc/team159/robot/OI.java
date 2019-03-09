@@ -10,12 +10,27 @@ import org.usfirst.frc.team159.robot.RobotMap;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+	 static double last_dpad=-1;
+	 static double last_axis[] = new double[8];
 	 static public Joystick stick = new Joystick(RobotMap.STICK);
+
 	 public static void buttonTest(){
-		 for (int i=0;i<16;i++){
+		 int dpad = stick.getPOV(0); // alays returns 0 in simulationlittle 
+		 
+		 if(dpad!=last_dpad){
+			System.out.println("Dpad = "+dpad);
+			last_dpad=dpad;
+		 }
+		 for (int i=0;i<12;i++){
 			 if(stick.getRawButton(i))
 			 	System.out.println("Button"+i+" pressed");
 		 }
+		 for (int i=0;i<6;i++){
+			double axis=stick.getRawAxis(i);
+			if(axis!=last_axis[i])
+				System.out.println("Axis["+i+"]="+axis);
+			last_axis[i]=axis;
+		}
 	 }
 }
 

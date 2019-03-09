@@ -191,7 +191,7 @@ public class PathPlotTest {
         info[3] = mode;
 
         System.out.println(
-                "Publishing Plot Data id:" + info[0] + " traces:" + info[1] + " pts:" + info[2] + " mode:" + info[3]);
+                "Publishing Plot Data showPathMotion" + info[3]);
 
         NetworkTableEntry entry = table.getEntry("NewPlot");
         entry.setDouble(plotIndex);

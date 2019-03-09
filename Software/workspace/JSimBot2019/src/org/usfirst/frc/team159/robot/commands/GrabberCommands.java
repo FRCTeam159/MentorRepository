@@ -27,7 +27,7 @@ public class GrabberCommands extends Command implements RobotMap{
   @Override
   protected void initialize() {
     System.out.println("GrabberCommands.initialize()");
-    System.out.println("GRABBER_TILT_BUTTON="+GRABBER_TILT_BUTTON+" id="+tiltButton.getID());
+    //System.out.println("GRABBER_TILT_BUTTON="+GRABBER_TILT_BUTTON+" id="+tiltButton.getID());
 
     //Robot.grabber.closeClaw();
   }
@@ -47,9 +47,9 @@ public class GrabberCommands extends Command implements RobotMap{
     }
     if (tiltButton.isPressed()){
       if(Robot.grabber.isTilted())
-        Robot.grabber.tilt(false);
-      else
         Robot.grabber.tilt(true);
+      else
+        Robot.grabber.tilt(false);
     }
     if (intakeButtonPressed)
       Robot.grabber.grab();

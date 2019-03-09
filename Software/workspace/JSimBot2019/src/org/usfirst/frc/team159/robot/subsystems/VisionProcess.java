@@ -46,29 +46,15 @@ public class VisionProcess extends Thread {
   static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 	}
-  // static UsbCamera camera;
-  public static double targetWidth = 13.0; // physical width of target (inches)
-  public static double targetHeight = 8.0; // physical height of target (inches)
-  public static double distanceToFillWidth = 16.5; // measured distance where target just fills screen (width)
-  public static double distanceToFillHeight = 13.5; // measured distance where target just fills screen (height)
-  public static double cameraFovW = 2 * Math.atan(0.5 * targetWidth / distanceToFillWidth); // 41.8 degrees
-  public static double cameraFovH = 2 * Math.atan(0.5 * targetHeight / distanceToFillHeight); // 33.0 degrees
+  
+  public static double cameraFovW =  41.8;//
 
   public static double imageWidth = 320;
   public static double imageHeight = 240;
-  // multiply these factors by target screen projection (pixels) to get distance
-  double distanceFactorWidth = 0.5 * targetWidth * imageWidth / Math.tan(cameraFovW / 2.0);
-  double distanceFactorHeight = 0.5 * targetHeight * imageHeight / Math.tan(cameraFovH / 2.0);
-  // multiply these factors by target center offset (pixels) to get horizontal and
-  // vertical angle offsets
   double angleFactorWidth = Math.toDegrees(cameraFovW) / imageWidth;
-  double angleFactorHeight = Math.toDegrees(cameraFovH) / imageHeight;
-  // expected width/height ratio
-
   AnalogInput rangefinder = new AnalogInput(1);
-  double targetAspectRatio = targetWidth / targetHeight;
-  // double range_inches_per_count = 1.0 / 19.744;
-  // double range_inches_per_count = 1.0;
+  double range_offset=10.0; // distance from rangefinder to bumpers
+  
   double min_range = 35;
   double max_range = 70;
   double range = 0;
@@ -76,11 +62,14 @@ public class VisionProcess extends Thread {
   double targetOffset = 0;
   VideoCapture vcap;
 
+  static public Boolean debugHSV = false;
+
   public double getRange() {
     double meters = rangefinder.getVoltage();
-    return 39.3701 * meters;
-    // double range = range_inches_per_count * rangefinder.getValue();
-    // return range;
+    if(meters>=1)
+      return 1234;
+    double inches=39.3701 * meters;
+    return inches-range_offset;
   }
 
   public void init() {
@@ -89,7 +78,15 @@ public class VisionProcess extends Thread {
     SmartDashboard.putNumber("Target Tilt", 0);
     SmartDashboard.putNumber("Range", 0);
     SmartDashboard.putBoolean("Show HSV", false);
-    System.out.println("fov H:" + Math.toDegrees(cameraFovH) + " W:" + Math.toDegrees(cameraFovW));
+    if(debugHSV){
+      SmartDashboard.putNumber("Hmin", GripPipeline.Hmin);
+      SmartDashboard.putNumber("Hmax", GripPipeline.Hmax);
+      SmartDashboard.putNumber("Smin", GripPipeline.Smin);
+      SmartDashboard.putNumber("Smax", GripPipeline.Smax);
+      SmartDashboard.putNumber("Vmin", GripPipeline.Vmin);
+      SmartDashboard.putNumber("Vmax", GripPipeline.Vmax);
+    }
+    System.out.println("fov " + Math.toDegrees(cameraFovW));
   }
 
   double round10(double x) {
@@ -104,16 +101,10 @@ public class VisionProcess extends Thread {
     else
       System.out.println("Video Stream captured " + videoStreamAddress);
 
-    // camera = CameraServer.getInstance().startAutomaticCapture("Targeting", 0);
     GripPipeline grip = new GripPipeline();
-    // CvSink cvSink = CameraServer.getInstance().getVideo();
     CvSource outputStream = CameraServer.getInstance().putVideo("Rectangle", 320, 240);
     Mat mat = new Mat();
     ArrayList<RotatedRect> rects = new ArrayList<RotatedRect>();
-    // TODO: use a network tables data structure to pass target params to Robot
-    // Program
-   // NetworkTableInstance inst = NetworkTableInstance.getDefault();
-   // NetworkTable table = inst.getTable("TargetData");
 
     NetworkTable table = NetworkTable.getTable("TargetData");
     edu.wpi.first.wpilibj.Timer timer = new edu.wpi.first.wpilibj.Timer();
@@ -128,6 +119,14 @@ public class VisionProcess extends Thread {
       timer.reset();
       if (!vcap.read(mat)) {
         continue;
+      }
+      if(debugHSV){
+        GripPipeline.Hmin=SmartDashboard.getNumber("Hmin", GripPipeline.Hmin);
+        GripPipeline.Hmax=SmartDashboard.getNumber("Hmax", GripPipeline.Hmax);
+        GripPipeline.Smin=SmartDashboard.getNumber("Smin", GripPipeline.Smin);
+        GripPipeline.Smax=SmartDashboard.getNumber("Smax", GripPipeline.Smax);
+        GripPipeline.Vmin=SmartDashboard.getNumber("Vmin", GripPipeline.Vmin);
+        GripPipeline.Vmax=SmartDashboard.getNumber("Vmax", GripPipeline.Vmax);
       }
       double dt = timer.get() * 1000;
       grip.process(mat);
@@ -155,7 +154,6 @@ public class VisionProcess extends Thread {
         }
         rects.add(r);
       }
-
       // calculate distance to target
       // - using ht
       SmartDashboard.putNumber("Targets", rects.size());

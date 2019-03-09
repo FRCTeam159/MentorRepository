@@ -1,54 +1,87 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Elevator Level" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="634" y="392"/>
+		<width>134</width>
+		<property name="Font Size" value="16"/>
+	</widget>
+	<widget field="Elevator On" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="447" y="381"/>
+		<width>166</width>
+		<height>82</height>
+	</widget>
+	<widget field="Elevator Height" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
+		<location x="617" y="349"/>
+		<width>152</width>
+		<property name="Font Size" value="16"/>
+	</widget>
+	<widget field="Hatch-Cargo" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="203" y="377"/>
+		<width>193</width>
+		<height>92</height>
+		<property name="Color to show when true" value="255.255.0.255"/>
+		<property name="Color to show when false" value="255.88.0.255"/>
+	</widget>
+	<widget field="Travel" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="42" y="306"/>
+		<width>109</width>
+	</widget>
+	<widget field="Grabber Tilted" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="33" y="458"/>
+		<width>120</width>
+	</widget>
+	<widget field="Elevator Tilted" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="648" y="441"/>
+		<width>122</width>
+	</widget>
+	<widget field="Input On" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="28" y="429"/>
+		<width>97</width>
+	</widget>
+	<widget field="Eject On" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="28" y="403"/>
+		<width>96</width>
+	</widget>
+	<widget field="Claw Open" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
+		<location x="25" y="373"/>
+		<width>110</width>
+	</widget>
+	<widget field="Heading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="177" y="307"/>
+		<width>114</width>
+	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
-		<location x="526" y="38"/>
-		<width>470</width>
-		<height>385</height>
+		<location x="407" y="1"/>
+		<width>369</width>
+		<height>291</height>
 		<property name="Camera Choice" value=""/>
 	</static-widget>
 	<widget field="Show HSV" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.CheckBox">
-		<location x="804" y="422"/>
+		<location x="688" y="308"/>
 	</widget>
 	<widget field="Targets" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="544" y="423"/>
+		<location x="574" y="304"/>
 		<width>98</width>
 	</widget>
 	<widget field="Range" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="659" y="421"/>
-		<width>113</width>
+		<location x="326" y="306"/>
+		<width>108</width>
 	</widget>
 	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.MjpgStreamViewerImpl">
 		<location x="8" y="6"/>
-		<width>494</width>
-		<height>437</height>
+		<width>415</width>
+		<height>281</height>
 		<property name="MJPG Server URL" value="http://localhost:5004/?action=stream"/>
 	</static-widget>
-	<widget field="Elevator" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="22" y="431"/>
-		<width>112</width>
-	</widget>
-	<widget field="LeftDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="17" y="482"/>
-		<width>138</width>
-	</widget>
-	<widget field="RightDistance" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="168" y="483"/>
-		<width>144</width>
-	</widget>
-	<widget field="LeftWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="18" y="538"/>
-		<width>130</width>
-	</widget>
-	<widget field="RightWheels" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
-		<location x="170" y="539"/>
-		<width>136</width>
-	</widget>
 </dashboard>
 <live-window>
 </live-window>
-	<hidden field="Heading"/>
+	<hidden field="RightWheels"/>
+	<hidden field="LeftWheels"/>
+	<hidden field="RightDistance"/>
 	<hidden field="Target Tilt"/>
 	<hidden field="HighGear"/>
-	<hidden field="Travel"/>
+	<hidden field="LeftDistance"/>
+	<hidden field="Elevator"/>
 	<hidden field="H offset"/>
 </xml>

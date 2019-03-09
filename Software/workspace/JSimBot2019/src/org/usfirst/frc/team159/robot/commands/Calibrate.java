@@ -15,8 +15,8 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class Calibrate extends Command {
-  Timer mytimer;
-  double runtime = 6;
+  //Timer mytimer;
+  double runtime = 5;
   private double lastVelocity = 0;
 
   private LinkedList<Double> vals = null;
@@ -31,12 +31,15 @@ public class Calibrate extends Command {
   double max_acc = 0;
   double max_vel = 0;
   long start_time;
+  double TIME_STEP = 0.02;
+	private int pathIndex = 0;
+
 
   public Calibrate() {
     requires(Robot.driveTrain);
-    mytimer = new Timer();
-    mytimer.start();
-    mytimer.reset();
+   //mytimer = new Timer();
+   // mytimer.start();
+   // mytimer.reset();
   }
 
   static public double f2m(double x) {
@@ -46,8 +49,8 @@ public class Calibrate extends Command {
   // Called just before this Command runs the first time
   protected void initialize() {
     Robot.driveTrain.reset();
-    mytimer.start();
-    mytimer.reset();
+    //mytimer.start();
+    //mytimer.reset();
     System.out.println("Calibrate.initialize(" + Robot.auto_scale + ")");
     vals = new LinkedList<Double>();
     lastTime = 0;
@@ -59,10 +62,11 @@ public class Calibrate extends Command {
 
   // Called repeatedly when this Command is scheduled to run
   protected void execute() {
-    double curtime = getTime();
+    double curtime = getSimTime();
     if (cnt < 1) {
       lastTime = curtime;
       cnt++;
+      pathIndex++;
       return;
     }
     double dt = curtime - lastTime;
@@ -79,7 +83,7 @@ public class Calibrate extends Command {
     max_vel = velocity > max_vel ? velocity : max_vel;
 
     if (print)
-      System.out.format("%f %d %f %f %f\n", curtime, (int) Math.round(dt * 1000.0), f2m(position), f2m(velocity),
+      System.out.format("%f %f %f %f\n", curtime, f2m(position), f2m(velocity),
           f2m(aveAcceleration));
     if (plot) {
       PathData pd = new PathData();
@@ -92,11 +96,12 @@ public class Calibrate extends Command {
 
     lastVelocity = velocity;
     lastTime = curtime;
+    pathIndex++;
   }
 
   // Make this return true when this Command no longer needs to run execute()
   protected boolean isFinished() {
-    if (getTime() >= runtime)
+    if (getSimTime() >= runtime)
       return true;
     return false;
   }
@@ -126,9 +131,7 @@ public class Calibrate extends Command {
     return total / vals.size();
   }
 
-  double getTime() {
-    // double curtime=1e-9*(System.nanoTime()-start_time);
-    // return (double)curtime;
-    return mytimer.get();
-  }
+  double getSimTime() {
+		return (double) TIME_STEP * pathIndex;
+	}
 }

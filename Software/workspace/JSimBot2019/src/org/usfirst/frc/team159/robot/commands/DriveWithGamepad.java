@@ -36,14 +36,17 @@ public class DriveWithGamepad extends Command implements RobotMap{
   @Override
   protected void initialize() {
     System.out.println("DriveWithGamepad.initialize");
+    Robot.driveTrain.enable();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if(!Robot.isTele)
+      return;
     Joystick stick = OI.stick;
-    double zs=stick.getRawAxis(RobotMap.LEFT_JOYSTICK);   // sign reversed in MAXbot
-    double xs=-stick.getRawAxis(RobotMap.RIGHT_JOYSTICK); // sign reversed in MAXbot
+    double zs=-stick.getRawAxis(1); 
+    double xs=-stick.getRawAxis(3);
 
     double z = zs;
     double x = xs;
@@ -68,7 +71,7 @@ public class DriveWithGamepad extends Command implements RobotMap{
     }
 
     turnValue *= Math.abs(moveValue) * (1 - turnScale) + turnScale;
-    Robot.driveTrain.arcadeDrive(moveValue, turnValue,true);
+    Robot.driveTrain.arcadeDrive(moveValue, turnValue);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -103,7 +106,6 @@ public class DriveWithGamepad extends Command implements RobotMap{
             * ((minThreshold + input)* (minThreshold + input)))
             - minOutput;
       }
-  
       else {
         return 0;
       }
