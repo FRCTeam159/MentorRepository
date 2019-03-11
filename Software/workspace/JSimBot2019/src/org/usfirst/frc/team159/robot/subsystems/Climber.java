@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Climber extends Subsystem{
 
-	private CANTalon motor;
+	private CANTalon front_motor;
+	private CANTalon back_motor;
+
 	
 	public void initDefaultCommand() {
 		 setDefaultCommand(new ClimberCmds());
@@ -22,15 +24,24 @@ public class Climber extends Subsystem{
 	
 	public Climber() {
 		super();
-		motor = new CANTalon(RobotMap.CLIMBER_MOTOR);
+		front_motor = new CANTalon(RobotMap.FRONT_CLIMBER_MOTOR);
+		back_motor = new CANTalon(RobotMap.BACK_CLIMBER_MOTOR);
 	}
-	
+	public void init() {
+		enable();
+		setFront(-0.1);
+		setBack(-0.1);
+	}
+
 	public void enable() {
-		motor.enable();
+		front_motor.enable();
+		back_motor.enable();
 	}
 	
-	public void set(double v) {
-		motor.set(v);
+	public void setFront(double v) {
+		front_motor.set(v);
 	}
-	
+	public void setBack(double v) {
+		back_motor.set(v);
+	}
 }

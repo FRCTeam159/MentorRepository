@@ -67,7 +67,7 @@ public class Elevator extends Subsystem {
     super();
     stage1 = new ElevatorStage(RobotMap.ELEVATOR_MOTOR,     0.5,0.001,6);
     stage2 = new ElevatorStage(RobotMap.ELEVATOR_MOTOR + 1, 0.2,0.001,6);
-    stage3 = new ElevatorStage(RobotMap.ELEVATOR_MOTOR + 2, 0.1,0.001,8);
+    stage3 = new ElevatorStage(RobotMap.ELEVATOR_MOTOR + 2, 0.05,0.001,8);
    
     //stage1.setDebug(true, false, false);
     //stage2.setDebug(true, false, false);
@@ -175,11 +175,14 @@ public class Elevator extends Subsystem {
   }
   public void stepUp(double v){
     setpoint += v * MOVE_RATE;
+    setElevator();
   }
   public void stepDown(double v){
     setpoint -= v * MOVE_RATE;
+    setElevator();
   }
   public void decrLevel(){
+    checkMode();
     if(Robot.hatchMode && level <= 1)
       return;
     if(!Robot.hatchMode && level == 0)
@@ -187,16 +190,20 @@ public class Elevator extends Subsystem {
     setpoint -=DELTA_TARGET_HEIGHT;
     Elevator.level--;
     checkLevel();
+    setElevator();
   }
   public void incrLevel(){
+    checkMode();
     if(!Robot.hatchMode && level==0)
       setpoint=ROCKET_BALL_HEIGHT_LOW;
     else
       setpoint += DELTA_TARGET_HEIGHT;
     level++;
     checkLevel();
+    setElevator();
   }
   public void resetLevel(){
+    checkMode();
     if(Robot.hatchMode){
       setpoint = HATCH_HEIGHT;
       level=1;
@@ -205,6 +212,7 @@ public class Elevator extends Subsystem {
       setpoint = BASE_HEIGHT;
       level=0;
     }
+    setElevator();
   }
   public void setElevator(){
     checkSetpoint();
@@ -225,7 +233,7 @@ public class Elevator extends Subsystem {
   
   public void log(){
     SmartDashboard.putBoolean("Elevator Tilted", tilted);
-    SmartDashboard.putNumber("Elevator Height", Math.round(setpoint));
+    SmartDashboard.putNumber("Elevator Target", Math.round(setpoint));
     SmartDashboard.putNumber("Elevator Actual", Math.round(getPosition()));
 
     SmartDashboard.putNumber("Elevator Level", level);

@@ -47,12 +47,16 @@
     </include>
    
     <include>
-      <uri>model://SimBot2019-4</uri>
+      <uri>model://SimBot2019</uri>
       <!-- on right step pose z=0.3346 (or 0.1 on ground)-->
-      <pose>-6.148 -5.035 0.3346 0 0 3.14</pose>
-     
+      <pose>-6.148 -5.035 .3346  0 0 3.14</pose>
     </include>
- <!--  -->
+    <!--   
+     <include>
+      <uri>model://Platform2</uri>
+      <pose>-5.1 -3.9 0.0 3.14 0 3.14</pose>
+    </include>
+-->
     <include>
       <uri>model://2019-Field-3</uri>
       <pose>13.2 -3.861 4.5797 1.57 0 0</pose>

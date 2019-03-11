@@ -10,7 +10,9 @@ public interface RobotMap {
 	public static int RIGHTWHEELS = 1;
 	public static int LEFTWHEELS = 2;
 
-	public static final int CLIMBER_MOTOR = 5; // MAXbot: 6
+	public static final int FRONT_CLIMBER_MOTOR = 4;
+	public static final int BACK_CLIMBER_MOTOR = 5;
+
 	public static final int GRABBER_MOTOR = 6; // MAXbot: 7
 	public static final int ELEVATOR_MOTOR = 7; // MAXbot: 5
 
@@ -33,7 +35,9 @@ public interface RobotMap {
 	// Button IDs
 	public static final int LEFT_TRIGGER_BUTTON = 5;
 	public static final int RIGHT_TRIGGER_BUTTON = 6;
-	public static final int DEPLOY_CLIMBER_BUTTON = 7;
+	public static final int FRONT_CLIMBER_BUTTON = 8;
+	public static final int BACK_CLIMBER_BUTTON = 7;
+
 	public static final int ELEVATOR_TILT_BUTTON = 9;
 	public static final int GRABBER_TILT_BUTTON = 10;
 	public static final int INTAKE_BUTTON = 1;

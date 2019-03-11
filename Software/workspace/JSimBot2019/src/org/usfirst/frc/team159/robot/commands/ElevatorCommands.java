@@ -4,6 +4,9 @@ import org.usfirst.frc.team159.robot.OI;
 import org.usfirst.frc.team159.robot.Robot;
 import org.usfirst.frc.team159.robot.RobotMap;
 import org.usfirst.frc.team159.robot.subsystems.Elevator;
+
+import javax.lang.model.util.ElementScanner6;
+
 import org.usfirst.frc.team159.robot.Button;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -70,58 +73,9 @@ public class ElevatorCommands extends Command implements RobotMap {
         Robot.elevator.stepDown(left);
       else if (right > 0)
         Robot.elevator.stepUp(right);
-     // else
-    //    return;
-      Robot.elevator.setElevator();
-    }
-    /*
-    if(stopAxis < -0.99)
-      Elevator.stopMode=false;
-    else if (stopAxis > 0.99)
-      Elevator.stopMode=true;
-
-    if(Elevator.stopMode){ // freeze elevator at current position
-      setpoint = Robot.elevator.getSetpoint();
-      Robot.elevator.setPosition(setpoint);
-    }
-    else if (tiltButton.isPressed()){
-      if(Robot.elevator.isTilted())
-        Robot.elevator.tiltElevator(true);
       else
-        Robot.elevator.tiltElevator(false);
+        Robot.elevator.log();
     }
-    else {
-      if (baseHtButton.isPressed()){
-        if(Robot.hatchMode){
-          setpoint = Elevator.HATCH_HEIGHT;
-          Elevator.level=1;
-        }
-        else{
-          setpoint = Elevator.BASE_HEIGHT;
-          Elevator.level=0;
-        }
-      }
-      else if (incrementButton.isPressed()){
-        if(!Robot.hatchMode && Elevator.level==0)
-          setpoint=Elevator.ROCKET_BALL_HEIGHT_LOW;
-        else
-          setpoint += Elevator.DELTA_TARGET_HEIGHT;
-        Elevator.level++;
-      }
-      else if (decrementButton.isPressed()){
-        setpoint -= Elevator.DELTA_TARGET_HEIGHT;
-        Elevator.level--;
-      }
-      else if (left > 0)
-        setpoint -= left * rate_scale;
-      else if (right > 0)
-        setpoint += right * rate_scale;
-      Elevator.level=Elevator.level<0?0:Elevator.level;
-      Elevator.level=Elevator.level>3?3:Elevator.level;
-      Robot.elevator.setPosition(setpoint);
-      setpoint = Robot.elevator.getSetpoint();
-    }
-    */
   }
 
   // Make this return true when this Command no longer needs to run execute()

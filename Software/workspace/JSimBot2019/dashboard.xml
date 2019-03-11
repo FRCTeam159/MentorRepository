@@ -1,19 +1,22 @@
 <xml version="1.0">
 <dashboard>
+	<widget field="Elevator Target" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="616" y="349"/>
+		<width>154</width>
+	</widget>
+	<widget field="Elevator Actual" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="616" y="391"/>
+		<width>153</width>
+	</widget>
 	<widget field="Elevator Level" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="634" y="392"/>
+		<location x="633" y="434"/>
 		<width>134</width>
 		<property name="Font Size" value="16"/>
 	</widget>
 	<widget field="Elevator On" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="447" y="381"/>
+		<location x="402" y="376"/>
 		<width>166</width>
 		<height>82</height>
-	</widget>
-	<widget field="Elevator Height" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.FormattedField">
-		<location x="617" y="349"/>
-		<width>152</width>
-		<property name="Font Size" value="16"/>
 	</widget>
 	<widget field="Hatch-Cargo" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
 		<location x="203" y="377"/>
@@ -31,8 +34,9 @@
 		<width>120</width>
 	</widget>
 	<widget field="Elevator Tilted" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
-		<location x="648" y="441"/>
+		<location x="642" y="480"/>
 		<width>122</width>
+		<height>20</height>
 	</widget>
 	<widget field="Input On" type="Boolean" class="edu.wpi.first.smartdashboard.gui.elements.BooleanBox">
 		<location x="28" y="429"/>
@@ -82,6 +86,5 @@
 	<hidden field="Target Tilt"/>
 	<hidden field="HighGear"/>
 	<hidden field="LeftDistance"/>
-	<hidden field="Elevator"/>
 	<hidden field="H offset"/>
 </xml>

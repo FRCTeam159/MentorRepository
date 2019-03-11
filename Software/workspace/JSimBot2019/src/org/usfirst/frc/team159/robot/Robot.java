@@ -50,6 +50,7 @@ public class Robot extends IterativeRobot {
 		System.out.println("robotInit");
 		grabber.init();
 		elevator.init();
+		climber.init();
 		vision.init();
         vision.start();
 	}
